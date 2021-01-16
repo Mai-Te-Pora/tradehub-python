@@ -1,0 +1,10 @@
+__pycache__
+.vscode
+venv
+.idea
+tradehub-venv
+
+
+# Sphinx documentation
+docs/_build/
+docs/html
