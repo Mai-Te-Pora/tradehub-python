@@ -1,7 +1,8 @@
 import itertools
+import jsons
 
 from tradehub.public_client import PublicClient as TradehubPublicClient
-from tradehub.types import message_types, fee_types, UpdateProfileMessage
+import tradehub.types as types
 from tradehub.utils import sort_and_stringify_json, to_tradehub_asset_amount
 from tradehub.wallet import Wallet
 
@@ -37,14 +38,39 @@ class AuthenticatedClient(TradehubPublicClient):
     def get_account_details(self):
         return self.get_account(swth_address = self.wallet.address)
 
-    def get_transaction_fee_type(self, message_type):
-        return fee_types[message_type]
+    def get_transaction_fee_type(self, transaction_type: str):
+        return types.fee_types[transaction_type]
+
+    def set_message_standards(self, messages: list):
+        messages_list = []
+        for message in messages:
+            if message.originator in [None, ""]:
+                message.originator = self.wallet.address
+            message_msg = jsons.dump(message)
+            messages_list.append(message_msg)
+        return messages_list
+
+
+    def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
+        messages_msg = self.set_message_standards(messages = messages)
+        transaction_type = types.transaction_types[transaction_type]
+        transactions_msg = [transaction_type] * len(messages_msg)
+        if fee:
+            fee_msg = fee
+        else:
+            fee_type = self.get_transaction_fee_type(transaction_type)
+            fee_amount = self.fees[fee_type]
+            fee_msg = {
+                "amount": [{"amount": fee_amount, "denom": "swth"}],
+                "gas": self.gas,
+            }
+        return messages_msg, transactions_msg, fee_msg
 
 
     ## Authenticated Client Message Signing, Construction, and Broadcasting
     def sign_transaction(self,
                          messages: list,
-                         message_types: list,
+                         transaction_types: list,
                          sequence: int = None,
                          memo: str = None,
                          mode: str = None,
@@ -64,7 +90,7 @@ class AuthenticatedClient(TradehubPublicClient):
             (5) Take the transaction JSON from step (4) and create the final layer of the transaction JSON message. <- construct_complete_transaction
         '''
 
-        concrete_messages = self.construct_concrete_messages(messages = messages, message_types = message_types)
+        concrete_messages = self.construct_concrete_messages(messages = messages, transaction_types = transaction_types)
         print(concrete_messages)
         signature = self.sign_message(messages = concrete_messages, sequence = sequence, memo = memo, fee = fee)
         print(signature)
@@ -74,8 +100,8 @@ class AuthenticatedClient(TradehubPublicClient):
         print(transaction)
         return self.construct_complete_transaction(transaction = transaction)
 
-    def construct_concrete_messages(self, messages: list, message_types: list):  # both of these are lists of strings
-        if len(messages) != len(message_types):
+    def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
+        if len(messages) != len(transaction_types):
             # throw new Error('Msg length is not equal to types length')
             pass
         if len(messages) > 100:
@@ -84,9 +110,9 @@ class AuthenticatedClient(TradehubPublicClient):
         
         concrete_messages = []   # ConcreteMsg[] from JS code -> {type: string, value: object}
 
-        for (message, message_type) in zip(messages, message_types):
+        for (message, transaction_type) in zip(messages, transaction_types):
             concrete_messages.append({
-                "type": message_type,
+                "type": transaction_type,
                 "value": message,
             })
 
@@ -151,35 +177,43 @@ class AuthenticatedClient(TradehubPublicClient):
         print(transactions)
         return self.request.post(path = '/txs', json_data = transactions)
 
-    def sign_and_broadcast(self, messages: list, message_types: list, fee: dict):   # Eventually need to add memo to this.
+    def sign_and_broadcast(self, messages: list, transaction_types: list, fee: dict):   # Eventually need to add memo to this.
         '''
             This is the entry point for all signatures in this Class.
             All the signatures should be handled in the Wallet Client to avoid leaking keys.
 
         '''
-        transactions = self.sign_transaction(messages = messages, message_types = message_types, fee = fee)
+        transactions = self.sign_transaction(messages = messages, transaction_types = transaction_types, fee = fee)
         print(transactions)
         return self.broadcast_transactions(transactions = transactions)
 
     ## Authenticated Client Functions
-    def update_profile(self, message: UpdateProfileMessage, fee: dict = None):
+    def update_profile(self, message: types.UpdateProfileMessage, fee: dict = None):
         '''
             message = {
                 username: 'PythonAPI',
                 twitter: '',
             }
         '''
-        if "originator" not in message:
-            message["originator"] = self.wallet.address
-        message_type = message_types["UPDATE_PROFILE_MSG_TYPE"]
-        fee_type = self.get_transaction_fee_type(message_type)
-        if fee:
-            fee_dict = fee
-        else:
-            fee_amount = self.fees[fee_type]
-            fee_dict = {
-                "amount": [{"amount": fee_amount, "denom": "swth"}],
-                "gas": self.gas,
+        messages_msg, transactions_msg, fee_msg = self.set_transaction_standards(messages = [message],
+                                                                                 transaction_type = "UPDATE_PROFILE_MSG_TYPE",
+                                                                                 fee = fee)
+        return self.sign_and_broadcast(messages = messages_msg, transaction_types = transactions_msg, fee = fee_msg)
+    
+    def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
+        '''
+            {
+                market: "swth_eth",
+                side: "sell",
+                quantity: "200",
+                price: "1.01",
+                order_type: "limit",
             }
-        
-        return self.sign_and_broadcast(messages = [message], message_types = [message_type], fee = fee_dict)
+        '''
+        return self.create_orders(messages = [message], fee = fee)
+
+    def create_orders(self, messages: [types.CreateOrderMessage], fee: dict = None):
+        messages_msg, transactions_msg, fee_msg = self.set_transaction_standards(messages = messages,
+                                                                                 transaction_type = "CREATE_ORDER_MSG_TYPE",
+                                                                                 fee = fee)
+        # return self.sign_and_broadcast(messages = messages_msg, transaction_types = transactions_msg, fee = fee_msg)

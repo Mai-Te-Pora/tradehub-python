@@ -1,14 +1,14 @@
 from collections import defaultdict
-from typing import TypedDict
+from dataclasses import dataclass
 
 
-message_types = {}
+transaction_types = {}
 
 # // Orders
-message_types["CREATE_ORDER_MSG_TYPE"] = 'order/MsgCreateOrder'
-message_types["CANCEL_ORDER_MSG_TYPE"] = 'order/MsgCancelOrder'
-message_types["CANCEL_ALL_MSG_TYPE"] = 'order/MsgCancelAll'
-message_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
+transaction_types["CREATE_ORDER_MSG_TYPE"] = 'order/MsgCreateOrder'
+transaction_types["CANCEL_ORDER_MSG_TYPE"] = 'order/MsgCancelOrder'
+transaction_types["CANCEL_ALL_MSG_TYPE"] = 'order/MsgCancelAll'
+transaction_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 # export const CREATE_MARKET_MSG_TYPE = 'market/MsgCreateMarket'
 # export const UPDATE_MARKET_MSG_TYPE = 'market/MsgUpdateMarket'
 # export const INITIATE_SETTLEMENT_MSG_TYPE = 'broker/MsgInitiateSettlement'
@@ -33,14 +33,14 @@ message_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 # export const DELEGATE_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgDelegate'
 # export const BEGIN_UNBONDING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgUndelegate'
 # export const BEGIN_REDELEGATING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgBeginRedelegate'
-message_types["WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"] = 'cosmos-sdk/MsgWithdrawDelegationReward'
+transaction_types["WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"] = 'cosmos-sdk/MsgWithdrawDelegationReward'
 
 # // Accounts
 # export const CREATE_SUB_ACCOUNT_MSG_TYPE = 'subaccount/MsgCreateSubAccountV1'
 # export const ACTIVATE_SUB_ACCOUNT_MSG_TYPE = 'subaccount/MsgActivateSubAccountV1'
 
 # // Profile
-message_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
+transaction_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
 
 
 # // Gov
@@ -91,6 +91,22 @@ fee_types = {
 
 fee_types = defaultdict(lambda: 'default_fee', fee_types)
 
-class UpdateProfileMessage(TypedDict, total = False):
+@dataclass
+class UpdateProfileMessage:
     username: str
     twitter: str
+    originator: str = None
+
+@dataclass
+class CreateOrderMessage:
+    market: str
+    side: str
+    quantity: str
+    price: str = None
+    order_type: str = 'limit'
+    order_time_in_force: str = 'gtc'
+    stop_price: str = None
+    trigger_type: str = None
+    is_post_only: bool = False
+    is_reduce_only: bool = False
+    originator: str = None
