@@ -103,8 +103,8 @@ class CreateOrderMessage:
     side: str
     quantity: str
     price: str = None
-    order_type: str = 'limit'
-    order_time_in_force: str = 'gtc'
+    type: str = 'limit'               # Order Type
+    order_time_in_force: str = None
     stop_price: str = None
     trigger_type: str = None
     is_post_only: bool = False

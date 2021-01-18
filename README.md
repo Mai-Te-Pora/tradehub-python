@@ -14,18 +14,17 @@ If you have ideas or contributions we are accepting Pull Requests.
 pip install -r requirements.txt
 ```
 
-### Tradehub Public Client
+### Demex Client
+
+This client utilizes all the other clients and can call wallet, authenticated, and public endpoints.
 
 ```
-from tradehub.utils import validator_crawler_mp
-from tradehub.public_client import PublicClient as TradehubPublicClient
-import random
-
-validator_dict = validator_crawler_mp(network = 'main')
-active_peers = validator_dict["active_peers"]
-decentralized_client = TradehubPublicClient(validator_ip=active_peers[random.randint(a=0, b=len(active_peers)-1)])
-
-print(decentralized_client.get_tokens())
+dmx = DemexClient(mnemonic=mnemonic, network="mainnet")
+print(dmx.tradehub.get_account_details())
+dmx.limit_sell(pair="swth_eth1", quantity="200", price="0.000021"))
+dmx.limit_buy(pair="swth_eth1", quantity="200", price="0.0000165"))
+dmx.market_sell(pair="swth_eth1", quantity="200"))
+dmx.market_buy(pair="swth_eth1", quantity="200"))
 ```
 
 ### Wallet and Tradehub Authenticated Client
@@ -42,4 +41,18 @@ profile_update_dict = {
     "twitter": "test3",
 }
 print(pk.update_profile(message = profile_update_dict))
+```
+
+### Tradehub Public Client
+
+```
+from tradehub.utils import validator_crawler_mp
+from tradehub.public_client import PublicClient as TradehubPublicClient
+import random
+
+validator_dict = validator_crawler_mp(network = 'main')
+active_peers = validator_dict["active_peers"]
+decentralized_client = TradehubPublicClient(validator_ip=active_peers[random.randint(a=0, b=len(active_peers)-1)])
+
+print(decentralized_client.get_tokens())
 ```

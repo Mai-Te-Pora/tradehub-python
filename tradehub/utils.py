@@ -45,96 +45,96 @@ def sort_and_stringify_json(message):
     """
     return json.dumps(message, sort_keys=True, separators=(',', ':'))
 
-def validator_crawler(network = 'test'):
-    peers_dict = {}
-    all_peers_list = []
-    checked_peers_list = []
-    active_peers_list = []
-    continue_checking_peers = True
-    seed_peers_list = {
-        "main": ["54.255.5.46", "168.119.70.59", "192.99.247.238", "40.87.48.237", "18.141.90.114"],
-        "test": ["54.255.42.175", "52.220.152.108"]
-    }
+# def validator_crawler(network = 'test'):
+#     peers_dict = {}
+#     all_peers_list = []
+#     checked_peers_list = []
+#     active_peers_list = []
+#     continue_checking_peers = True
+#     seed_peers_list = {
+#         "main": ["54.255.5.46", "168.119.70.59", "192.99.247.238", "40.87.48.237", "18.141.90.114"],
+#         "test": ["54.255.42.175", "52.220.152.108"]
+#     }
 
-    if network in ["main", "test"]:
-        all_peers_list = seed_peers_list[network]
+#     if network in ["main", "test"]:
+#         all_peers_list = seed_peers_list[network]
 
-    while continue_checking_peers:
-        unchecked_peers_list = list(set(all_peers_list) - set(checked_peers_list))
-        print("Unchecked Peers: {}".format(unchecked_peers_list))
-        for peer in unchecked_peers_list:
-            print(peer)
-            try:
-                process_peer = True
-                i = requests.get("http://{}:26657/net_info".format(peer), timeout=1)
-            except requests.exceptions.Timeout:
-                print("{} timed out on net_info.".format(peer))
-                peers_dict[peer] = {
-                    "validator_status": "Unknown - Cannot Connect to Retrieve Validator INFO",
-                    "connected_nodes": []
-                }
-                process_peer = False
-            except requests.exceptions.ConnectionError:
-                print("{} Connection Error; max retries exceeded with url: net_info.".format(peer))
-                peers_dict[peer] = {
-                    "validator_status": "Unknown - Cannot Connect to Retrieve Validator INFO",
-                    "connected_nodes": []
-                }
-                process_peer = False
+#     while continue_checking_peers:
+#         unchecked_peers_list = list(set(all_peers_list) - set(checked_peers_list))
+#         print("Unchecked Peers: {}".format(unchecked_peers_list))
+#         for peer in unchecked_peers_list:
+#             print(peer)
+#             try:
+#                 process_peer = True
+#                 i = requests.get("http://{}:26657/net_info".format(peer), timeout=1)
+#             except requests.exceptions.Timeout:
+#                 print("{} timed out on net_info.".format(peer))
+#                 peers_dict[peer] = {
+#                     "validator_status": "Unknown - Cannot Connect to Retrieve Validator INFO",
+#                     "connected_nodes": []
+#                 }
+#                 process_peer = False
+#             except requests.exceptions.ConnectionError:
+#                 print("{} Connection Error; max retries exceeded with url: net_info.".format(peer))
+#                 peers_dict[peer] = {
+#                     "validator_status": "Unknown - Cannot Connect to Retrieve Validator INFO",
+#                     "connected_nodes": []
+#                 }
+#                 process_peer = False
 
-            all_peers_list.append(peer)
-            checked_peers_list.append(peer)
-            if i.status_code == 200 and process_peer:
-                connected_nodes = []
+#             all_peers_list.append(peer)
+#             checked_peers_list.append(peer)
+#             if i.status_code == 200 and process_peer:
+#                 connected_nodes = []
 
-                for connected_peer in i.json()["result"]["peers"]:
-                    all_peers_list.append(connected_peer["remote_ip"])
-                    connected_nodes.append({
-                        "node_id": connected_peer["node_info"]["id"],
-                        "node_ip": connected_peer["remote_ip"],
-                        "node_full": "{}@{}".format(connected_peer["node_info"]["id"], connected_peer["remote_ip"])
-                    })
+#                 for connected_peer in i.json()["result"]["peers"]:
+#                     all_peers_list.append(connected_peer["remote_ip"])
+#                     connected_nodes.append({
+#                         "node_id": connected_peer["node_info"]["id"],
+#                         "node_ip": connected_peer["remote_ip"],
+#                         "node_full": "{}@{}".format(connected_peer["node_info"]["id"], connected_peer["remote_ip"])
+#                     })
                 
-                try:
-                    s = requests.get("http://{}:26657/status".format(peer))
-                except requests.exceptions.Timeout:
-                    print("{} timed out on status.".format(peer))
-                    peers_dict[peer] = {
-                        "validator_status": "Unknown - Cannot Connect to Retrieve Status end point",
-                        "connected_nodes": []
-                    }
-                    process_peer = False
-                except requests.exceptions.ConnectionError:
-                    print("{} Connection Error; max retries exceeded with url: status.".format(peer))
-                    peers_dict[peer] = {
-                        "validator_status": "Unknown - Cannot Connect to Retrieve Status end point",
-                        "connected_nodes": []
-                    }
-                    process_peer = False
+#                 try:
+#                     s = requests.get("http://{}:26657/status".format(peer))
+#                 except requests.exceptions.Timeout:
+#                     print("{} timed out on status.".format(peer))
+#                     peers_dict[peer] = {
+#                         "validator_status": "Unknown - Cannot Connect to Retrieve Status end point",
+#                         "connected_nodes": []
+#                     }
+#                     process_peer = False
+#                 except requests.exceptions.ConnectionError:
+#                     print("{} Connection Error; max retries exceeded with url: status.".format(peer))
+#                     peers_dict[peer] = {
+#                         "validator_status": "Unknown - Cannot Connect to Retrieve Status end point",
+#                         "connected_nodes": []
+#                     }
+#                     process_peer = False
                 
-                if s.status_code == 200 and process_peer:
-                    peers_dict[peer] = parse_validator_status(request_json = s.json())
-                    peers_dict["validator_status"] = "Active"
-                    peers_dict["connected_nodes"] = connected_nodes
-                    if not peers_dict[peer]["catching_up"]:
-                        active_peers_list.append(peer)
+#                 if s.status_code == 200 and process_peer:
+#                     peers_dict[peer] = parse_validator_status(request_json = s.json())
+#                     peers_dict["validator_status"] = "Active"
+#                     peers_dict["connected_nodes"] = connected_nodes
+#                     if not peers_dict[peer]["catching_up"]:
+#                         active_peers_list.append(peer)
                 
-                all_peers_list = list(dict.fromkeys(all_peers_list))
-                checked_peers_list = list(dict.fromkeys(checked_peers_list))
-                active_peers_list = list(dict.fromkeys(active_peers_list))
+#                 all_peers_list = list(dict.fromkeys(all_peers_list))
+#                 checked_peers_list = list(dict.fromkeys(checked_peers_list))
+#                 active_peers_list = list(dict.fromkeys(active_peers_list))
         
-        unchecked_peers_list = list(set(all_peers_list) - set(checked_peers_list))
-        print("Unchecked Peers: {}".format(unchecked_peers_list))
-        if not unchecked_peers_list and active_peers_list:
-            continue_checking_peers = False
-        elif not unchecked_peers_list and not active_peers_list:
-            validators = Request(api_url = 'https://tradescan.switcheo.org', timeout = 30).get(path = '/monitor')
-            for validator in validators:
-                unchecked_peers_list.append(validator["ip"])
+#         unchecked_peers_list = list(set(all_peers_list) - set(checked_peers_list))
+#         print("Unchecked Peers: {}".format(unchecked_peers_list))
+#         if not unchecked_peers_list and active_peers_list:
+#             continue_checking_peers = False
+#         elif not unchecked_peers_list and not active_peers_list:
+#             validators = Request(api_url = 'https://tradescan.switcheo.org', timeout = 30).get(path = '/monitor')
+#             for validator in validators:
+#                 unchecked_peers_list.append(validator["ip"])
     
-    peers_dict["active_peers"] = active_peers_list
-    print(peers_dict)
-    print(peers_dict["active_peers"])
+#     peers_dict["active_peers"] = active_peers_list
+#     # print(peers_dict)
+#     # print(peers_dict["active_peers"])
 
 
 def validator_crawler_mp(network = 'test'):
@@ -181,7 +181,6 @@ def validator_crawler_mp(network = 'test'):
                 unchecked_peers_list.append(validator["ip"])
     
     peers_dict["active_peers"] = active_peers_list
-    print(peers_dict["active_peers"])
     return peers_dict
 
 def validator_status_request(validator_ip):

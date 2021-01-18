@@ -46,25 +46,29 @@ class AuthenticatedClient(TradehubPublicClient):
         for message in messages:
             if message.originator in [None, ""]:
                 message.originator = self.wallet.address
-            message_msg = jsons.dump(message)
-            messages_list.append(message_msg)
+            message_json = jsons.dump(message)
+            message_dict = {}
+            for key, value in message_json.items():
+                if message_json[key] is not None:
+                    message_dict[key] = value
+            messages_list.append(message_dict)
         return messages_list
 
 
     def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
-        messages_msg = self.set_message_standards(messages = messages)
+        messages_list = self.set_message_standards(messages = messages)
         transaction_type = types.transaction_types[transaction_type]
-        transactions_msg = [transaction_type] * len(messages_msg)
+        transactions_list = [transaction_type] * len(messages_list)
         if fee:
-            fee_msg = fee
+            fee_dict = fee
         else:
             fee_type = self.get_transaction_fee_type(transaction_type)
             fee_amount = self.fees[fee_type]
-            fee_msg = {
+            fee_dict = {
                 "amount": [{"amount": fee_amount, "denom": "swth"}],
                 "gas": self.gas,
             }
-        return messages_msg, transactions_msg, fee_msg
+        return messages_list, transactions_list, fee_dict
 
 
     ## Authenticated Client Message Signing, Construction, and Broadcasting
@@ -91,13 +95,9 @@ class AuthenticatedClient(TradehubPublicClient):
         '''
 
         concrete_messages = self.construct_concrete_messages(messages = messages, transaction_types = transaction_types)
-        print(concrete_messages)
         signature = self.sign_message(messages = concrete_messages, sequence = sequence, memo = memo, fee = fee)
-        print(signature)
         signatures = self.construct_signatures(signature = signature)
-        print(signatures)
         transaction = self.construct_transaction(message = concrete_messages, signatures = [signatures], fees = fee)
-        print(transaction)
         return self.construct_complete_transaction(transaction = transaction)
 
     def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
@@ -149,8 +149,7 @@ class AuthenticatedClient(TradehubPublicClient):
             "msgs": messages,
             "sequence": self.account_sequence_nbr,
         }
-        
-        print(constructed_signing_message)
+
         return self.wallet._sign(message = constructed_signing_message)
 
     def construct_signatures(self, signature: str):
@@ -174,7 +173,6 @@ class AuthenticatedClient(TradehubPublicClient):
         }
 
     def broadcast_transactions(self, transactions: dict):
-        print(transactions)
         return self.request.post(path = '/txs', json_data = transactions)
 
     def sign_and_broadcast(self, messages: list, transaction_types: list, fee: dict):   # Eventually need to add memo to this.
@@ -184,7 +182,6 @@ class AuthenticatedClient(TradehubPublicClient):
 
         '''
         transactions = self.sign_transaction(messages = messages, transaction_types = transaction_types, fee = fee)
-        print(transactions)
         return self.broadcast_transactions(transactions = transactions)
 
     ## Authenticated Client Functions
@@ -195,10 +192,10 @@ class AuthenticatedClient(TradehubPublicClient):
                 twitter: '',
             }
         '''
-        messages_msg, transactions_msg, fee_msg = self.set_transaction_standards(messages = [message],
-                                                                                 transaction_type = "UPDATE_PROFILE_MSG_TYPE",
-                                                                                 fee = fee)
-        return self.sign_and_broadcast(messages = messages_msg, transaction_types = transactions_msg, fee = fee_msg)
+        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = [message],
+                                                                                    transaction_type = "UPDATE_PROFILE_MSG_TYPE",
+                                                                                    fee = fee)
+        return self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
     
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
         '''
@@ -206,14 +203,17 @@ class AuthenticatedClient(TradehubPublicClient):
                 market: "swth_eth",
                 side: "sell",
                 quantity: "200",
-                price: "1.01",
+                price: "0.00002",
                 order_type: "limit",
             }
         '''
         return self.create_orders(messages = [message], fee = fee)
 
     def create_orders(self, messages: [types.CreateOrderMessage], fee: dict = None):
-        messages_msg, transactions_msg, fee_msg = self.set_transaction_standards(messages = messages,
-                                                                                 transaction_type = "CREATE_ORDER_MSG_TYPE",
-                                                                                 fee = fee)
-        # return self.sign_and_broadcast(messages = messages_msg, transaction_types = transactions_msg, fee = fee_msg)
+        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = messages,
+                                                                                    transaction_type = "CREATE_ORDER_MSG_TYPE",
+                                                                                    fee = fee)
+        txn_response = self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
+        if 'code' not in txn_response:
+            self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
+        return txn_response
