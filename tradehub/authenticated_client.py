@@ -44,7 +44,7 @@ class AuthenticatedClient(TradehubPublicClient):
     def set_message_standards(self, messages: list):
         messages_list = []
         for message in messages:
-            if message.originator in [None, ""]:
+            if hasattr(message, 'originator') and message.originator in [None, ""]:
                 message.originator = self.wallet.address
             message_json = jsons.dump(message)
             message_dict = {}
@@ -63,7 +63,7 @@ class AuthenticatedClient(TradehubPublicClient):
             fee_dict = fee
         else:
             fee_type = self.get_transaction_fee_type(transaction_type)
-            fee_amount = self.fees[fee_type]
+            fee_amount = self.fees[fee_type] * len(messages)
             fee_dict = {
                 "amount": [{"amount": fee_amount, "denom": "swth"}],
                 "gas": self.gas,
@@ -182,9 +182,28 @@ class AuthenticatedClient(TradehubPublicClient):
 
         '''
         transactions = self.sign_transaction(messages = messages, transaction_types = transaction_types, fee = fee)
-        return self.broadcast_transactions(transactions = transactions)
+        broadcast_response = self.broadcast_transactions(transactions = transactions)
+        if 'code' not in broadcast_response:
+            self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
+        return broadcast_response
+
+    def submit_transaction_on_chain(self, messages: list, transaction_type: str, fee: dict):
+        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = messages,
+                                                                                    transaction_type = transaction_type,
+                                                                                    fee = fee)
+        return self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
 
     ## Authenticated Client Functions
+    '''
+        The way each of these functions work follow a similar pattern.
+        (1) The function is passed a message that matches a class from the type file.
+        (2) That message and matching transaction type are sent to a function that standardizes builds of transaction sent to the blockchain.
+        (3) Inside that standardization are the:
+            (3a) - Determination of fees
+            (3b) - Transformation of the message class to a Python dictionary/JSON object to facilitate signing and broadcast to the network.
+            (3c) - Determination of account details
+        (4) With everything standardized, each of the objects are then sent off to be signed and broadcast to the Tradehub blockchain.
+    '''
     def update_profile(self, message: types.UpdateProfileMessage, fee: dict = None):
         '''
             message = {
@@ -192,10 +211,8 @@ class AuthenticatedClient(TradehubPublicClient):
                 twitter: '',
             }
         '''
-        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = [message],
-                                                                                    transaction_type = "UPDATE_PROFILE_MSG_TYPE",
-                                                                                    fee = fee)
-        return self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
+        transaction_type = "UPDATE_PROFILE_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
     
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
         '''
@@ -210,10 +227,16 @@ class AuthenticatedClient(TradehubPublicClient):
         return self.create_orders(messages = [message], fee = fee)
 
     def create_orders(self, messages: [types.CreateOrderMessage], fee: dict = None):
-        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = messages,
-                                                                                    transaction_type = "CREATE_ORDER_MSG_TYPE",
-                                                                                    fee = fee)
-        txn_response = self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
-        if 'code' not in txn_response:
-            self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
-        return txn_response
+        transaction_type = "CREATE_ORDER_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+
+    def claim_staking_rewards(self, message = types.WithdrawDelegatorRewardsMessage, fee: dict = None):
+        transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def claim_all_staking_rewards(self, message = types.WithdrawAllDelegatorRewardsParams, fee: dict = None):
+        transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
+        messages = []
+        for validator_address in message.validator_addresses:
+            messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
+        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)

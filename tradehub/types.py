@@ -110,3 +110,13 @@ class CreateOrderMessage:
     is_post_only: bool = False
     is_reduce_only: bool = False
     originator: str = None
+
+@dataclass
+class WithdrawDelegatorRewardsMessage:
+  delegator_address: str
+  validator_address: str
+
+@dataclass
+class WithdrawAllDelegatorRewardsParams:
+  delegator_address: str
+  validator_addresses: [str]
