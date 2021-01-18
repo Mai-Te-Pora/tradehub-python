@@ -30,7 +30,7 @@ transaction_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 
 # // Staking
 # export const CREATE_VALIDATOR_MSG_TYPE = 'cosmos-sdk/MsgCreateValidator'
-# export const DELEGATE_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgDelegate'
+transaction_types["DELEGATE_TOKENS_MSG_TYPE"] = 'cosmos-sdk/MsgDelegate'
 # export const BEGIN_UNBONDING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgUndelegate'
 # export const BEGIN_REDELEGATING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgBeginRedelegate'
 transaction_types["WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"] = 'cosmos-sdk/MsgWithdrawDelegationReward'
@@ -112,11 +112,22 @@ class CreateOrderMessage:
     originator: str = None
 
 @dataclass
+class DelegateTokensAmount:
+    amount: str
+    denom: str = 'swth'
+
+@dataclass
+class DelegateTokensMsg:
+    delegator_address: str
+    validator_address: str
+    amount: DelegateTokensAmount
+
+@dataclass
 class WithdrawDelegatorRewardsMessage:
-  delegator_address: str
-  validator_address: str
+    delegator_address: str
+    validator_address: str
 
 @dataclass
 class WithdrawAllDelegatorRewardsParams:
-  delegator_address: str
-  validator_addresses: [str]
+    delegator_address: str
+    validator_addresses: [str]

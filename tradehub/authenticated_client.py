@@ -230,6 +230,11 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "CREATE_ORDER_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
 
+    def stake_switcheo(self, message = types.DelegateTokensMsg, fee: dict = None):
+        transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
+        message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), power = 8)
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
     def claim_staking_rewards(self, message = types.WithdrawDelegatorRewardsMessage, fee: dict = None):
         transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)

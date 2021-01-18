@@ -254,7 +254,7 @@ def parse_validator_status(request_json, validator_ip):
         "validator_voting_power": request_json["result"]["validator_info"]["voting_power"]
     }
 
-def to_tradehub_asset_amount(amount, power = 8):
+def to_tradehub_asset_amount(amount: float, power = 8):
     '''
         TODO: Need to add different checks for different types of assets, this is a carry over from NEO
     '''
