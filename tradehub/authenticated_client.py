@@ -32,6 +32,7 @@ class AuthenticatedClient(TradehubPublicClient):
         self.fees = self.get_transactions_fees()
         self.mode = "block"        # Need to automate
         self.gas = "100000000000"  # Need to automate
+        self.tokens = self.get_token_details()
 
 
     ## Authenticated Client Getters
@@ -135,7 +136,7 @@ class AuthenticatedClient(TradehubPublicClient):
         if fee:
             fee_dict = fee
         else:
-            fee_amount = to_tradehub_asset_amount(amount = len(messages), power = 8)
+            fee_amount = to_tradehub_asset_amount(amount = len(messages), decimals = self.tokens["swth"]["decimals"])
             fee_dict = {
                 "amount": [{"denom": "swth", "amount": fee_amount}],
                 "gas": self.gas,
@@ -213,6 +214,17 @@ class AuthenticatedClient(TradehubPublicClient):
         '''
         transaction_type = "UPDATE_PROFILE_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def send_tokens(self, message = types.SendTokensMsg, fee: dict = None):
+        transaction_type = "SEND_TOKENS_TYPE"
+        if hasattr(message, 'from_address') and message.from_address in [None, ""]:
+            message.from_address = self.wallet.address
+        amounts = []
+        for amount in message.amount:
+            formatted_amount = to_tradehub_asset_amount(amount = float(amount.amount), decimals = self.tokens[amount.denom]["decimals"])
+            amounts.append(types.SendTokensAmount(amount = formatted_amount, denom = amount.denom))
+        message.amount = amounts
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
     
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
         '''
@@ -232,7 +244,7 @@ class AuthenticatedClient(TradehubPublicClient):
 
     def stake_switcheo(self, message = types.DelegateTokensMsg, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
-        message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), power = 8)
+        message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), decimals = self.tokens["swth"]["decimals"])
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
 
     def claim_staking_rewards(self, message = types.WithdrawDelegatorRewardsMessage, fee: dict = None):

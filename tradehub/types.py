@@ -1,5 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass
+from typing import List
 
 
 transaction_types = {}
@@ -22,7 +23,7 @@ transaction_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 # export const MINT_TOKEN_MSG_TYPE = 'coin/MsgMintToken'
 # export const CREATE_TOKEN_MSG_TYPE = 'coin/MsgCreateToken'
 # export const CREATE_WITHDRAWAL_TYPE = 'coin/MsgWithdraw'
-# export const SEND_TOKENS_TYPE = 'cosmos-sdk/MsgSend'
+transaction_types["SEND_TOKENS_TYPE"] = 'cosmos-sdk/MsgSend'
 
 # // Oracle
 # export const CREATE_ORACLE_TYPE = 'oracle/MsgCreateOracle'
@@ -96,6 +97,17 @@ class UpdateProfileMessage:
     username: str
     twitter: str
     originator: str = None
+
+@dataclass
+class SendTokensAmount:
+    amount: str
+    denom: str
+
+@dataclass
+class SendTokensMsg:
+  to_address: str
+  amount: List[SendTokensAmount]
+  from_address: str = None
 
 @dataclass
 class CreateOrderMessage:

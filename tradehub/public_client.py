@@ -1353,6 +1353,18 @@ class PublicClient(object):
         """
         return self.request.get(path='/get_tokens')
 
+    def get_token_details(self) -> dict:
+        tokens = self.get_tokens()
+        tokens_details = {}
+        for token in tokens:
+            if token["is_active"]:
+                tokens_details[token["denom"]] = {
+                    'name': token["name"],
+                    'symbol': token["symbol"],
+                    'decimals': token["decimals"],
+                }
+        return tokens_details
+
     def get_top_r_profits(self, market: str, limit: int):
         """
 
