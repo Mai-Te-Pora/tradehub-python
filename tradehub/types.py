@@ -116,7 +116,7 @@ class CreateOrderMessage:
     quantity: str
     price: str = None
     type: str = 'limit'               # Order Type
-    order_time_in_force: str = None
+    time_in_force: str = None
     stop_price: str = None
     trigger_type: str = None
     is_post_only: bool = False
