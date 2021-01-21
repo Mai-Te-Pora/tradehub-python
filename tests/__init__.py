@@ -1,6 +1,11 @@
 from unittest import TestCase
+import random
 
-DEVEL_AND_CO_SENTRY = "85.214.91.220"
+from tradehub.utils import validator_crawler_mp
+
+active_peers = validator_crawler_mp(network = 'main')["active_peers"]
+validator_ip = active_peers[random.randint(a=0, b=len(active_peers)-1)]
+DEVEL_AND_CO_SENTRY = validator_ip
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
 

@@ -148,7 +148,7 @@ def validator_crawler_mp(network = 'test'):
     continue_checking_peers = True
 
     seed_peers_list = {
-        "main": ["54.255.5.46", "168.119.70.59", "192.99.247.238", "40.87.48.237", "18.141.90.114"],
+        "main": ["54.255.5.46", "175.41.151.35"],
         "test": ["54.255.42.175", "52.220.152.108"]
     }
 
