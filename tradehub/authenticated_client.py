@@ -215,7 +215,7 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "UPDATE_PROFILE_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
 
-    def send_tokens(self, message = types.SendTokensMsg, fee: dict = None):
+    def send_tokens(self, message = types.SendTokensMessage, fee: dict = None):
         transaction_type = "SEND_TOKENS_TYPE"
         if hasattr(message, 'from_address') and message.from_address in [None, ""]:
             message.from_address = self.wallet.address
@@ -242,7 +242,18 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "CREATE_ORDER_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
 
-    def stake_switcheo(self, message = types.DelegateTokensMsg, fee: dict = None):
+    def cancel_order(self, message: types.CancelOrderMessage, fee: dict = None):
+        return self.cancel_orders(messages = [message], fee = fee)
+
+    def cancel_orders(self, messages: [types.CancelOrderMessage], fee: dict = None):
+        transaction_type = "CANCEL_ORDER_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+
+    def cancel_all(self, message: types.CancelAllMessage, fee: dict = None):
+        transaction_type = "CANCEL_ALL_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def stake_switcheo(self, message = types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
         message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), decimals = self.tokens["swth"]["decimals"])
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
@@ -258,7 +269,7 @@ class AuthenticatedClient(TradehubPublicClient):
             messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
 
-    def create_withdraw(self, message: types.CreateWithdrawMsg, fee: dict = None):
+    def create_withdraw(self, message: types.CreateWithdrawMessage, fee: dict = None):
         message.fee_address = 'swth1prv0t8j8tqcdngdmjlt59pwy6dxxmtqgycy2h7'
         message.to_address = format_withdraw_address(address = message.to_address)
         transaction_type = "CREATE_WITHDRAWAL_TYPE"

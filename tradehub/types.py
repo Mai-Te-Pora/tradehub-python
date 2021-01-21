@@ -104,7 +104,7 @@ class SendTokensAmount:
     denom: str
 
 @dataclass
-class SendTokensMsg:
+class SendTokensMessage:
     to_address: str
     amount: List[SendTokensAmount]
     from_address: str = None
@@ -124,7 +124,17 @@ class CreateOrderMessage:
     originator: str = None
 
 @dataclass
-class CreateWithdrawMsg:
+class CancelOrderMessage:
+  id: str
+  originator: str = None
+
+@dataclass
+class CancelAllMessage:
+  market: str
+  originator: str = None
+
+@dataclass
+class CreateWithdrawMessage:
     to_address: str
     denom: str
     amount: str
@@ -137,7 +147,7 @@ class DelegateTokensAmount:
     denom: str = 'swth'
 
 @dataclass
-class DelegateTokensMsg:
+class DelegateTokensMessage:
     delegator_address: str
     validator_address: str
     amount: DelegateTokensAmount

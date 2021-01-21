@@ -15,7 +15,7 @@ class DemexClient(object):
         self.validator_ip = self.active_validators[random.randint(a=0, b=len(self.active_peers)-1)]
         self.tradehub = TradehubAuthenticatedClient(wallet = self.wallet, node_ip = self.validator_ip, network = network)
 
-    def limit_buy(self, pair, quantity, price):
+    def limit_buy(self, pair: str, quantity: str, price: str):
         create_order_msg = types.CreateOrderMessage(market = pair,
                                                     side = "buy",
                                                     quantity = quantity,
@@ -23,7 +23,7 @@ class DemexClient(object):
                                                     type = "limit")
         return self.tradehub.create_order(message = create_order_msg)
 
-    def limit_sell(self, pair, quantity, price):
+    def limit_sell(self, pair: str, quantity: str, price: str):
         create_order_msg = types.CreateOrderMessage(market = pair,
                                                     side = "sell",
                                                     quantity = quantity,
@@ -31,14 +31,14 @@ class DemexClient(object):
                                                     type = "limit")
         return self.tradehub.create_order(message = create_order_msg)
 
-    def market_buy(self, pair, quantity):
+    def market_buy(self, pair: str, quantity: str):
         create_order_msg = types.CreateOrderMessage(market = pair,
                                                     side = "buy",
                                                     quantity = quantity,
                                                     type = "market")
         return self.tradehub.create_order(message = create_order_msg)
 
-    def market_sell(self, pair, quantity):
+    def market_sell(self, pair: str, quantity: str):
         create_order_msg = types.CreateOrderMessage(market = pair,
                                                     side = "sell",
                                                     quantity = quantity,
@@ -56,3 +56,17 @@ class DemexClient(object):
 
     def stop_market_sell(self, pair, quantity):
         pass
+
+    def cancel_order(self, order_id: str):
+        cancel_order_msg = types.CancelOrderMessage(id = order_id)
+        return self.tradehub.cancel_order(message = cancel_order_msg)
+
+    def cancel_orders(self, order_ids: list):
+        cancel_order_msgs = []
+        for order_id in order_ids:
+            cancel_order_msgs.append(types.CancelOrderMessage(id = order_id))
+        return self.tradehub.cancel_orders(messages = cancel_order_msgs)
+
+    def cancel_all_open_orders_for_pair(self, pair: str):
+        cancel_all_order_msg = types.CancelAllMessage(market = pair)
+        return self.tradehub.cancel_all(message = cancel_all_order_msg)
