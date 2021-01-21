@@ -3,7 +3,7 @@ import jsons
 
 from tradehub.public_client import PublicClient as TradehubPublicClient
 import tradehub.types as types
-from tradehub.utils import sort_and_stringify_json, to_tradehub_asset_amount
+from tradehub.utils import sort_and_stringify_json, to_tradehub_asset_amount, format_withdraw_address
 from tradehub.wallet import Wallet
 
 
@@ -131,7 +131,7 @@ class AuthenticatedClient(TradehubPublicClient):
             self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
             self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
             if self.account_nbr == '0' or self.account_nbr is None:
-                print('Account number still 0 after refetching. This suggests your account is not initialized with funds')
+                raise ValueError('Account number still 0 after refetching. This suggests your account is not initialized with funds.')
 
         if fee:
             fee_dict = fee
@@ -223,7 +223,7 @@ class AuthenticatedClient(TradehubPublicClient):
         for amount in message.amount:
             formatted_amount = to_tradehub_asset_amount(amount = float(amount.amount), decimals = self.tokens[amount.denom]["decimals"])
             amounts.append(types.SendTokensAmount(amount = formatted_amount, denom = amount.denom))
-        message.amount = amounts
+        message.amount = sorted(amounts, key=lambda x: x.denom.lower())  # When dealing with coin lists in Cosmos it is a requirement that they be ordered by name - https://github.com/cosmos/cosmos-sdk/blob/master/types/coin.go#L215
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
     
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
@@ -257,3 +257,9 @@ class AuthenticatedClient(TradehubPublicClient):
         for validator_address in message.validator_addresses:
             messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+
+    def create_withdraw(self, message: types.CreateWithdrawMsg, fee: dict = None):
+        message.fee_address = 'swth1prv0t8j8tqcdngdmjlt59pwy6dxxmtqgycy2h7'
+        message.to_address = format_withdraw_address(address = message.to_address)
+        transaction_type = "CREATE_WITHDRAWAL_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)

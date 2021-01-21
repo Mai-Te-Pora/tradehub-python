@@ -1,7 +1,10 @@
+import base58
+import binascii
 import json
 import math
 import multiprocessing as mp
 import requests
+from web3 import Web3
 
 
 class TradehubApiException(Exception):
@@ -254,11 +257,44 @@ def parse_validator_status(request_json, validator_ip):
         "validator_voting_power": request_json["result"]["validator_info"]["voting_power"]
     }
 
-def to_tradehub_asset_amount(amount: float, power = 8):
-    '''
-        TODO: Need to add different checks for different types of assets, this is a carry over from NEO
-    '''
-    if 0.00000001 < amount < 1000000000:
-        return "{:.0f}".format(amount * math.pow(10, power))
+def to_tradehub_asset_amount(amount: float, decimals: int = 8):
+    return "{:.0f}".format(amount * math.pow(10, decimals))
+
+def is_valid_neo_public_address(address: str) -> bool:
+    """Check if address is a valid NEO address"""
+    valid = False
+
+    if len(address) == 34 and address[0] == 'A':
+        try:
+            base58.b58decode_check(address.encode())
+            valid = True
+        except ValueError:
+            # checksum mismatch
+            valid = False
+
+    return valid
+
+def reverse_hex(message: str):
+    return "".join([message[x:x + 2] for x in range(0, len(message), 2)][::-1])
+
+def neo_get_scripthash_from_address(address: str):
+    hash_bytes = binascii.hexlify(base58.b58decode_check(address))
+    return reverse_hex(hash_bytes[2:].decode('utf-8'))
+
+def is_eth_contract(address: str, web3_uri: str):
+    eth_w3 = Web3(provider = Web3.HTTPProvider(endpoint_uri = web3_uri))
+    if len(eth_w3.eth.getCode(eth_w3.toChecksumAddress(value = address))) == 0:
+        return True
     else:
-        raise ValueError('Asset amount {} outside of acceptable range {}-{}.'.format(amount, 0.00000001, 1000000000))
+        return False
+
+def format_withdraw_address(address: str):
+    if is_valid_neo_public_address(address = address):
+        return reverse_hex(neo_get_scripthash_from_address(address = address))
+    elif Web3.isAddress(value = address):
+        if is_eth_contract(address = address):
+            raise ValueError('Cannot withdraw to an Ethereum contract address.')
+        else:
+            return Web3.toChecksumAddress(value = address)[2:]
+    else:
+        raise ValueError('Not a valid address or blockchain not yet supported.')

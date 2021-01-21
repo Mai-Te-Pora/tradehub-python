@@ -22,7 +22,7 @@ transaction_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 # // Tokens
 # export const MINT_TOKEN_MSG_TYPE = 'coin/MsgMintToken'
 # export const CREATE_TOKEN_MSG_TYPE = 'coin/MsgCreateToken'
-# export const CREATE_WITHDRAWAL_TYPE = 'coin/MsgWithdraw'
+transaction_types["CREATE_WITHDRAWAL_TYPE"] = 'coin/MsgWithdraw'
 transaction_types["SEND_TOKENS_TYPE"] = 'cosmos-sdk/MsgSend'
 
 # // Oracle
@@ -105,9 +105,9 @@ class SendTokensAmount:
 
 @dataclass
 class SendTokensMsg:
-  to_address: str
-  amount: List[SendTokensAmount]
-  from_address: str = None
+    to_address: str
+    amount: List[SendTokensAmount]
+    from_address: str = None
 
 @dataclass
 class CreateOrderMessage:
@@ -121,6 +121,14 @@ class CreateOrderMessage:
     trigger_type: str = None
     is_post_only: bool = False
     is_reduce_only: bool = False
+    originator: str = None
+
+@dataclass
+class CreateWithdrawMsg:
+    to_address: str
+    denom: str
+    amount: str
+    fee_amount: str
     originator: str = None
 
 @dataclass
