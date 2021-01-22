@@ -72,13 +72,33 @@ class DemexClient(object):
                                                         trigger_type = "last_price")
             return self.tradehub.create_order(message = create_order_msg)
         else:
-            raise ValueError("Stop Price target is required to be below the current market price to trigger a stop order.")
+            raise ValueError("Stop Price target {} is required to be below the current market price {} to trigger a stop order.".format(stop_price, current_price))
 
-    def stop_market_buy(self, pair, quantity):
-        pass
+    def stop_market_buy(self, pair: str, quantity: str, stop_price: str):
+        current_price = self.tradehub.get_prices(market = pair)["last"]
+        if Decimal(stop_price) > Decimal(current_price):
+            create_order_msg = types.CreateOrderMessage(market = pair,
+                                                        side = "buy",
+                                                        quantity = quantity,
+                                                        type = "stop-market",
+                                                        stop_price = stop_price,
+                                                        trigger_type = "last_price")
+            return self.tradehub.create_order(message = create_order_msg)
+        else:
+            raise ValueError("Stop Price target {} is required to be higher than the current market price {} to trigger a stop order.".format(stop_price, current_price))
 
-    def stop_market_sell(self, pair, quantity):
-        pass
+    def stop_market_sell(self, pair: str, quantity: str, stop_price: str):
+        current_price = self.tradehub.get_prices(market = pair)["last"]
+        if Decimal(stop_price) < Decimal(current_price):
+            create_order_msg = types.CreateOrderMessage(market = pair,
+                                                        side = "sell",
+                                                        quantity = quantity,
+                                                        type = "stop-market",
+                                                        stop_price = stop_price,
+                                                        trigger_type = "last_price")
+            return self.tradehub.create_order(message = create_order_msg)
+        else:
+            raise ValueError("Stop Price target {} is required to be below the current market price {} to trigger a stop order.".format(stop_price, current_price))
 
     def cancel_order(self, order_id: str):
         cancel_order_msg = types.CancelOrderMessage(id = order_id)
