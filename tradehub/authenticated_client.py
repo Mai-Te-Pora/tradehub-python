@@ -103,11 +103,9 @@ class AuthenticatedClient(TradehubPublicClient):
 
     def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
         if len(messages) != len(transaction_types):
-            # throw new Error('Msg length is not equal to types length')
-            pass
+            raise ValueError('Message length is not equal to transaction types length.')
         if len(messages) > 100:
-            # throw new Error('Cannot broadcast more than 100 messages in 1 transaction')
-            pass
+            raise ValueError('Cannot broadcast more than 100 messages in 1 transaction')
         
         concrete_messages = []   # ConcreteMsg[] from JS code -> {type: string, value: object}
 
