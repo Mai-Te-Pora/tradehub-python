@@ -55,20 +55,23 @@ class AuthenticatedClient(TradehubPublicClient):
             messages_list.append(message_dict)
         return messages_list
 
-
-    def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
-        messages_list = self.set_message_standards(messages = messages)
-        transaction_type = types.transaction_types[transaction_type]
-        transactions_list = [transaction_type] * len(messages_list)
+    def set_fees(self, transaction_cnt: int, transaction_type: str, fee: dict):
         if fee:
             fee_dict = fee
         else:
             fee_type = self.get_transaction_fee_type(transaction_type)
-            fee_amount = str(int(self.fees[fee_type]) * len(messages))
+            fee_amount = str(int(self.fees[fee_type]) * transaction_cnt)
             fee_dict = {
                 "amount": [{"amount": fee_amount, "denom": "swth"}],
                 "gas": self.gas,
             }
+        return fee_dict
+
+    def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
+        messages_list = self.set_message_standards(messages = messages)
+        tradehub_transaction_type = types.transaction_types[transaction_type]
+        transactions_list = [tradehub_transaction_type] * len(messages_list)
+        fee_dict = self.set_fees(transaction_cnt = len(messages), transaction_type = tradehub_transaction_type, fee = fee)
         return messages_list, transactions_list, fee_dict
 
 
@@ -76,9 +79,7 @@ class AuthenticatedClient(TradehubPublicClient):
     def sign_transaction(self,
                          messages: list,
                          transaction_types: list,
-                         sequence: int = None,
                          memo: str = None,
-                         mode: str = None,
                          fee: dict = None):   # Not clear to me if sequnce or mode are necessary here since they are part of the class
         # if self.useSequenceCounter === true:
         #     return self.seqSignAndBroadcast(msgs, types, options)
@@ -96,18 +97,16 @@ class AuthenticatedClient(TradehubPublicClient):
         '''
 
         concrete_messages = self.construct_concrete_messages(messages = messages, transaction_types = transaction_types)
-        signature = self.sign_message(messages = concrete_messages, sequence = sequence, memo = memo, fee = fee)
+        signature = self.sign_message(messages = concrete_messages, memo = memo, fee = fee)
         signatures = self.construct_signatures(signature = signature)
         transaction = self.construct_transaction(message = concrete_messages, signatures = [signatures], fees = fee)
         return self.construct_complete_transaction(transaction = transaction)
 
     def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
         if len(messages) != len(transaction_types):
-            # throw new Error('Msg length is not equal to types length')
-            pass
+            raise ValueError('Message length is not equal to transaction types length.')
         if len(messages) > 100:
-            # throw new Error('Cannot broadcast more than 100 messages in 1 transaction')
-            pass
+            raise ValueError('Cannot broadcast more than 100 messages in 1 transaction')
         
         concrete_messages = []   # ConcreteMsg[] from JS code -> {type: string, value: object}
 
@@ -121,26 +120,17 @@ class AuthenticatedClient(TradehubPublicClient):
     
     def sign_message(self,
                      messages: list,
-                     sequence: int = None,
                      memo: str = None,
-                     mode: str = None,
                      fee: dict = None):     # JS original -> msgs: ConcreteMsg[], options: any = {}
 
-        if (not sequence and self.account_sequence_nbr is None) or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
-            self.account_blockchain_dict = self.get_account(self.wallet.address)
+        if self.account_sequence_nbr is None or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
+            self.account_blockchain_dict = self.get_account_details()
             self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
             self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
             if self.account_nbr == '0' or self.account_nbr is None:
                 raise ValueError('Account number still 0 after refetching. This suggests your account is not initialized with funds.')
-
-        if fee:
-            fee_dict = fee
-        else:
-            fee_amount = to_tradehub_asset_amount(amount = len(messages), decimals = self.tokens["swth"]["decimals"])
-            fee_dict = {
-                "amount": [{"denom": "swth", "amount": fee_amount}],
-                "gas": self.gas,
-            }
+        
+        fee_dict = self.set_fees(transaction_cnt = len(messages), transaction_type = messages[0]["type"], fee = fee)
 
         constructed_signing_message = {
             "account_number": self.account_nbr,
