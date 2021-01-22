@@ -64,7 +64,7 @@ class AuthenticatedClient(TradehubPublicClient):
             fee_dict = fee
         else:
             fee_type = self.get_transaction_fee_type(transaction_type)
-            fee_amount = self.fees[fee_type] * len(messages)
+            fee_amount = str(int(self.fees[fee_type]) * len(messages))
             fee_dict = {
                 "amount": [{"amount": fee_amount, "denom": "swth"}],
                 "gas": self.gas,
@@ -127,7 +127,7 @@ class AuthenticatedClient(TradehubPublicClient):
                      fee: dict = None):     # JS original -> msgs: ConcreteMsg[], options: any = {}
 
         if (not sequence and self.account_sequence_nbr is None) or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
-            self.account_blockchain_dict = self.get_account()
+            self.account_blockchain_dict = self.get_account(self.wallet.address)
             self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
             self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
             if self.account_nbr == '0' or self.account_nbr is None:
