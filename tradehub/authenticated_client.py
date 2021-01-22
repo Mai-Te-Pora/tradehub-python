@@ -121,13 +121,11 @@ class AuthenticatedClient(TradehubPublicClient):
     
     def sign_message(self,
                      messages: list,
-                     sequence: int = None,
                      memo: str = None,
-                     mode: str = None,
                      fee: dict = None):     # JS original -> msgs: ConcreteMsg[], options: any = {}
 
-        if (not sequence and self.account_sequence_nbr is None) or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
-            self.account_blockchain_dict = self.get_account(self.wallet.address)
+        if self.account_sequence_nbr is None or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
+            self.account_blockchain_dict = self.get_account_details()
             self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
             self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
             if self.account_nbr == '0' or self.account_nbr is None:
