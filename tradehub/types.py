@@ -153,6 +153,14 @@ class DelegateTokensMessage:
     amount: DelegateTokensAmount
 
 @dataclass
+class EditOrderMessage:
+    id: str
+    quantity: str = None
+    price: str = None
+    stop_price: str = None
+    originator: str = None
+
+@dataclass
 class WithdrawDelegatorRewardsMessage:
     delegator_address: str
     validator_address: str

@@ -93,3 +93,41 @@ class DemexClient(object):
     def cancel_all_open_orders_for_pair(self, pair: str):
         cancel_all_order_msg = types.CancelAllMessage(market = pair)
         return self.tradehub.cancel_all(message = cancel_all_order_msg)
+
+    def edit_orders(self, orders: [types.EditOrderMessage]):
+        return self.tradehub.edit_orders(messages = orders)
+
+    def edit_limit_order(self, order_id: str, quantity: str = None, price: str = None):
+        if order_id in self.get_open_limit_orders():
+            edit_order_msg = types.EditOrderMessage(id = order_id,
+                                                    quantity = quantity,
+                                                    price = price)
+            return self.tradehub.edit_order(message = edit_order_msg)
+        else:
+            raise ValueError("The Order ID - {} - is not a valid limit order; is open or a stop or leveraged order?".format(order_id))
+
+    def edit_stop_order(self, order_id: str, quantity: str = None, price: str = None, stop_price: str = None):
+        if order_id in self.get_open_stop_orders():
+            edit_order_msg = types.EditOrderMessage(id = order_id,
+                                                    quantity = quantity,
+                                                    price = price,
+                                                    stop_price = stop_price)
+            return self.tradehub.edit_order(message = edit_order_msg)
+        else:
+            raise ValueError("The Order ID - {} - is not a valid stop order; is open or a limit or leveraged order?".format(order_id))
+
+    def get_open_limit_orders(self):
+        orders = self.tradehub.get_orders(swth_address = self.wallet.address, order_status = 'open', order_type = 'limit')
+        order_dict = {}
+        for order in orders:
+            order_dict[order["order_id"]] = order
+        return order_dict
+
+    def get_open_stop_orders(self):
+        triggerred_stops = self.tradehub.get_orders(swth_address = self.wallet.address, order_status = 'triggered')
+        untriggerred_stops = self.tradehub.get_orders(swth_address = self.wallet.address, order_status = 'untriggered')
+        stops = triggerred_stops + untriggerred_stops
+        stop_dict = {}
+        for stop in stops:
+            stop_dict[stop["order_id"]] = stop
+        return stop_dict
