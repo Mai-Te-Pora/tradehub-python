@@ -271,3 +271,15 @@ class AuthenticatedClient(TradehubPublicClient):
         message.to_address = format_withdraw_address(address = message.to_address)
         transaction_type = "CREATE_WITHDRAWAL_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def create_validator(self, message: types.CreateValidatorMessage, fee: dict = None):
+        transaction_type = "CREATE_VALIDATOR_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def create_sub_account(self, message: types.CreateSubAccountMessage, fee: dict = None):
+        transaction_type = "CREATE_SUB_ACCOUNT_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def activate_sub_account(self, message: types.ActivateSubAccountMessage, fee: dict = None):
+        transaction_type = "ACTIVATE_SUB_ACCOUNT_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
