@@ -32,8 +32,8 @@ transaction_types["SEND_TOKENS_TYPE"] = 'cosmos-sdk/MsgSend'
 # // Staking
 transaction_types["CREATE_VALIDATOR_MSG_TYPE"] = 'cosmos-sdk/MsgCreateValidator'
 transaction_types["DELEGATE_TOKENS_MSG_TYPE"] = 'cosmos-sdk/MsgDelegate'
-# export const BEGIN_UNBONDING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgUndelegate'
-# export const BEGIN_REDELEGATING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgBeginRedelegate'
+transaction_types["BEGIN_UNBONDING_TOKENS_MSG_TYPE"] = 'cosmos-sdk/MsgUndelegate'
+transaction_types["BEGIN_REDELEGATING_TOKENS_MSG_TYPE"] = 'cosmos-sdk/MsgBeginRedelegate'
 transaction_types["WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"] = 'cosmos-sdk/MsgWithdrawDelegationReward'
 
 # // Accounts
@@ -207,3 +207,21 @@ class CreateSubAccountMessage:
 class ActivateSubAccountMessage:
     expected_main_account: str
     originator: str = None
+
+@dataclass
+class AmountMessage:
+    amount: str
+    denom: str
+
+@dataclass
+class BeginUnbondingTokensMessage:
+    delegator_address: str
+    validator_address: str
+    amount: AmountMessage
+
+@dataclass
+class BeginRedelegatingTokensMessage:
+    delegator_address: str
+    validator_src_address: str
+    validator_dst_address: str
+    amount: AmountMessage
