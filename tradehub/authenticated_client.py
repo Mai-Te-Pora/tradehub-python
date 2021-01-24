@@ -266,6 +266,14 @@ class AuthenticatedClient(TradehubPublicClient):
             messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
 
+    def unbond_tokens(self, message: types.BeginUnbondingTokensMessage, fee: dict = None):
+        transaction_type = "BEGIN_UNBONDING_TOKENS_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def redelegate_tokens(self, message: types.BeginRedelegatingTokensMessage, fee: dict = None):
+        transaction_type = "BEGIN_REDELEGATING_TOKENS_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
     def create_withdraw(self, message: types.CreateWithdrawMessage, fee: dict = None):
         message.fee_address = 'swth1prv0t8j8tqcdngdmjlt59pwy6dxxmtqgycy2h7'
         message.to_address = format_withdraw_address(address = message.to_address)
