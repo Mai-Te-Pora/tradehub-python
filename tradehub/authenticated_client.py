@@ -243,6 +243,13 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "CANCEL_ALL_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
 
+    def edit_order(self, message: types.EditOrderMessage, fee: dict = None):
+        return self.edit_orders(messages = [message], fee = fee)
+
+    def edit_orders(self, messages: [types.EditOrderMessage], fee: dict = None):
+        transaction_type = "EDIT_ORDER_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+
     def stake_switcheo(self, message = types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
         message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), decimals = self.tokens["swth"]["decimals"])
