@@ -30,15 +30,15 @@ transaction_types["SEND_TOKENS_TYPE"] = 'cosmos-sdk/MsgSend'
 # export const CREATE_VOTE_TYPE = 'oracle/MsgCreateVote'
 
 # // Staking
-# export const CREATE_VALIDATOR_MSG_TYPE = 'cosmos-sdk/MsgCreateValidator'
+transaction_types["CREATE_VALIDATOR_MSG_TYPE"] = 'cosmos-sdk/MsgCreateValidator'
 transaction_types["DELEGATE_TOKENS_MSG_TYPE"] = 'cosmos-sdk/MsgDelegate'
 # export const BEGIN_UNBONDING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgUndelegate'
 # export const BEGIN_REDELEGATING_TOKENS_MSG_TYPE = 'cosmos-sdk/MsgBeginRedelegate'
 transaction_types["WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"] = 'cosmos-sdk/MsgWithdrawDelegationReward'
 
 # // Accounts
-# export const CREATE_SUB_ACCOUNT_MSG_TYPE = 'subaccount/MsgCreateSubAccountV1'
-# export const ACTIVATE_SUB_ACCOUNT_MSG_TYPE = 'subaccount/MsgActivateSubAccountV1'
+transaction_types["CREATE_SUB_ACCOUNT_MSG_TYPE"] = 'subaccount/MsgCreateSubAccountV1'
+transaction_types["ACTIVATE_SUB_ACCOUNT_MSG_TYPE"] = 'subaccount/MsgActivateSubAccountV1'
 
 # // Profile
 transaction_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
@@ -169,3 +169,41 @@ class WithdrawDelegatorRewardsMessage:
 class WithdrawAllDelegatorRewardsParams:
     delegator_address: str
     validator_addresses: [str]
+
+@dataclass
+class ValidatorDescription:
+    moniker: str
+    identity: str
+    website: str
+    details: str
+
+@dataclass
+class ValidatorCommission:
+    rate: str
+    max_rate: str
+    max_rate_change: str
+
+@dataclass
+class ValidatorValue:
+    amount: str
+    denom: str
+
+@dataclass
+class CreateValidatorMessage:
+    description: ValidatorDescription
+    commission: ValidatorCommission
+    min_self_delegation: str
+    delegator_address: str
+    validator_address: str
+    pubkey: str
+    value: ValidatorValue
+
+@dataclass
+class CreateSubAccountMessage:
+    sub_address: str
+    originator: str = None
+
+@dataclass
+class ActivateSubAccountMessage:
+    expected_main_account: str
+    originator: str = None
