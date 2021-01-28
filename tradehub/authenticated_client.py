@@ -257,6 +257,13 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "SET_LEVERAGE_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
 
+    def edit_margin(self, message: types.EditMarginMessage, fee: dict = None):
+        return self.edit_margins(messages = [message], fee = fee)
+
+    def edit_margins(self, messages: [types.EditMarginMessage], fee: dict = None):
+        transaction_type = "EDIT_MARGIN_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+
     def stake_switcheo(self, message = types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
         message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), decimals = self.tokens["swth"]["decimals"])
