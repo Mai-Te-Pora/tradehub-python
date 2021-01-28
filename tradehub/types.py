@@ -16,7 +16,7 @@ transaction_types["EDIT_ORDER_MSG_TYPE"] = 'order/MsgEditOrder'
 # export const SET_TRADING_FLAG_MSG_TYPE = 'order/MsgSetTradingFlag'
 
 # // Positions
-# export const SET_LEVERAGE_MSG_TYPE = 'leverage/MsgSetLeverage'
+transaction_types["SET_LEVERAGE_MSG_TYPE"] = 'leverage/MsgSetLeverage'
 # export const EDIT_MARGIN_MSG_TYPE = 'position/MsgSetMargin'
 
 # // Tokens
@@ -158,6 +158,12 @@ class EditOrderMessage:
     quantity: str = None
     price: str = None
     stop_price: str = None
+    originator: str = None
+
+@dataclass
+class SetLeverageMessage:
+    market: str
+    leverage: str
     originator: str = None
 
 @dataclass
