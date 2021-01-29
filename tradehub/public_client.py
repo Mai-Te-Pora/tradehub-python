@@ -32,6 +32,17 @@ class PublicClient(object):
         self.api_url: str = uri or f"http://{node_ip}:{node_port}"
         self.request: Request = Request(api_url=self.api_url, timeout=30)
 
+    def check_username(self, username: str) -> dict:
+        """
+
+        :param username:
+        :return:
+        """
+        api_params = {
+            "username": username,
+        }
+        return self.request.get(path='/username_check', params=api_params)
+
     def get_account(self, swth_address: str) -> dict:
         """
         Request account information about swth wallet.
@@ -101,6 +112,17 @@ class PublicClient(object):
             "account": swth_address,
         }
         return self.request.get(path='/get_account', params=api_params)
+
+    def get_active_wallets(self, token: str) -> int:
+        """
+
+        :param token:
+        :return active_wallet_cnt:
+        """
+        api_params = {
+            "token": token,
+        }
+        return self.request.get(path='/get_active_wallets', params=api_params)
 
     def get_address(self, username: str) -> str:
         """
@@ -721,6 +743,12 @@ class PublicClient(object):
         }
 
         return self.request.get(path='/get_markets', params=api_params)
+
+    def get_nodes(self) -> dict:
+        """
+        """
+        # TODO no results yet available
+        return self.request.get(path='/monitor')
 
     def get_oracle_result(self, oracle_id: str):
         """
@@ -1478,3 +1506,18 @@ class PublicClient(object):
             "username": username
         }
         return self.request.get(path='/username_check', params=api_params)
+
+    def get_vault_types(self) -> list:
+        """
+
+        :param token:
+        :return :
+        """
+        # TODO responses currently not an empty list
+        return self.request.get(path='/get_vault_types')
+
+    def get_vaults(self, swth_address: str) -> dict:
+        api_params = {
+            "address": swth_address,
+        }
+        return self.request.get(path='/get_vaults', params=api_params)
