@@ -188,6 +188,9 @@ def validator_crawler_mp(network: str = 'test'):
             for validator in validators:
                 unchecked_peers_list.append(validator["ip"])
     
+    active_peers_list.remove("116.202.216.145")
+    active_peers_list.remove("135.181.157.127")
+    active_peers_list.remove("135.181.196.133")
     for active_peer in active_peers_list:
         try:
             Request(api_url = "http://{}:5001".format(active_peer), timeout = 1).get(path = '/get_status')
