@@ -37,11 +37,11 @@ jobs:
       shell: bash
       run: |
         poetry install
-        python -m poetry run python -m pip install pytest
+        python -m poetry run python -m pip install pytest pytest-cov
 
     - name: Test with pytest
       run: |
-        python -m poetry run python -m pytest -v tests/
+        python -m poetry run python -m pytest -v tests/ --cov=./ --cov-report=xml
 
     - name: Coverage
       uses: codecov/codecov-action@v1
