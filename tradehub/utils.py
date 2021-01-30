@@ -140,7 +140,10 @@ def sort_and_stringify_json(message):
 #     # print(peers_dict["active_peers"])
 
 
-def validator_crawler_mp(network = 'test'):
+def validator_crawler_mp(network: str = 'test'):
+    if network.lower() not in ["main", "mainnet", "test", "testnet"]:
+        raise ValueError("Parameter network - {} - is not valid, requires main, mainnent, test, or testnet.".format(network))
+
     peers_dict = {}
     all_peers_list = []
     checked_peers_list = []
@@ -149,10 +152,12 @@ def validator_crawler_mp(network = 'test'):
 
     seed_peers_list = {
         "main": ["54.255.5.46", "175.41.151.35"],
-        "test": ["54.255.42.175", "52.220.152.108"]
+        "mainnet": ["54.255.5.46", "175.41.151.35"],
+        "test": ["54.255.42.175", "52.220.152.108"],
+        "testnet": ["54.255.42.175", "52.220.152.108"],
     }
 
-    if network in ["main", "test"]:
+    if network in ["main", "mainnet", "test", "testnet"]:
         all_peers_list = seed_peers_list[network]
 
     while continue_checking_peers:
@@ -183,6 +188,15 @@ def validator_crawler_mp(network = 'test'):
             for validator in validators:
                 unchecked_peers_list.append(validator["ip"])
     
+    active_peers_list.remove("116.202.216.145")
+    active_peers_list.remove("135.181.157.127")
+    active_peers_list.remove("135.181.196.133")
+    for active_peer in active_peers_list:
+        try:
+            Request(api_url = "http://{}:5001".format(active_peer), timeout = 1).get(path = '/get_status')
+        except:
+            active_peers_list.remove(active_peer)
+
     peers_dict["active_peers"] = active_peers_list
     return peers_dict
 
