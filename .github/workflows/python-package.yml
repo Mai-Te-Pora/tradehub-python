@@ -35,11 +35,11 @@ jobs:
 
     - name: Install dependencies
       shell: bash
-      run: python -m poetry install
+      run: poetry install
 
     - name: Test with pytest
       run: |
-          python -m poetry run python -m pytest -v tests
+        poetry run pytest -v tests
 
     - name: Coverage
       uses: codecov/codecov-action@v1
