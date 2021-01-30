@@ -305,3 +305,25 @@ class AuthenticatedClient(TradehubPublicClient):
     def activate_sub_account(self, message: types.ActivateSubAccountMessage, fee: dict = None):
         transaction_type = "ACTIVATE_SUB_ACCOUNT_MSG_TYPE"
         return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def add_liquidity(self, message: types.AddLiquidityMessage, fee: dict = None):
+        transaction_type = "ADD_LIQUIDITY_MSG_TYPE"
+        if not hasattr(message, 'min_shares'):
+            message.min_shares = '0'
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def remove_liquidity(self, message: types.RemoveLiquidityMessage, fee: dict = None):
+        transaction_type = "REMOVE_LIQUIDITY_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def stake_pool_token(self, message: types.StakePoolTokenMessage, fee: dict = None):
+        transaction_type = "STAKE_POOL_TOKEN_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def unstake_pool_token(self, message: types.UnstakePoolTokenMessage, fee: dict = None):
+        transaction_type = "UNSTAKE_POOL_TOKEN_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+
+    def claim_pool_rewards(self, message: types.ClaimPoolRewardsMessage, fee: dict = None):
+        transaction_type = "CLAIM_POOL_REWARDS_MSG_TYPE"
+        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)

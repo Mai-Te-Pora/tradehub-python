@@ -50,8 +50,8 @@ transaction_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
 # export const VOTE_PROPOSAL_TYPE = 'cosmos-sdk/MsgVote'
 
 # // AMM
-# export const ADD_LIQUIDITY_MSG_TYPE = 'liquiditypool/AddLiquidity'
-# export const REMOVE_LIQUIDITY_MSG_TYPE = 'liquiditypool/RemoveLiquidity'
+transaction_types["ADD_LIQUIDITY_MSG_TYPE"] = 'liquiditypool/AddLiquidity'
+transaction_types["REMOVE_LIQUIDITY_MSG_TYPE"] = 'liquiditypool/RemoveLiquidity'
 # export const CREATE_POOL_MSG_TYPE = 'liquiditypool/CreatePool'
 # export const CREATE_POOL_WITH_LIQUIDITY_MSG_TYPE = 'liquiditypool/CreatePoolWithLiquidity'
 # export const LINK_POOL_MSG_TYPE = 'liquiditypool/LinkPool'
@@ -59,9 +59,9 @@ transaction_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
 # export const SET_REWARDS_WEIGHTS_MSG_TYPE = 'liquiditypool/SetRewardsWeights'
 # export const SET_REWARD_CURVE_MSG_TYPE = 'liquiditypool/SetRewardCurve'
 # export const SET_COMMITMENT_CURVE_MSG_TYPE = 'liquiditypool/SetCommitmentCurve'
-# export const STAKE_POOL_TOKEN_MSG_TYPE = 'liquiditypool/StakePoolToken'
-# export const UNSTAKE_POOL_TOKEN_MSG_TYPE = 'liquiditypool/UnstakePoolToken'
-# export const CLAIM_POOL_REWARDS_MSG_TYPE = 'liquiditypool/ClaimPoolRewards'
+transaction_types["STAKE_POOL_TOKEN_MSG_TYPE"] = 'liquiditypool/StakePoolToken'
+transaction_types["UNSTAKE_POOL_TOKEN_MSG_TYPE"] = 'liquiditypool/UnstakePoolToken'
+transaction_types["CLAIM_POOL_REWARDS_MSG_TYPE"] = 'liquiditypool/ClaimPoolRewards'
 # export const LINK_POOL_PROPOSAL_TYPE = 'liquiditypool/LinkPoolProposal'
 # export const SET_REWARD_CURVE_PROPOSAL_TYPE = 'liquiditypool/SetRewardCurveProposal'
 # export const SET_REWARDS_WEIGHT_PROPOSAL_TYPE = 'liquiditypool/SetRewardsWeightsProposal'
@@ -82,12 +82,12 @@ transaction_types["UPDATE_PROFILE_MSG_TYPE"] = 'profile/MsgUpdateProfile'
 
 
 fee_types = {
-  'order/MsgCreateOrder': 'create_order',
-  'liquiditypool/ClaimPoolRewards': 'claim_pool_rewards',
-  'oracle/MsgCreateOracle': 'create_oracle_vote',
-  'liquiditypool/CreatePool': 'create_pool',
-  'liquiditypool/StakePoolToken': 'stake_pool_token',
-  'liquiditypool/UnstakePoolToken': 'unstake_pool_token',
+    'order/MsgCreateOrder': 'create_order',
+    'liquiditypool/ClaimPoolRewards': 'claim_pool_rewards',
+    'oracle/MsgCreateOracle': 'create_oracle_vote',
+    'liquiditypool/CreatePool': 'create_pool',
+    'liquiditypool/StakePoolToken': 'stake_pool_token',
+    'liquiditypool/UnstakePoolToken': 'unstake_pool_token',
 }
 
 fee_types = defaultdict(lambda: 'default_fee', fee_types)
@@ -125,13 +125,13 @@ class CreateOrderMessage:
 
 @dataclass
 class CancelOrderMessage:
-  id: str
-  originator: str = None
+    id: str
+    originator: str = None
 
 @dataclass
 class CancelAllMessage:
-  market: str
-  originator: str = None
+    market: str
+    originator: str = None
 
 @dataclass
 class CreateWithdrawMessage:
@@ -168,9 +168,9 @@ class SetLeverageMessage:
 
 @dataclass
 class EditMarginMessage:
-  market: str
-  margin: str
-  originator: str = None
+    market: str
+    margin: str
+    originator: str = None
 
 @dataclass
 class WithdrawDelegatorRewardsMessage:
@@ -237,3 +237,38 @@ class BeginRedelegatingTokensMessage:
     validator_src_address: str
     validator_dst_address: str
     amount: AmountMessage
+
+@dataclass
+class AddLiquidityMessage:
+    pool_id: str
+    a_denom: str = None
+    a_amount: str = None
+    a_max_amount: str = None
+    b_denom: str = None
+    b_amount: str = None
+    b_max_amount: str = None
+    originator: str = None
+
+@dataclass
+class RemoveLiquidityMessage:
+    pool_id: str
+    shares: str
+    originator: str = None
+
+@dataclass
+class StakePoolTokenMessage:
+    denom: str
+    amount: str
+    duration: str     # in seconds
+    originator: str = None
+
+@dataclass
+class UnstakePoolTokenMessage:
+    denom: str
+    amount: str
+    originator: str = None
+
+@dataclass
+class ClaimPoolRewardsMessage:
+    pool_id: str
+    originator: str = None
