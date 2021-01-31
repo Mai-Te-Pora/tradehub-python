@@ -1,13 +1,11 @@
 # This workflow will install Python dependencies, run tests, lint, generate coverage reports, and publish to PyPi with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Tradehub CI/CD
+name: Tradehub Release and Publish to PyPi
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  release:
+    types: [ created ]
 
 jobs:
   build:
@@ -15,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.8]
         poetry-version: [1.1.4]
       fail-fast: false
 
