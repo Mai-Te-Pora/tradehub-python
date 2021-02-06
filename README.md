@@ -1,3 +1,20 @@
+<p align="center">
+    <a href="https://scrutinizer-ci.com/g/Mai-Te-Pora/tradehub-python/">
+        <img src="https://img.shields.io/scrutinizer/quality/g/mai-te-pora/tradehub-python/main" alt="Code Quality"></a>
+    <a href="https://app.codecov.io/gh/Mai-Te-Pora/tradehub-python/">
+        <img src="https://img.shields.io/codecov/c/github/mai-te-pora/tradehub-python" alt="Code Coverage"></a>
+    <a href="https://pypi.org/project/tradehub/">
+        <img src="https://img.shields.io/pypi/v/tradehub" alt="PyPi Version"/></a>
+</p>
+<p align="center">
+    <a href="https://github.com/Mai-Te-Pora/tradehub-python/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/Mai-Te-Pora/tradehub-python" /></a>
+    <a href="https://github.com/Mai-Te-Pora/tradehub-python/pulse" alt="Commit Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/mai-te-pora/tradehub-python" /></a>
+    <a href="https://github.com/Mai-Te-Pora/tradehub-python/issues">
+        <img src="https://img.shields.io/github/issues/mai-te-pora/tradehub-python" alt="Open Issues"></a>
+</p>
+
 # Tradehub Python API
 
 This repository is designed to easily integrate your Python code or application with the Switcheo Tradehub Blockchain. This API is designed to interact with the decentralized network of Validators designed to keep the blockchain running and secure. This allows you to choose trusted endpoints or select random endpoints to interact with.
