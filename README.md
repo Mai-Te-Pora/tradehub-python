@@ -19,6 +19,8 @@
         <img src="https://img.shields.io/github/commit-activity/m/mai-te-pora/tradehub-python" /></a>
     <a href="https://github.com/Mai-Te-Pora/tradehub-python/issues">
         <img src="https://img.shields.io/github/issues/mai-te-pora/tradehub-python" alt="Open Issues"></a>
+    <a href="">
+        <img src="https://img.shields.io/pypi/dm/tradehub" alt="Downloads"></a>
 </p>
 
 # Tradehub Python API
