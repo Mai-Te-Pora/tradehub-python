@@ -3,10 +3,16 @@
         <img src="https://img.shields.io/scrutinizer/quality/g/mai-te-pora/tradehub-python/main" alt="Code Quality"></a>
     <a href="https://app.codecov.io/gh/Mai-Te-Pora/tradehub-python/">
         <img src="https://img.shields.io/codecov/c/github/mai-te-pora/tradehub-python" alt="Code Coverage"></a>
+    <a href="https://libraries.io/github/Mai-Te-Pora/tradehub-python" alt="Dependcy Status">
+        <img src="https://img.shields.io/librariesio/github/Mai-Te-Pora/tradehub-python">
     <a href="https://pypi.org/project/tradehub/">
         <img src="https://img.shields.io/pypi/v/tradehub" alt="PyPi Version"/></a>
+    <a href="https://pypi.org/project/tradehub/#history">
+        <img src="https://img.shields.io/pypi/pyversions/tradehub"/></a>
 </p>
 <p align="center">
+    <a href="https://github.com/Mai-Te-Pora/tradehub-python/blob/main/LICENSE" alt="License">
+        <img src="https://img.shields.io/github/license/mai-te-pora/tradehub-python" /></a>
     <a href="https://github.com/Mai-Te-Pora/tradehub-python/graphs/contributors" alt="Contributors">
         <img src="https://img.shields.io/github/contributors/Mai-Te-Pora/tradehub-python" /></a>
     <a href="https://github.com/Mai-Te-Pora/tradehub-python/pulse" alt="Commit Activity">
