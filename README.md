@@ -11,7 +11,13 @@ If you have ideas or contributions we are accepting Pull Requests.
 ## Getting Started
 
 ```
-pip install -r requirements.txt
+pip install tradehub
+```
+
+Or Using Poetry - https://python-poetry.org/
+
+```
+poetry add tradehub
 ```
 
 ### Demex Client
