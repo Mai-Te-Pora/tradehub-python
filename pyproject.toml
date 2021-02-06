@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tradehub"
-version = "0.1.0"
+version = "1.0.0"
 description = "Python Client to interact with the Switcheo Tradehub Blockchain to manage staking, liquidity pools, governance, and trading on Demex."
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
