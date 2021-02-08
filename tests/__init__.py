@@ -3,7 +3,7 @@ import random
 
 from tradehub.utils import validator_crawler_mp
 
-active_peers = validator_crawler_mp(network = 'main')["active_peers"]
+active_peers = validator_crawler_mp(network='main')["active_peers"]
 validator_ip = active_peers[random.randint(a=0, b=len(active_peers)-1)]
 DEVEL_AND_CO_SENTRY = validator_ip
 
@@ -12,6 +12,11 @@ WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
 WALLET_DEVEL = "swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz"
 
 USERNAME_DEVEL = "devel484"
+
+WALLET_MNEMONIC = "refuse flag merge fiction choose dream frown gauge need fabric once pizza actual armed reopen couple family fury reopen slush blue try focus minute"
+WALLET_PRIVATE_KEY = b'\x15\xcf\xdd\xdf\xead\x88\xd2y!\xdb\xb61\xa6\x98\xeeQm\x05\xed\x8d%43!\n\xccS\xcbsf\x90'
+WALLET_PUBLIC_KEY = b'\x02o\x1f\xfbL\x96\xe8\x1e\xb0\x12V\x80\xc7t\xfc\xb40R\xaeu\xf3{\xf6\xd7m]\xd1\xa9\x91\xa8\xe0Df'
+WALLET_ADDRESS = 'tswth1upcgussnx4p3jegwj3x2fccwlajwckkzgstrp8'
 
 
 class APITestCase(TestCase):
