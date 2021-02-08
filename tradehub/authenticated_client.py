@@ -1,9 +1,8 @@
-import itertools
 import jsons
 
 from tradehub.public_client import PublicClient as TradehubPublicClient
 import tradehub.types as types
-from tradehub.utils import sort_and_stringify_json, to_tradehub_asset_amount, format_withdraw_address
+from tradehub.utils import to_tradehub_asset_amount, format_withdraw_address
 from tradehub.wallet import Wallet
 
 
@@ -19,7 +18,7 @@ class AuthenticatedClient(TradehubPublicClient):
     def __init__(self, wallet: Wallet, node_ip: str, node_port: int = 5001, network: str = "testnet"):
         """
         """
-        TradehubPublicClient.__init__(self, node_ip = node_ip, node_port = node_port)
+        TradehubPublicClient.__init__(self, node_ip=node_ip, node_port=node_port)
         self.wallet = wallet
         self.account_blockchain_dict = self.get_account_details()
         self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
@@ -34,10 +33,9 @@ class AuthenticatedClient(TradehubPublicClient):
         self.gas = "100000000000"  # Need to automate
         self.tokens = self.get_token_details()
 
-
-    ## Authenticated Client Getters
+    # Authenticated Client Getters
     def get_account_details(self):
-        return self.get_account(swth_address = self.wallet.address)
+        return self.get_account(swth_address=self.wallet.address)
 
     def get_transaction_fee_type(self, transaction_type: str):
         return types.fee_types[transaction_type]
@@ -68,14 +66,13 @@ class AuthenticatedClient(TradehubPublicClient):
         return fee_dict
 
     def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
-        messages_list = self.set_message_standards(messages = messages)
+        messages_list = self.set_message_standards(messages=messages)
         tradehub_transaction_type = types.transaction_types[transaction_type]
         transactions_list = [tradehub_transaction_type] * len(messages_list)
-        fee_dict = self.set_fees(transaction_cnt = len(messages), transaction_type = tradehub_transaction_type, fee = fee)
+        fee_dict = self.set_fees(transaction_cnt=len(messages), transaction_type=tradehub_transaction_type, fee=fee)
         return messages_list, transactions_list, fee_dict
 
-
-    ## Authenticated Client Message Signing, Construction, and Broadcasting
+    # Authenticated Client Message Signing, Construction, and Broadcasting
     def sign_transaction(self,
                          messages: list,
                          transaction_types: list,
@@ -96,11 +93,11 @@ class AuthenticatedClient(TradehubPublicClient):
             (5) Take the transaction JSON from step (4) and create the final layer of the transaction JSON message. <- construct_complete_transaction
         '''
 
-        concrete_messages = self.construct_concrete_messages(messages = messages, transaction_types = transaction_types)
-        signature = self.sign_message(messages = concrete_messages, memo = memo, fee = fee)
-        signatures = self.construct_signatures(signature = signature)
-        transaction = self.construct_transaction(message = concrete_messages, signatures = [signatures], fees = fee)
-        return self.construct_complete_transaction(transaction = transaction)
+        concrete_messages = self.construct_concrete_messages(messages=messages, transaction_types=transaction_types)
+        signature = self.sign_message(messages=concrete_messages, memo=memo, fee=fee)
+        signatures = self.construct_signatures(signature=signature)
+        transaction = self.construct_transaction(message=concrete_messages, signatures=[signatures], fees=fee)
+        return self.construct_complete_transaction(transaction=transaction)
 
     def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
         if len(messages) != len(transaction_types):
@@ -130,7 +127,7 @@ class AuthenticatedClient(TradehubPublicClient):
             if self.account_nbr == '0' or self.account_nbr is None:
                 raise ValueError('Account number still 0 after refetching. This suggests your account is not initialized with funds.')
         
-        fee_dict = self.set_fees(transaction_cnt = len(messages), transaction_type = messages[0]["type"], fee = fee)
+        fee_dict = self.set_fees(transaction_cnt=len(messages), transaction_type=messages[0]["type"], fee=fee)
 
         constructed_signing_message = {
             "account_number": self.account_nbr,
@@ -141,7 +138,7 @@ class AuthenticatedClient(TradehubPublicClient):
             "sequence": self.account_sequence_nbr,
         }
 
-        return self.wallet._sign(message = constructed_signing_message)
+        return self.wallet._sign(message=constructed_signing_message)
 
     def construct_signatures(self, signature: str):
         return {
@@ -164,7 +161,7 @@ class AuthenticatedClient(TradehubPublicClient):
         }
 
     def broadcast_transactions(self, transactions: dict):
-        return self.request.post(path = '/txs', json_data = transactions)
+        return self.request.post(path='/txs', json_data=transactions)
 
     def sign_and_broadcast(self, messages: list, transaction_types: list, fee: dict):   # Eventually need to add memo to this.
         '''
@@ -172,17 +169,17 @@ class AuthenticatedClient(TradehubPublicClient):
             All the signatures should be handled in the Wallet Client to avoid leaking keys.
 
         '''
-        transactions = self.sign_transaction(messages = messages, transaction_types = transaction_types, fee = fee)
-        broadcast_response = self.broadcast_transactions(transactions = transactions)
+        transactions = self.sign_transaction(messages=messages, transaction_types=transaction_types, fee=fee)
+        broadcast_response = self.broadcast_transactions(transactions=transactions)
         if 'code' not in broadcast_response:
             self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
         return broadcast_response
 
     def submit_transaction_on_chain(self, messages: list, transaction_type: str, fee: dict):
-        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages = messages,
-                                                                                    transaction_type = transaction_type,
-                                                                                    fee = fee)
-        return self.sign_and_broadcast(messages = messages_list, transaction_types = transactions_list, fee = fee_dict)
+        messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages=messages,
+                                                                                    transaction_type=transaction_type,
+                                                                                    fee=fee)
+        return self.sign_and_broadcast(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)
 
     ## Authenticated Client Functions
     '''
@@ -203,18 +200,18 @@ class AuthenticatedClient(TradehubPublicClient):
             }
         '''
         transaction_type = "UPDATE_PROFILE_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
-    def send_tokens(self, message = types.SendTokensMessage, fee: dict = None):
+    def send_tokens(self, message: types.SendTokensMessage, fee: dict = None):
         transaction_type = "SEND_TOKENS_TYPE"
         if hasattr(message, 'from_address') and message.from_address in [None, ""]:
             message.from_address = self.wallet.address
         amounts = []
         for amount in message.amount:
-            formatted_amount = to_tradehub_asset_amount(amount = float(amount.amount), decimals = self.tokens[amount.denom]["decimals"])
-            amounts.append(types.SendTokensAmount(amount = formatted_amount, denom = amount.denom))
+            formatted_amount = to_tradehub_asset_amount(amount=float(amount.amount), decimals=self.tokens[amount.denom]["decimals"])
+            amounts.append(types.SendTokensAmount(amount=formatted_amount, denom=amount.denom))
         message.amount = sorted(amounts, key=lambda x: x.denom.lower())  # When dealing with coin lists in Cosmos it is a requirement that they be ordered by name - https://github.com/cosmos/cosmos-sdk/blob/master/types/coin.go#L215
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
     
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
         '''
@@ -226,104 +223,104 @@ class AuthenticatedClient(TradehubPublicClient):
                 order_type: "limit",
             }
         '''
-        return self.create_orders(messages = [message], fee = fee)
+        return self.create_orders(messages=[message], fee=fee)
 
     def create_orders(self, messages: [types.CreateOrderMessage], fee: dict = None):
         transaction_type = "CREATE_ORDER_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def cancel_order(self, message: types.CancelOrderMessage, fee: dict = None):
-        return self.cancel_orders(messages = [message], fee = fee)
+        return self.cancel_orders(messages=[message], fee=fee)
 
     def cancel_orders(self, messages: [types.CancelOrderMessage], fee: dict = None):
         transaction_type = "CANCEL_ORDER_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def cancel_all(self, message: types.CancelAllMessage, fee: dict = None):
         transaction_type = "CANCEL_ALL_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def edit_order(self, message: types.EditOrderMessage, fee: dict = None):
-        return self.edit_orders(messages = [message], fee = fee)
+        return self.edit_orders(messages=[message], fee=fee)
 
     def edit_orders(self, messages: [types.EditOrderMessage], fee: dict = None):
         transaction_type = "EDIT_ORDER_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def set_leverage(self, message: types.SetLeverageMessage, fee: dict = None):
-        return self.set_leverages(messages = [message], fee = fee)
+        return self.set_leverages(messages=[message], fee=fee)
 
     def set_leverages(self, messages: [types.SetLeverageMessage], fee: dict = None):
         transaction_type = "SET_LEVERAGE_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def edit_margin(self, message: types.EditMarginMessage, fee: dict = None):
-        return self.edit_margins(messages = [message], fee = fee)
+        return self.edit_margins(messages=[message], fee=fee)
 
     def edit_margins(self, messages: [types.EditMarginMessage], fee: dict = None):
         transaction_type = "EDIT_MARGIN_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def stake_switcheo(self, message = types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
-        message.amount.amount = to_tradehub_asset_amount(amount = float(message.amount.amount), decimals = self.tokens["swth"]["decimals"])
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        message.amount.amount = to_tradehub_asset_amount(amount=float(message.amount.amount), decimals=self.tokens["swth"]["decimals"])
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def claim_staking_rewards(self, message = types.WithdrawDelegatorRewardsMessage, fee: dict = None):
         transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def claim_all_staking_rewards(self, message = types.WithdrawAllDelegatorRewardsParams, fee: dict = None):
         transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
         messages = []
         for validator_address in message.validator_addresses:
             messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
-        return self.submit_transaction_on_chain(messages = messages, transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def unbond_tokens(self, message: types.BeginUnbondingTokensMessage, fee: dict = None):
         transaction_type = "BEGIN_UNBONDING_TOKENS_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def redelegate_tokens(self, message: types.BeginRedelegatingTokensMessage, fee: dict = None):
         transaction_type = "BEGIN_REDELEGATING_TOKENS_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def create_withdraw(self, message: types.CreateWithdrawMessage, fee: dict = None):
         message.fee_address = 'swth1prv0t8j8tqcdngdmjlt59pwy6dxxmtqgycy2h7'
-        message.to_address = format_withdraw_address(address = message.to_address)
+        message.to_address = format_withdraw_address(address=message.to_address)
         transaction_type = "CREATE_WITHDRAWAL_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def create_validator(self, message: types.CreateValidatorMessage, fee: dict = None):
         transaction_type = "CREATE_VALIDATOR_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def create_sub_account(self, message: types.CreateSubAccountMessage, fee: dict = None):
         transaction_type = "CREATE_SUB_ACCOUNT_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def activate_sub_account(self, message: types.ActivateSubAccountMessage, fee: dict = None):
         transaction_type = "ACTIVATE_SUB_ACCOUNT_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def add_liquidity(self, message: types.AddLiquidityMessage, fee: dict = None):
         transaction_type = "ADD_LIQUIDITY_MSG_TYPE"
         if not hasattr(message, 'min_shares'):
             message.min_shares = '0'
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def remove_liquidity(self, message: types.RemoveLiquidityMessage, fee: dict = None):
         transaction_type = "REMOVE_LIQUIDITY_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def stake_pool_token(self, message: types.StakePoolTokenMessage, fee: dict = None):
         transaction_type = "STAKE_POOL_TOKEN_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def unstake_pool_token(self, message: types.UnstakePoolTokenMessage, fee: dict = None):
         transaction_type = "UNSTAKE_POOL_TOKEN_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def claim_pool_rewards(self, message: types.ClaimPoolRewardsMessage, fee: dict = None):
         transaction_type = "CLAIM_POOL_REWARDS_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages = [message], transaction_type = transaction_type, fee = fee)
+        return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)

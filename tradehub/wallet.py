@@ -5,7 +5,6 @@ import hashlib
 import hdwallets
 import mnemonic
 
-from hdwallets import BIP32DerivationError as BIP32DerivationError
 from tradehub.utils import sort_and_stringify_json
 
 
@@ -13,41 +12,42 @@ class Wallet(object):
 
     _DEFAULT_DERIVATION_PATH = "m/44'/118'/0'/0/0"
 
-    def __init__(self, mnemonic: str, network: str = "testnet"):
+    def __init__(self, mnemonic: str = None, network: str = "testnet"):
         """
 
         """
         self.DEFAULT_BECH32_PREFIX_DICT = {
+            "main": "swth",
             "mainnet": "swth",
+            "test": "tswth",
             "testnet": "tswth",
         }
-        self.DEFAULT_BECH32_PREFIX = self.DEFAULT_BECH32_PREFIX_DICT[network]
+        self.DEFAULT_BECH32_PREFIX = self.DEFAULT_BECH32_PREFIX_DICT[network.lower()]
 
-        if mnemonic:
+        if mnemonic and len(mnemonic.split()) in [12, 24]:
             self._mnemonic = mnemonic
-            self._private_key = self.mnemonic_to_private_key(mnemonic_phrase = self._mnemonic)
-            self.public_key = self.private_key_to_public_key(private_key = self._private_key)
-            self.base64_public_key = base64.b64encode(self.public_key).decode("utf-8")
-            self.address = self.private_key_to_address(private_key = self._private_key)
         else:
-            self._private_key = None
-            self.public_key = None
-            self.public_key_obj = None
-            self.base64_public_key = None
-            self.address = None
+            self._mnemonic = self.generate_12_word_wallet()
 
+        self._private_key = self.mnemonic_to_private_key(mnemonic_phrase=self._mnemonic)
+        self.public_key = self.private_key_to_public_key(private_key=self._private_key)
+        self.base64_public_key = base64.b64encode(self.public_key).decode("utf-8")
+        self.address = self.private_key_to_address(private_key=self._private_key)
 
-    def generate_wallet(self):
-        return mnemonic.Mnemonic(language = "english").generate(strength = 256)
+    def generate_12_word_wallet(self):
+        return mnemonic.Mnemonic(language="english").generate(strength=128)
+
+    def generate_24_word_wallet(self):
+        return mnemonic.Mnemonic(language="english").generate(strength=256)
 
     def mnemonic_to_private_key(self, mnemonic_phrase: str = None, wallet_path: str = _DEFAULT_DERIVATION_PATH) -> bytes:
-        mnemonic_bytes = mnemonic.Mnemonic.to_seed(mnemonic_phrase, passphrase = "")
+        mnemonic_bytes = mnemonic.Mnemonic.to_seed(mnemonic_phrase, passphrase="")
         hd_wallet = hdwallets.BIP32.from_seed(mnemonic_bytes)
         self._private_key = hd_wallet.get_privkey_from_path(wallet_path)
         return self._private_key
 
     def private_key_to_public_key(self, private_key: bytes = None) -> bytes:
-        privkey_obj = ecdsa.SigningKey.from_string(self._private_key, curve = ecdsa.SECP256k1)
+        privkey_obj = ecdsa.SigningKey.from_string(self._private_key, curve=ecdsa.SECP256k1)
         self.public_key_obj = privkey_obj.get_verifying_key()
         self.public_key = self.public_key_obj.to_string("compressed")
         return self.public_key
@@ -65,17 +65,17 @@ class Wallet(object):
         if hrp is None:
             hrp = self.DEFAULT_BECH32_PREFIX
         public_key = self.private_key_to_public_key(private_key)
-        return self.public_key_to_address(public_key = public_key, hrp = hrp)
+        return self.public_key_to_address(public_key=public_key, hrp=hrp)
 
     def _sign(self, message: dict) -> str:
-        message_str = sort_and_stringify_json(message = message)
+        message_str = sort_and_stringify_json(message=message)
         message_bytes = message_str.encode("utf-8")
 
-        private_key = ecdsa.SigningKey.from_string(self._private_key, curve = ecdsa.SECP256k1)
+        private_key = ecdsa.SigningKey.from_string(self._private_key, curve=ecdsa.SECP256k1)
         signature_compact = private_key.sign_deterministic(
             message_bytes,
-            hashfunc = hashlib.sha256,
-            sigencode = ecdsa.util.sigencode_string_canonize
+            hashfunc=hashlib.sha256,
+            sigencode=ecdsa.util.sigencode_string_canonize
         )
 
         signature_base64_str = base64.b64encode(signature_compact).decode("utf-8")
