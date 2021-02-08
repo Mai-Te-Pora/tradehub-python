@@ -423,7 +423,10 @@ class DemexWebsocket:
         """
         await self._websocket.send(json.dumps(data))
 
-    async def connect(self, on_receive_message_callback: Callable, on_connect_callback: Optional[Callable] = None):
+    async def connect(self,
+                      on_receive_message_callback: Callable,
+                      on_connect_callback: Optional[Callable] = None,
+                      on_error_callback: Optional[Callable] = None):
         """
         Connect to websocket server.
 
@@ -433,19 +436,26 @@ class DemexWebsocket:
 
         :param on_receive_message_callback: async callback which is called with the received message as dict.
         :param on_connect_callback: async callback which is called if websocket is connected.
+        :param on_error_callback: async callback which is called if websocket has an error.
         :return: None
         """
-        async with websockets.connect(self._uri,
-                                      ping_interval=self._ping_interval,
-                                      ping_timeout=self._ping_timeout) as websocket:
-            self._websocket = websocket
+        try:
+            async with websockets.connect(self._uri,
+                                          ping_interval=self._ping_interval,
+                                          ping_timeout=self._ping_timeout) as websocket:
+                self._websocket = websocket
 
-            if on_connect:
-                await on_connect_callback()
+                if on_connect:
+                    await on_connect_callback()
 
-            async for message in websocket:
-                data = json.loads(message)
-                await on_receive_message_callback(data)
+                async for message in websocket:
+                    data = json.loads(message)
+                    await on_receive_message_callback(data)
+        except Exception as e:
+            if on_error_callback:
+                await on_error_callback(e)
+            else:
+                raise e
 
 
 async def on_receive_message(message):
