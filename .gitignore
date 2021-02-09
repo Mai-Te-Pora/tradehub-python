@@ -3,6 +3,7 @@ __pycache__
 venv
 .idea
 tradehub-venv
+poetry.lock
 
 
 # Sphinx documentation

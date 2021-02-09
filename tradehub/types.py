@@ -92,22 +92,26 @@ fee_types = {
 
 fee_types = defaultdict(lambda: 'default_fee', fee_types)
 
+
 @dataclass
 class UpdateProfileMessage:
     username: str
     twitter: str
     originator: str = None
 
+
 @dataclass
 class SendTokensAmount:
     amount: str
     denom: str
+
 
 @dataclass
 class SendTokensMessage:
     to_address: str
     amount: List[SendTokensAmount]
     from_address: str = None
+
 
 @dataclass
 class CreateOrderMessage:
@@ -123,15 +127,18 @@ class CreateOrderMessage:
     is_reduce_only: bool = False
     originator: str = None
 
+
 @dataclass
 class CancelOrderMessage:
     id: str
     originator: str = None
 
+
 @dataclass
 class CancelAllMessage:
     market: str
     originator: str = None
+
 
 @dataclass
 class CreateWithdrawMessage:
@@ -141,16 +148,19 @@ class CreateWithdrawMessage:
     fee_amount: str
     originator: str = None
 
+
 @dataclass
 class DelegateTokensAmount:
     amount: str
     denom: str = 'swth'
+
 
 @dataclass
 class DelegateTokensMessage:
     delegator_address: str
     validator_address: str
     amount: DelegateTokensAmount
+
 
 @dataclass
 class EditOrderMessage:
@@ -160,11 +170,13 @@ class EditOrderMessage:
     stop_price: str = None
     originator: str = None
 
+
 @dataclass
 class SetLeverageMessage:
     market: str
     leverage: str
     originator: str = None
+
 
 @dataclass
 class EditMarginMessage:
@@ -172,15 +184,18 @@ class EditMarginMessage:
     margin: str
     originator: str = None
 
+
 @dataclass
 class WithdrawDelegatorRewardsMessage:
     delegator_address: str
     validator_address: str
 
+
 @dataclass
 class WithdrawAllDelegatorRewardsParams:
     delegator_address: str
     validator_addresses: [str]
+
 
 @dataclass
 class ValidatorDescription:
@@ -189,16 +204,19 @@ class ValidatorDescription:
     website: str
     details: str
 
+
 @dataclass
 class ValidatorCommission:
     rate: str
     max_rate: str
     max_rate_change: str
 
+
 @dataclass
 class ValidatorValue:
     amount: str
     denom: str
+
 
 @dataclass
 class CreateValidatorMessage:
@@ -210,20 +228,24 @@ class CreateValidatorMessage:
     pubkey: str
     value: ValidatorValue
 
+
 @dataclass
 class CreateSubAccountMessage:
     sub_address: str
     originator: str = None
+
 
 @dataclass
 class ActivateSubAccountMessage:
     expected_main_account: str
     originator: str = None
 
+
 @dataclass
 class AmountMessage:
     amount: str
     denom: str
+
 
 @dataclass
 class BeginUnbondingTokensMessage:
@@ -231,12 +253,14 @@ class BeginUnbondingTokensMessage:
     validator_address: str
     amount: AmountMessage
 
+
 @dataclass
 class BeginRedelegatingTokensMessage:
     delegator_address: str
     validator_src_address: str
     validator_dst_address: str
     amount: AmountMessage
+
 
 @dataclass
 class AddLiquidityMessage:
@@ -249,11 +273,13 @@ class AddLiquidityMessage:
     b_max_amount: str = None
     originator: str = None
 
+
 @dataclass
 class RemoveLiquidityMessage:
     pool_id: str
     shares: str
     originator: str = None
+
 
 @dataclass
 class StakePoolTokenMessage:
@@ -262,11 +288,13 @@ class StakePoolTokenMessage:
     duration: str     # in seconds
     originator: str = None
 
+
 @dataclass
 class UnstakePoolTokenMessage:
     denom: str
     amount: str
     originator: str = None
+
 
 @dataclass
 class ClaimPoolRewardsMessage:

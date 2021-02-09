@@ -8,9 +8,7 @@ validator_ip = active_peers[random.randint(a=0, b=len(active_peers)-1)]
 DEVEL_AND_CO_SENTRY = validator_ip
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
-
 WALLET_DEVEL = "swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz"
-
 USERNAME_DEVEL = "devel484"
 
 WALLET_MNEMONIC = "refuse flag merge fiction choose dream frown gauge need fabric once pizza actual armed reopen couple family fury reopen slush blue try focus minute"
@@ -52,7 +50,7 @@ class APITestCase(TestCase):
                                                       f"received non empty list {actual[key]}")
                 else:
                     self.assertTrue(actual[key], msg=f"Expected list {self.path_to_dict_path(path+[key])},"
-                                                    f"received empty list {actual[key]}")
+                                                     f"received empty list {actual[key]}")
 
                 if expect[key] and isinstance(expect[key][0], dict):
                     for i, entry in enumerate(actual[key]):
