@@ -445,7 +445,7 @@ class DemexWebsocket:
                                           ping_timeout=self._ping_timeout) as websocket:
                 self._websocket = websocket
 
-                if on_connect:
+                if on_connect_callback:
                     await on_connect_callback()
 
                 async for message in websocket:
@@ -456,22 +456,3 @@ class DemexWebsocket:
                 await on_error_callback(e)
             else:
                 raise e
-
-
-async def on_receive_message(message):
-    print(message)
-
-
-async def on_connect():
-    await DEMEX.get_market_stats("test", market="swth_eth1")
-
-
-DEMEX = DemexWebsocket("ws://85.214.81.155:5000/ws")
-
-
-def main():
-    asyncio.get_event_loop().run_until_complete(DEMEX.connect(on_receive_message, on_connect))
-
-
-if __name__ == '__main__':
-    main()
