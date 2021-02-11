@@ -24,8 +24,8 @@ class AuthenticatedClient(TradehubPublicClient):
         self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
         self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
         self.network_variables = {
-            "testnet": {"chain_id": "switcheochain",},
-            "mainnet": {"chain_id": "switcheo-tradehub-1",},
+            "testnet": {"chain_id": "switcheochain", },
+            "mainnet": {"chain_id": "switcheo-tradehub-1", },
         }
         self.chain_id = self.network_variables[network]["chain_id"]
         self.fees = self.get_transactions_fees()
@@ -104,7 +104,7 @@ class AuthenticatedClient(TradehubPublicClient):
             raise ValueError('Message length is not equal to transaction types length.')
         if len(messages) > 100:
             raise ValueError('Cannot broadcast more than 100 messages in 1 transaction')
-        
+
         concrete_messages = []   # ConcreteMsg[] from JS code -> {type: string, value: object}
 
         for (message, transaction_type) in zip(messages, transaction_types):
@@ -114,7 +114,7 @@ class AuthenticatedClient(TradehubPublicClient):
             })
 
         return concrete_messages
-    
+
     def sign_message(self,
                      messages: list,
                      memo: str = None,
@@ -126,7 +126,7 @@ class AuthenticatedClient(TradehubPublicClient):
             self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
             if self.account_nbr == '0' or self.account_nbr is None:
                 raise ValueError('Account number still 0 after refetching. This suggests your account is not initialized with funds.')
-        
+
         fee_dict = self.set_fees(transaction_cnt=len(messages), transaction_type=messages[0]["type"], fee=fee)
 
         constructed_signing_message = {
@@ -145,7 +145,7 @@ class AuthenticatedClient(TradehubPublicClient):
             "pub_key": {"type": "tendermint/PubKeySecp256k1", "value": self.wallet.base64_public_key},
             "signature": signature,
         }
-    
+
     def construct_transaction(self, message: list, signatures: list, fees: dict, memo: str = None):
         return {
             "fee": fees,
@@ -153,7 +153,7 @@ class AuthenticatedClient(TradehubPublicClient):
             "memo": memo if memo else '',
             "signatures": signatures
         }
-    
+
     def construct_complete_transaction(self, transaction: dict, mode: str = None):
         return {
             "mode": mode if mode else self.mode,
@@ -181,7 +181,7 @@ class AuthenticatedClient(TradehubPublicClient):
                                                                                     fee=fee)
         return self.sign_and_broadcast(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)
 
-    ## Authenticated Client Functions
+    # Authenticated Client Functions
     '''
         The way each of these functions work follow a similar pattern.
         (1) The function is passed a message that matches a class from the type file.
@@ -212,7 +212,7 @@ class AuthenticatedClient(TradehubPublicClient):
             amounts.append(types.SendTokensAmount(amount=formatted_amount, denom=amount.denom))
         message.amount = sorted(amounts, key=lambda x: x.denom.lower())  # When dealing with coin lists in Cosmos it is a requirement that they be ordered by name - https://github.com/cosmos/cosmos-sdk/blob/master/types/coin.go#L215
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
-    
+
     def create_order(self, message: types.CreateOrderMessage, fee: dict = None):
         '''
             {
@@ -261,20 +261,20 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "EDIT_MARGIN_MSG_TYPE"
         return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
-    def stake_switcheo(self, message = types.DelegateTokensMessage, fee: dict = None):
+    def stake_switcheo(self, message=types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
         message.amount.amount = to_tradehub_asset_amount(amount=float(message.amount.amount), decimals=self.tokens["swth"]["decimals"])
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
-    def claim_staking_rewards(self, message = types.WithdrawDelegatorRewardsMessage, fee: dict = None):
+    def claim_staking_rewards(self, message=types.WithdrawDelegatorRewardsMessage, fee: dict = None):
         transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
-    def claim_all_staking_rewards(self, message = types.WithdrawAllDelegatorRewardsParams, fee: dict = None):
+    def claim_all_staking_rewards(self, message=types.WithdrawAllDelegatorRewardsParams, fee: dict = None):
         transaction_type = "WITHDRAW_DELEGATOR_REWARDS_MSG_TYPE"
         messages = []
         for validator_address in message.validator_addresses:
-            messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address,validator_address=validator_address))
+            messages.append(types.WithdrawDelegatorRewardsMessage(delegator_address=message.delegator_address, validator_address=validator_address))
         return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def unbond_tokens(self, message: types.BeginUnbondingTokensMessage, fee: dict = None):
