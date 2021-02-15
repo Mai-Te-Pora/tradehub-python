@@ -285,9 +285,9 @@ class AuthenticatedClient(TradehubPublicClient):
         transaction_type = "BEGIN_REDELEGATING_TOKENS_MSG_TYPE"
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
-    def create_withdraw(self, message: types.CreateWithdrawMessage, fee: dict = None):
+    def create_withdraw(self, message: types.CreateWithdrawMessage, blockchain: str, fee: dict = None):
         message.fee_address = 'swth1prv0t8j8tqcdngdmjlt59pwy6dxxmtqgycy2h7'
-        message.to_address = format_withdraw_address(address=message.to_address)
+        message.to_address = format_withdraw_address(address=message.to_address, blockchain=blockchain)
         transaction_type = "CREATE_WITHDRAWAL_TYPE"
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
