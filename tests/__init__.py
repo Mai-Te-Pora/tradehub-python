@@ -21,7 +21,6 @@ ETH_ADDRESS = '0x32c46323b51c977814e05ef5e258ee4da0e4c3c3'   # Ropsten Testnet A
 ETH_CONTRACT = '0x0025b3342582d106454e88ecb091f3e456f81ac3'  # Sushi Ropsten Testnet Contract
 
 WEB3_API_KEY = os.environ.get('WEB3_API_KEY')
-WEB3_API_KEY = 'kZLcvbGCS-TWPgYB451-kIvHzU_8hVxb'
 WEB3_API_URL = 'https://eth-ropsten.alchemyapi.io/v2/{}'.format(WEB3_API_KEY)
 
 
