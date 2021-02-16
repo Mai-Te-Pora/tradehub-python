@@ -140,6 +140,7 @@ class TradehubNodeClient(object):
                 self.validator_crawler_mp()
                 self.sentry_status_request()
             self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+            return self.tradehub_get_request(path=path, params=params)
 
     def tradehub_post_request(self, path: str, data=None, json_data=None, params=None):
         try:
@@ -151,3 +152,4 @@ class TradehubNodeClient(object):
                 self.validator_crawler_mp()
                 self.sentry_status_request()
             self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+            return self.tradehub_post_request(path=path, data=data, json_data=json_data, params=params)
