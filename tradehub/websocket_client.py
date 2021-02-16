@@ -1,5 +1,4 @@
 from typing import Optional, List, Callable
-import asyncio
 import websockets
 import json
 
