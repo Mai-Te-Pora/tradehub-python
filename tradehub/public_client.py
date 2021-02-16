@@ -1478,7 +1478,7 @@ class PublicClient(object):
         return self.request.get(path='/get_trades', params=api_params)
 
     def get_transactions_fees(self):
-        gas_fees = self.request.get(path = '/get_txns_fees')
+        gas_fees = self.request.get(path='/get_txns_fees')
         fees = {}
         for gas_fee in gas_fees["result"]:
             fees[gas_fee["msg_type"]] = gas_fee["fee"]

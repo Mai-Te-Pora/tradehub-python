@@ -38,6 +38,8 @@ jobs:
         python -m poetry run python -m pip install pytest pytest-cov
 
     - name: Test with pytest
+      env:
+        WEB3_API_KEY: ${{ secrets.ALCHEMY_WEB3_API_KEY }}
       run: |
         python -m poetry run python -m pytest -v tests/ --cov=./ --cov-report=xml
 
