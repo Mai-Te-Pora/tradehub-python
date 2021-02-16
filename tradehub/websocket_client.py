@@ -488,7 +488,48 @@ class DemexWebsocket:
 
     async def get_order_history(self, message_id: str, swth_address: str, market: Optional[str] = None):
         """
-        Request order history.
+        Request up to 200 order histories.
+
+        Example::
+
+            ws_client.get_order_history('order_history', "swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p")
+
+        The expected return result for this function is as follows::
+
+            {
+                "id": "order_history",
+                "result": [
+                    {
+                        "order_id": "C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD",
+                        "block_height": 7561537,
+                        "triggered_block_height": 0,
+                        "address": "swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p",
+                        "market": "wbtc1_usdc1",
+                        "side": "sell",
+                        "price": "0",
+                        "quantity": "0.0011",
+                        "available": "0",
+                        "filled": "0.0011",
+                        "order_status": "filled",
+                        "order_type": "market",
+                        "initiator": "user",
+                        "time_in_force": "fok",
+                        "stop_price": "0",
+                        "trigger_type": "",
+                        "allocated_margin_denom": "wbtc1",
+                        "allocated_margin_amount": "0",
+                        "is_liquidation": false,
+                        "is_post_only": false,
+                        "is_reduce_only": false,
+                        "type": "",
+                        "block_created_at": "2021-02-16T08:31:13.225303Z",
+                        "username": "",
+                        "id": "2315998"
+                    },
+                    ...
+                ]
+            }
+
 
         .. note::
             The market identifier is optional and acts as a filter.
@@ -510,7 +551,42 @@ class DemexWebsocket:
 
     async def get_recent_trades(self, message_id: str, market: str):
         """
-        Request recent trades.
+        Request up  to 100 recent trades for a market.
+
+        Example::
+
+            ws_client.get_recent_trades('recent_trades', "swth_eth1")
+
+        The expected return result for this function is as follows::
+
+            {
+                "id": "recent_trades",
+                "sequence_number": 3,
+                "result": [
+                    {
+                        "id": "0",
+                        "block_created_at": "2021-02-16T10:21:31.346041707Z",
+                        "taker_id": "3F71918F83D84639F505464335FD355105EE63E622CBB819AAFBBAC97368CC7A",
+                        "taker_address": "swth1ysezxr46dhd4dzjsswqte35wfm0ml5dxx97aqt",
+                        "taker_fee_amount": "3.2475",
+                        "taker_fee_denom": "swth",
+                        "taker_side": "buy",
+                        "maker_id": "343590CF4F54FEB1E2429F60B77CD3BED701A040418AEB914BB41D561E24E7DE",
+                        "maker_address": "swth1a5v8pyhkzjjmyw03mh9zqfakwyu0t5wkv0tf66",
+                        "maker_fee_amount": "-0.6495",
+                        "maker_fee_denom": "swth",
+                        "maker_side": "sell",
+                        "market": "swth_eth1",
+                        "price": "0.0000182",
+                        "quantity": "1299",
+                        "liquidation": "",
+                        "taker_username": "",
+                        "maker_username": "",
+                        "block_height": "7564715"
+                    },
+                    ...
+                ]
+            }
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -529,6 +605,9 @@ class DemexWebsocket:
                                from_epoch: Optional[int] = None, to_epoch: Optional[int] = None):
         """
         Requests candlesticks for market with granularity.
+
+        .. warning::
+            This endpoint does not seem to work and results in an error message.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -555,6 +634,46 @@ class DemexWebsocket:
         """
         Request open orders.
 
+        Example::
+
+            ws_client.get_open_orders('open_orders', "swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk")
+
+        The expected return result for this function is as follows::
+
+            {
+                "id": "open_orders",
+                "result": [
+                    {
+                        "order_id": "A7C488A6AE25249E90523FCD603236342025340E3DCAE6A6312133905C41794C",
+                        "block_height": 7564973,
+                        "triggered_block_height": 0,
+                        "address": "swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk",
+                        "market": "swth_eth1",
+                        "side": "sell",
+                        "price": "0.0000181",
+                        "quantity": "58806",
+                        "available": "58806",
+                        "filled": "0",
+                        "order_status": "open",
+                        "order_type": "limit",
+                        "initiator": "amm",
+                        "time_in_force": "gtc",
+                        "stop_price": "0",
+                        "trigger_type": "",
+                        "allocated_margin_denom": "swth",
+                        "allocated_margin_amount": "0",
+                        "is_liquidation": false,
+                        "is_post_only": false,
+                        "is_reduce_only": false,
+                        "type": "",
+                        "block_created_at": "2021-02-16T10:30:27.079962Z",
+                        "username": "",
+                        "id": "2316597"
+                    },
+                    ...
+                ]
+            }
+
         .. note::
             The market identifier is optional and acts as a filter.
 
@@ -576,7 +695,36 @@ class DemexWebsocket:
     async def get_account_trades(self, message_id: str, swth_address: str,
                                  market: Optional[str] = None, page: Optional[int] = None):
         """
-        Request account trades.
+        Request up to 100 account trades.
+
+        Example::
+
+            ws_client.get_account_trades('account_trades', 'swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p')
+
+        The expected return result for this function is as follows::
+
+            {
+                "id": "account_trades",
+                "result": [
+                    {
+                        "base_precision": 8,
+                        "quote_precision": 6,
+                        "fee_precision": 6,
+                        "order_id": "C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD",
+                        "market": "wbtc1_usdc1",
+                        "side": "sell",
+                        "quantity": "0.0001",
+                        "price": "48745.12",
+                        "fee_amount": "0.004875",
+                        "fee_denom": "usdc1",
+                        "address": "swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p",
+                        "block_height": "7561537",
+                        "block_created_at": "2021-02-16T08:31:13.225303Z",
+                        "id": 289733
+                    },
+                    ...
+                ]
+            }
 
         .. note::
             The market identifier is optional and acts as a filter.
@@ -605,6 +753,33 @@ class DemexWebsocket:
     async def get_market_stats(self, message_id: str, market: Optional[str] = None):
         """
         Request market stats.
+
+        Example::
+
+            ws_client.get_market_stats('market_stats')
+
+        The expected return result for this function is as follows::
+
+            {
+                "id": "market_stats",
+                "result": {
+                    "eth1_usdc1": {
+                        "day_high": "1818.51",
+                        "day_low": "1751.81",
+                        "day_open": "1760.07",
+                        "day_close": "1788.19",
+                        "day_volume": "36.503",
+                        "day_quote_volume": "65153.50224",
+                        "index_price": "0",
+                        "mark_price": "0",
+                        "last_price": "1788.19",
+                        "market": "eth1_usdc1",
+                        "market_type": "spot",
+                        "open_interest": "0"
+                    },
+                    ...
+                }
+            }
 
         .. warning::
             Parameter 'market' has no effect. Maybe not intended as parameter. Request will result in all market stats.
