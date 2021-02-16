@@ -5,3 +5,4 @@ Client Documentation
    :maxdepth: 2
 
    public_client
+   websocket_client
