@@ -228,7 +228,7 @@ class DemexWebsocket:
         The channel update messages are expected as::
 
             {
-                'channel': 'orders.swth1...abcd'
+                'channel': 'orders.swth1...abcd',
                 'result': [
                     {
                         'order_id': '7CBBF51B75CF2E046726BB...56757D6D502B01F4BB62178DCF',
