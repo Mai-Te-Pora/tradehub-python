@@ -478,11 +478,11 @@ class DemexWebsocket:
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
-        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 1360, 1440.
+        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.
         :return: None
         """
-        if granularity not in [1, 5, 15, 30, 60, 1360, 1440]:
-            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 1360, 1440")
+        if granularity not in [1, 5, 15, 30, 60, 360, 1440]:
+            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440")
         channel_name: str = f"candlesticks.{market}.{granularity}"
         await self.subscribe(message_id, [channel_name])
 
@@ -612,13 +612,13 @@ class DemexWebsocket:
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
-        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 1360, 1440.
+        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.
         :param from_epoch: Starting from epoch seconds.
         :param to_epoch: Ending to epoch seconds.
         :return: None
         """
-        if granularity not in [1, 5, 15, 30, 60, 1360, 1440]:
-            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 1360, 1440")
+        if granularity not in [1, 5, 15, 30, 60, 360, 1440]:
+            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440")
         await self.send({
             "id": message_id,
             "method": "get_candlesticks",
