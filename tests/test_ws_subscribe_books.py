@@ -49,7 +49,7 @@ class TestWSSubscribeBooks(APITestCase):
             loop.run_until_complete(asyncio.wait_for(client.connect(on_connect_callback=on_connect,
                                                                     on_receive_message_callback=on_message),
                                                      WEBSOCKET_TIMEOUT_SUBSCRIPTION))
-        except concurrent.futures._base.TimeoutError:
+        except asyncio.TimeoutError:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(client.disconnect())
 

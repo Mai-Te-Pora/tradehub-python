@@ -59,7 +59,7 @@ class TestWSGetRecentTrades(APITestCase):
             loop.run_until_complete(asyncio.wait_for(client.connect(on_connect_callback=on_connect,
                                                                     on_receive_message_callback=on_message),
                                                      WEBSOCKET_TIMEOUT_GET_REQUEST))
-        except concurrent.futures._base.TimeoutError:
+        except asyncio.TimeoutError:
             raise TimeoutError("Test did not complete in time.")
 
         if not self.response:
