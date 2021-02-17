@@ -423,6 +423,15 @@ class DemexWebsocket:
         """
         await self._websocket.send(json.dumps(data))
 
+    async def disconnect(self):
+        """
+        Safely close the websocket connection.
+
+        :return:
+        """
+        if self._websocket:
+            await self._websocket.close()
+
     async def connect(self,
                       on_receive_message_callback: Callable,
                       on_connect_callback: Optional[Callable] = None,
