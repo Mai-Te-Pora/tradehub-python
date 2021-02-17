@@ -357,7 +357,7 @@ class DemexWebsocket:
 
         Example::
 
-            ws_client.subscribe_account_trades('account', "swth...abcd', "eth1_usdc1")
+            ws_client.subscribe_account_trades('account', 'swth...abcd', 'eth1_usdc1')
             # or for all markets
             ws_client.subscribe_account_trades('account', "swth...abcd')
 
