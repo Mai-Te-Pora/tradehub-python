@@ -13,5 +13,5 @@ async def on_receive_message(message: dict):
 
 
 if __name__ == '__main__':
-    demex: DemexWebsocket = DemexWebsocket('ws://85.214.81.155:5000/ws')
+    demex: DemexWebsocket = DemexWebsocket('ws://164.132.169.19:5000/ws')
     asyncio.get_event_loop().run_until_complete(demex.connect(on_receive_message, on_connect))
