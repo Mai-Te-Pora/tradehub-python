@@ -6,9 +6,9 @@ from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOC
 from tradehub.websocket_client import DemexWebsocket
 
 
-class TestWSSubscribeCandlesticks(APITestCase):
+class TestWSSubscribeRecentTrades(APITestCase):
 
-    def test_subscribe_candlesticks_structure(self):
+    def test_subscribe_recent_trades_structure(self):
         """
         Check if response match expected dict structure.
         :return:
@@ -20,19 +20,30 @@ class TestWSSubscribeCandlesticks(APITestCase):
 
         expect: dict = {
             'channel': str,
-            'sequence_number': int,
-            'result': {
-                'id': int,
-                'market': str,
-                'time': str,
-                'resolution': int,
-                'open': str,
-                'close': str,
-                'high': str,
-                'low': str,
-                'volume': str,
-                'quote_volume': str,
-            }
+            'sequence_number': 812,
+            'result': [
+                {
+                    'id': str,
+                    'block_created_at': str,
+                    'taker_id': str,
+                    'taker_address': str,
+                    'taker_fee_amount': str,
+                    'taker_fee_denom': str,
+                    'taker_side': str,
+                    'maker_id': str,
+                    'maker_address': str,
+                    'maker_fee_amount': str,
+                    'maker_fee_denom': str,
+                    'maker_side': str,
+                    'market': str,
+                    'price': str,
+                    'quantity': str,
+                    'liquidation': str,
+                    'taker_username': str,
+                    'maker_username': str,
+                    'block_height': str,
+                }
+            ]
         }
 
 
@@ -42,18 +53,18 @@ class TestWSSubscribeCandlesticks(APITestCase):
         self.response: List[dict] = []
 
         async def on_connect():
-            await client.subscribe_candlesticks('candlesticks', "swth_eth1", 1)
+            # use AMM to be sure deterministic of which tokens the wallet holds
+            await client.subscribe_recent_trades('orders', "eth1_usdc1")
 
         async def on_message(message: dict):
             # save response into self
-            print(message)
             self.response.append(message)
 
         try:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(asyncio.wait_for(client.connect(on_connect_callback=on_connect,
                                                                     on_receive_message_callback=on_message),
-                                                     2*WEBSOCKET_TIMEOUT_SUBSCRIPTION))
+                                                     WEBSOCKET_TIMEOUT_SUBSCRIPTION))
         except concurrent.futures._base.TimeoutError:
             loop = asyncio.get_event_loop()
             loop.run_until_complete(client.disconnect())
@@ -62,23 +73,11 @@ class TestWSSubscribeCandlesticks(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         if len(self.response) < 2:
-            self.skipTest(f"Did not receive candlesticks within time, test can not finish.")
+            self.skipTest(f"Did not receive orders within time, test can not finish.")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)
 
         for message in self.response[1:]:
+            # if this fails, check if the AMM wallet own other tokens as expected
             self.assertDictStructure(expect, message)
-
-    def test_subscribe_candlesticks_wrong_granularity(self):
-        """
-        Check if the method catches wrong granularities.
-        :return:
-        """
-
-        # connect to websocket
-        client = DemexWebsocket("")
-        for wrong_granularity in [0, 2, 4, 6, 100, 1500]:
-            with self.assertRaises(ValueError):
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(client.subscribe_candlesticks("candle", "swth_eth1", wrong_granularity))

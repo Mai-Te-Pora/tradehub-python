@@ -1,6 +1,6 @@
 import asyncio
 import concurrent
-from typing import Optional
+from typing import Optional, List
 
 from tests import APITestCase, DEVEL_AND_CO_SENTRY, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
@@ -26,15 +26,15 @@ class TestWSGetCandlesticks(APITestCase):
         # connect to websocket
         client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
         # little work around to save the response
-        self.response: Optional[dict] = None
+        self.response: List[Optional[dict]] = []
 
         async def on_connect():
-            await client.get_candlesticks('candlesticks', "swth_eth1", 5)
+            for granularity in [1, 5, 15, 30, 60, 360, 1440]:
+                await client.get_candlesticks('candlesticks', "swth_eth1", granularity)
 
         async def on_message(message: dict):
             # save response into self
-            self.response = message
-            await client.disconnect()
+            self.response.append(message)
 
         try:
             loop = asyncio.get_event_loop()
@@ -42,9 +42,24 @@ class TestWSGetCandlesticks(APITestCase):
                                                                     on_receive_message_callback=on_message),
                                                      WEBSOCKET_TIMEOUT_GET_REQUEST))
         except concurrent.futures._base.TimeoutError:
-            raise TimeoutError("Test did not complete in time.")
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(client.disconnect())
 
         if not self.response:
             raise RuntimeError("Did not receive a response.")
 
-        self.assertDictStructure(expect, self.response)
+        for response in self.response:
+            self.assertDictStructure(expect, response)
+
+    def test_get_candlesticks_wrong_granularity(self):
+        """
+        Check if the method catches wrong granularities.
+        :return:
+        """
+
+        # connect to websocket
+        client = DemexWebsocket("")
+        for wrong_granularity in [0, 2, 4, 6, 100, 1500]:
+            with self.assertRaises(ValueError):
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(client.get_candlesticks("candle", "swth_eth1", wrong_granularity))

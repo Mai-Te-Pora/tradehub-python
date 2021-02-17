@@ -2,13 +2,13 @@ import asyncio
 import concurrent
 from typing import Optional
 
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_DEVEL, WEBSOCKET_TIMEOUT_GET_REQUEST
+from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
 
 
-class TestWSGetOrderHistory(APITestCase):
+class TestWSGetOpenOrders(APITestCase):
 
-    def test_get_order_history_structure(self):
+    def test_get_open_orders_structure(self):
         """
         Check if response match expected dict structure.
         :return:
@@ -52,7 +52,7 @@ class TestWSGetOrderHistory(APITestCase):
         self.response: Optional[dict] = None
 
         async def on_connect():
-            await client.get_order_history('order_history', WALLET_DEVEL)
+            await client.get_open_orders('order_history', WALLET_SWTH_ETH1_AMM)
 
         async def on_message(message: dict):
             # save response into self
