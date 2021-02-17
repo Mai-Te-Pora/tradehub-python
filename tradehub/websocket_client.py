@@ -135,6 +135,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'books.eth1_usdc1',
+                'sequence_number': 924,
                 'result': [
                     {
                         'market': 'eth1_usdc1',
@@ -159,7 +160,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'books.eth1_usdc1',
-                'sequence_number': 924
+                'sequence_number': 924,
                 'result': [
                     {
                         'market': 'eth1_usdc1',
