@@ -90,6 +90,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'market_stats',
+                'sequence_number': 484,
                 'result': {
                     'cel1_usdc1': {
                         'day_high': '5.97',
@@ -472,14 +473,33 @@ class DemexWebsocket:
 
         Example::
 
-            ws_client.subscribe_candlesticks('candle', "eth1_usdc1', 1)
+            ws_client.subscribe_candlesticks('candle', "swth_eth1', 1)
 
 
         The initial channel message is expected as::
 
             {
                 'id': 'candle',
-                'result': ['candlesticks.eth1_usdc1.1']
+                'result': ['candlesticks.swth_eth1.1']
+            }
+
+        The subscription and channel messages are expected as follow::
+
+            {
+                'channel': 'candlesticks.swth_eth1.1',
+                'sequence_number': 57,
+                'result': {
+                    'id': 0,
+                    'market':'swth_eth1',
+                    'time': '2021-02-17T10:59:00Z',
+                    'resolution': 1,
+                    'open': '0.000018',
+                    'close': '0.000018',
+                    'high': '0.000018',
+                    'low': '0.000018',
+                    'volume': '5555',
+                    'quote_volume': '0.09999'
+                }
             }
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
@@ -615,6 +635,29 @@ class DemexWebsocket:
                                from_epoch: Optional[int] = None, to_epoch: Optional[int] = None):
         """
         Requests candlesticks for market with granularity.
+
+        Example::
+
+            ws_client.get_candlesticks('recent_trades', "swth_eth1")
+
+        The subscription and channel messages are expected as follow::
+
+            {
+                'channel': 'candlesticks.swth_eth1.1',
+                'sequence_number': 57,
+                'result': {
+                    'id': 0,
+                    'market':'swth_eth1',
+                    'time': '2021-02-17T10:59:00Z',
+                    'resolution': 1,
+                    'open': '0.000018',
+                    'close': '0.000018',
+                    'high': '0.000018',
+                    'low': '0.000018',
+                    'volume': '5555',
+                    'quote_volume': '0.09999'
+                }
+            }
 
         .. warning::
             This endpoint does not seem to work and results in an error message.
