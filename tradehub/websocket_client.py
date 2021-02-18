@@ -90,6 +90,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'market_stats',
+                'sequence_number': 484,
                 'result': {
                     'cel1_usdc1': {
                         'day_high': '5.97',
@@ -135,6 +136,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'books.eth1_usdc1',
+                'sequence_number': 924,
                 'result': [
                     {
                         'market': 'eth1_usdc1',
@@ -159,7 +161,7 @@ class DemexWebsocket:
 
             {
                 'channel': 'books.eth1_usdc1',
-                'sequence_number': 924
+                'sequence_number': 924,
                 'result': [
                     {
                         'market': 'eth1_usdc1',
@@ -226,7 +228,7 @@ class DemexWebsocket:
         The channel update messages are expected as::
 
             {
-                'channel': 'orders.swth1...abcd'
+                'channel': 'orders.swth1...abcd',
                 'result': [
                     {
                         'order_id': '7CBBF51B75CF2E046726BB...56757D6D502B01F4BB62178DCF',
@@ -343,6 +345,9 @@ class DemexWebsocket:
                 ]
             }
 
+        .. warning::
+            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
+
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
@@ -357,7 +362,7 @@ class DemexWebsocket:
 
         Example::
 
-            ws_client.subscribe_account_trades('account', "swth...abcd', "eth1_usdc1")
+            ws_client.subscribe_account_trades('account', 'swth...abcd', 'eth1_usdc1')
             # or for all markets
             ws_client.subscribe_account_trades('account', "swth...abcd')
 
@@ -407,6 +412,9 @@ class DemexWebsocket:
 
         .. note::
             The market identifier is optional and acts as a filter.
+
+        .. warning::
+            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -465,24 +473,43 @@ class DemexWebsocket:
 
         Example::
 
-            ws_client.subscribe_candlesticks('candle', "eth1_usdc1', 1)
+            ws_client.subscribe_candlesticks('candle', "swth_eth1', 1)
 
 
         The initial channel message is expected as::
 
             {
                 'id': 'candle',
-                'result': ['candlesticks.eth1_usdc1.1']
+                'result': ['candlesticks.swth_eth1.1']
+            }
+
+        The subscription and channel messages are expected as follow::
+
+            {
+                'channel': 'candlesticks.swth_eth1.1',
+                'sequence_number': 57,
+                'result': {
+                    'id': 0,
+                    'market':'swth_eth1',
+                    'time': '2021-02-17T10:59:00Z',
+                    'resolution': 1,
+                    'open': '0.000018',
+                    'close': '0.000018',
+                    'high': '0.000018',
+                    'low': '0.000018',
+                    'volume': '5555',
+                    'quote_volume': '0.09999'
+                }
             }
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
-        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 1360, 1440.
+        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.
         :return: None
         """
-        if granularity not in [1, 5, 15, 30, 60, 1360, 1440]:
-            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 1360, 1440")
+        if granularity not in [1, 5, 15, 30, 60, 360, 1440]:
+            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440")
         channel_name: str = f"candlesticks.{market}.{granularity}"
         await self.subscribe(message_id, [channel_name])
 
@@ -588,6 +615,9 @@ class DemexWebsocket:
                 ]
             }
 
+        .. warning::
+            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
+
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
@@ -606,19 +636,42 @@ class DemexWebsocket:
         """
         Requests candlesticks for market with granularity.
 
+        Example::
+
+            ws_client.get_candlesticks('recent_trades', "swth_eth1")
+
+        The subscription and channel messages are expected as follow::
+
+            {
+                'channel': 'candlesticks.swth_eth1.1',
+                'sequence_number': 57,
+                'result': {
+                    'id': 0,
+                    'market':'swth_eth1',
+                    'time': '2021-02-17T10:59:00Z',
+                    'resolution': 1,
+                    'open': '0.000018',
+                    'close': '0.000018',
+                    'high': '0.000018',
+                    'low': '0.000018',
+                    'volume': '5555',
+                    'quote_volume': '0.09999'
+                }
+            }
+
         .. warning::
             This endpoint does not seem to work and results in an error message.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
-        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 1360, 1440.
+        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.
         :param from_epoch: Starting from epoch seconds.
         :param to_epoch: Ending to epoch seconds.
         :return: None
         """
-        if granularity not in [1, 5, 15, 30, 60, 1360, 1440]:
-            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 1360, 1440")
+        if granularity not in [1, 5, 15, 30, 60, 360, 1440]:
+            raise ValueError(f"Granularity '{granularity}' not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440")
         await self.send({
             "id": message_id,
             "method": "get_candlesticks",
@@ -884,6 +937,15 @@ class DemexWebsocket:
         :return:
         """
         await self._websocket.send(json.dumps(data))
+
+    async def disconnect(self):
+        """
+        Safely close the websocket connection.
+
+        :return:
+        """
+        if self._websocket:
+            await self._websocket.close()
 
     async def connect(self,
                       on_receive_message_callback: Callable,

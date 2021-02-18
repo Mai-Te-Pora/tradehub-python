@@ -8,6 +8,7 @@ DEVEL_AND_CO_SENTRY = active_node_client.active_sentry_api_ip
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
 WALLET_DEVEL = "swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz"
+WALLET_SWTH_ETH1_AMM = "swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk"
 USERNAME_DEVEL = "devel484"
 
 WALLET_MNEMONIC = "refuse flag merge fiction choose dream frown gauge need fabric once pizza actual armed reopen couple family fury reopen slush blue try focus minute"
@@ -22,6 +23,9 @@ ETH_CONTRACT = '0x0025b3342582d106454e88ecb091f3e456f81ac3'  # Sushi Ropsten Tes
 
 WEB3_API_KEY = os.environ.get('WEB3_API_KEY')
 WEB3_API_URL = 'https://eth-ropsten.alchemyapi.io/v2/{}'.format(WEB3_API_KEY)
+
+WEBSOCKET_TIMEOUT_GET_REQUEST = 5
+WEBSOCKET_TIMEOUT_SUBSCRIPTION = 60
 
 
 class APITestCase(TestCase):
