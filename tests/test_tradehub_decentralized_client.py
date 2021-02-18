@@ -1,11 +1,11 @@
-from tradehub.decentralized_client import TradehubNodeClient
+from tradehub.decentralized_client import NetworkCrawlerClient
 from tests import APITestCase
 
 
-class TestTradeHubNodeClient(APITestCase):
+class TestNetworkCrawlerClient(APITestCase):
 
     def setUp(self) -> None:
-        self.tradehub_client = TradehubNodeClient(network='mainnet')
+        self.tradehub_client = NetworkCrawlerClient(network='mainnet')
 
     def test_validator_crawler_mp(self):
         self.tradehub_client.validator_crawler_mp()

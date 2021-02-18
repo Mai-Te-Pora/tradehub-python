@@ -1,9 +1,8 @@
 from decimal import Decimal
-import random
 
 import tradehub.types as types
 from tradehub.authenticated_client import AuthenticatedClient as TradehubAuthenticatedClient
-from tradehub.utils import validator_crawler_mp
+from tradehub.decentralized_client import NetworkCrawlerClient
 from tradehub.wallet import Wallet
 
 
@@ -11,9 +10,7 @@ class DemexClient(object):
 
     def __init__(self, mnemonic: str, network: str = "testnet"):
         self.wallet = Wallet(mnemonic=mnemonic, network=network)
-        self.active_peers = validator_crawler_mp(network='main')
-        self.active_validators = self.active_peers["active_peers"]
-        self.validator_ip = self.active_validators[random.randint(a=0, b=len(self.active_peers)-1)]
+        self.validator_ip = NetworkCrawlerClient(network=network).active_sentry_api_ip
         self.tradehub = TradehubAuthenticatedClient(wallet=self.wallet, node_ip=self.validator_ip, network=network)
 
     def limit_buy(self, pair: str, quantity: str, price: str):

@@ -1,9 +1,9 @@
 import os
 from unittest import TestCase
 
-from tradehub.decentralized_client import TradehubNodeClient
+from tradehub.decentralized_client import NetworkCrawlerClient
 
-active_node_client = TradehubNodeClient(network='mainnet')
+active_node_client = NetworkCrawlerClient(network='mainnet')
 DEVEL_AND_CO_SENTRY = active_node_client.active_sentry_api_ip
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
@@ -15,6 +15,8 @@ WALLET_MNEMONIC = "refuse flag merge fiction choose dream frown gauge need fabri
 WALLET_PRIVATE_KEY = b'\x15\xcf\xdd\xdf\xead\x88\xd2y!\xdb\xb61\xa6\x98\xeeQm\x05\xed\x8d%43!\n\xccS\xcbsf\x90'
 WALLET_PUBLIC_KEY = b'\x02o\x1f\xfbL\x96\xe8\x1e\xb0\x12V\x80\xc7t\xfc\xb40R\xaeu\xf3{\xf6\xd7m]\xd1\xa9\x91\xa8\xe0Df'
 WALLET_ADDRESS = 'tswth1upcgussnx4p3jegwj3x2fccwlajwckkzgstrp8'
+
+TRADING_TESTNET_WALLET_MNEMONIC = "venture consider cool fury front middle junk person suit assist garbage category"
 
 NEO_ADDRESS = 'APuP9GsSCPJKrexPe49afDV8CQYubZGWd8'
 NEO_CONTRACT = '3e09e602eeeb401a2fec8e8ea137d59aae54a139'
