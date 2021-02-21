@@ -44,15 +44,22 @@ class TestTradeHubWallet(APITestCase):
         """
 
         expect: dict = {
-            'order/MsgCreateOrder': str,
-            'liquiditypool/ClaimPoolRewards': str,
-            'oracle/MsgCreateOracle': str,
-            'liquiditypool/CreatePool': str,
-            'liquiditypool/StakePoolToken': str,
-            'liquiditypool/UnstakePoolToken': str,
+            'order/MsgCreateOrder': 'create_order',
+            'liquiditypool/ClaimPoolRewards': 'claim_pool_rewards',
+            'oracle/MsgCreateOracle': 'create_oracle_vote',
+            'liquiditypool/CreatePool': 'create_pool',
+            'liquiditypool/StakePoolToken': 'stake_pool_token',
+            'liquiditypool/UnstakePoolToken': 'unstake_pool_token',
         }
 
-        self.assertDictStructure(expect, types.fee_types)
+        # self.assertDictStructure(expect, types.fee_types)
+        # self.assertDictEqual(expect, types.fee_types)
+        self.assertEqual(expect['order/MsgCreateOrder'], types.fee_types['order/MsgCreateOrder'])
+        self.assertEqual(expect['liquiditypool/ClaimPoolRewards'], types.fee_types['liquiditypool/ClaimPoolRewards'])
+        self.assertEqual(expect['oracle/MsgCreateOracle'], types.fee_types['oracle/MsgCreateOracle'])
+        self.assertEqual(expect['liquiditypool/CreatePool'], types.fee_types['liquiditypool/CreatePool'])
+        self.assertEqual(expect['liquiditypool/StakePoolToken'], types.fee_types['liquiditypool/StakePoolToken'])
+        self.assertEqual(expect['liquiditypool/UnstakePoolToken'], types.fee_types['liquiditypool/UnstakePoolToken'])
 
     def test_update_profile_message(self):
         """

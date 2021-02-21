@@ -5,7 +5,7 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 import threading
 
 
-class TradehubNodeClient(object):
+class NetworkCrawlerClient(object):
 
     def __init__(self, network: str = "testnet"):
         if network.lower() not in ["main", "mainnet", "test", "testnet"]:

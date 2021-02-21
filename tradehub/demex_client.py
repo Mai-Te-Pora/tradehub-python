@@ -1,9 +1,8 @@
 from decimal import Decimal
-import random
 
 import tradehub.types as types
 from tradehub.authenticated_client import AuthenticatedClient as TradehubAuthenticatedClient
-from tradehub.utils import validator_crawler_mp
+from tradehub.decentralized_client import NetworkCrawlerClient
 from tradehub.wallet import Wallet
 
 
@@ -11,9 +10,7 @@ class DemexClient(object):
 
     def __init__(self, mnemonic: str, network: str = "testnet"):
         self.wallet = Wallet(mnemonic=mnemonic, network=network)
-        self.active_peers = validator_crawler_mp(network='main')
-        self.active_validators = self.active_peers["active_peers"]
-        self.validator_ip = self.active_validators[random.randint(a=0, b=len(self.active_peers)-1)]
+        self.validator_ip = NetworkCrawlerClient(network=network).active_sentry_api_ip
         self.tradehub = TradehubAuthenticatedClient(wallet=self.wallet, node_ip=self.validator_ip, network=network)
 
     def limit_buy(self, pair: str, quantity: str, price: str):
@@ -135,6 +132,20 @@ class DemexClient(object):
             return self.tradehub.edit_order(message=edit_order_msg)
         else:
             raise ValueError("The Order ID - {} - is not a valid stop order; is open or a limit or leveraged order?".format(order_id))
+
+    def get_open_orders(self):
+        orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open')
+        order_dict = {}
+        for order in orders:
+            order_dict[order["order_id"]] = order
+        return order_dict
+
+    def get_open_orders_by_pair(self, pair: str):
+        orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open', market=pair)
+        order_dict = {}
+        for order in orders:
+            order_dict[order["order_id"]] = order
+        return order_dict
 
     def get_open_limit_orders(self):
         orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open', order_type='limit')
