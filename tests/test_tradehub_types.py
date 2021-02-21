@@ -53,7 +53,13 @@ class TestTradeHubWallet(APITestCase):
         }
 
         # self.assertDictStructure(expect, types.fee_types)
-        self.assertDictEqual(expect, types.fee_types)
+        # self.assertDictEqual(expect, types.fee_types)
+        self.assertEqual(expect['order/MsgCreateOrder'], types.fee_types['order/MsgCreateOrder'])
+        self.assertEqual(expect['liquiditypool/ClaimPoolRewards'], types.fee_types['liquiditypool/ClaimPoolRewards'])
+        self.assertEqual(expect['oracle/MsgCreateOracle'], types.fee_types['oracle/MsgCreateOracle'])
+        self.assertEqual(expect['liquiditypool/CreatePool'], types.fee_types['liquiditypool/CreatePool'])
+        self.assertEqual(expect['liquiditypool/StakePoolToken'], types.fee_types['liquiditypool/StakePoolToken'])
+        self.assertEqual(expect['liquiditypool/UnstakePoolToken'], types.fee_types['liquiditypool/UnstakePoolToken'])
 
     def test_update_profile_message(self):
         """
