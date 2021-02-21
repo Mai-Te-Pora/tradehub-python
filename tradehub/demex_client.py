@@ -133,6 +133,20 @@ class DemexClient(object):
         else:
             raise ValueError("The Order ID - {} - is not a valid stop order; is open or a limit or leveraged order?".format(order_id))
 
+    def get_open_orders(self):
+        orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open')
+        order_dict = {}
+        for order in orders:
+            order_dict[order["order_id"]] = order
+        return order_dict
+
+    def get_open_orders_by_pair(self, pair: str):
+        orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open', market=pair)
+        order_dict = {}
+        for order in orders:
+            order_dict[order["order_id"]] = order
+        return order_dict
+
     def get_open_limit_orders(self):
         orders = self.tradehub.get_orders(swth_address=self.wallet.address, order_status='open', order_type='limit')
         order_dict = {}
