@@ -74,7 +74,7 @@ class TestWSSubscribeMarketStats(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         if len(self.response) < 2:
-            self.skipTest(f"{Did not receive candlesticks within time, test can not finish.}")
+            self.skipTest(f"Did not receive candlesticks within time, test can not finish.")
 
         print(self.response[1]["result"].keys())
 

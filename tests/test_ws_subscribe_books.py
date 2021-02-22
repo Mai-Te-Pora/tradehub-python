@@ -55,7 +55,7 @@ class TestWSSubscribeBooks(APITestCase):
         if not self.response:
             raise RuntimeError("Did not receive a response.")
 
-        self.assertTrue(len(self.response) >= 2, msg=f"{Expected at least 2 messages: channel subscription and an update message}")
+        self.assertTrue(len(self.response) >= 2, msg=f"Expected at least 2 messages: channel subscription and an update message")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)

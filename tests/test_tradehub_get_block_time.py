@@ -19,4 +19,4 @@ class TestTradeHubGetBlockTime(APITestCase):
 
         self.assertIsInstance(result, str)
 
-        self.assertAlmostEqual(len(result), len(expect), msg=f"{Check if expected length matches actual length failed.}", delta=3)
+        self.assertAlmostEqual(len(result), len(expect), msg=f"Check if expected length matches actual length failed.", delta=3)

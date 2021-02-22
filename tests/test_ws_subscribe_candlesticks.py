@@ -60,7 +60,7 @@ class TestWSSubscribeCandlesticks(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         if len(self.response) < 2:
-            self.skipTest(f"{Did not receive candlesticks within time, test can not finish.}")
+            self.skipTest(f"Did not receive candlesticks within time, test can not finish.")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)
