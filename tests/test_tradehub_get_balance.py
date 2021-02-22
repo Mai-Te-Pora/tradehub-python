@@ -1,11 +1,11 @@
-from tests import APITestCase, DEVEL_AND_CO_SENTRY
+from tests import APITestCase, MAINNET_VAL_IP
 from tradehub.public_client import PublicClient
 
 
 class TestTradeHubGetBalance(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(DEVEL_AND_CO_SENTRY)
+        self._client = PublicClient(MAINNET_VAL_IP)
 
     def test_get_balance_structure(self):
         """
@@ -43,7 +43,7 @@ class TestTradeHubGetBalance(APITestCase):
                 "position": str,
                 "denom": str
             },
-            "usdc1":{
+            "usdc1": {
                 "available": str,
                 "order": str,
                 "position": str,

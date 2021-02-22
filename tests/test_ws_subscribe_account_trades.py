@@ -1,9 +1,6 @@
 import asyncio
-import concurrent
-from typing import Optional, List
-
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 from tradehub.websocket_client import DemexWebsocket
+from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 
 
 class TestWSSubscribeAccountTrades(APITestCase):
@@ -47,7 +44,7 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -80,7 +77,6 @@ class TestWSSubscribeAccountTrades(APITestCase):
         for message in self.response[1:]:
             # if this fails, check if the AMM wallet own other tokens as expected
             self.assertDictStructure(expect, message)
-
 
     def test_subscribe_account_market_trades_structure(self):
         """
@@ -121,7 +117,7 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -154,5 +150,3 @@ class TestWSSubscribeAccountTrades(APITestCase):
         for message in self.response[1:]:
             # if this fails, check if the AMM wallet own other tokens as expected
             self.assertDictStructure(expect, message)
-
-

@@ -1,8 +1,7 @@
 import asyncio
-import concurrent
-from typing import Optional, List
+from typing import List
 
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
+from tests import APITestCase, MAINNET_VAL_IP, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -46,9 +45,8 @@ class TestWSSubscribeRecentTrades(APITestCase):
             ]
         }
 
-
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
