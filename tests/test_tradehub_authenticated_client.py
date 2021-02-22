@@ -93,9 +93,14 @@ class TestAuthenticatedClient(APITestCase):
         txn_message: dict = types.BeginUnbondingTokensMessage(delegator_address=self._wallet.address,
                                                               validator_address=self.validator_address,
                                                               amount=types.AmountMessage(amount='0.1', denom='swth'))
+        time.sleep(2)
         result: dict = self.authenticated_client.unbond_tokens(message=txn_message)
 
-        self.assertDictStructure(expect=expect, actual=result)
+        if 'code' in result:
+            self.assertEqual(first='too many unbonding delegation entries for (delegator, validator) tuple: failed to execute message; message index: 0',
+                             second=result['raw_log'])
+        else:
+            self.assertDictStructure(expect=expect, actual=result)
 
     def test_redelegate_tokens(self):
         expect: dict = self.expect
@@ -108,4 +113,8 @@ class TestAuthenticatedClient(APITestCase):
         time.sleep(2)
         result: dict = self.authenticated_client.redelegate_tokens(message=txn_message)
 
-        self.assertDictStructure(expect=expect, actual=result)
+        if 'code' in result:
+            self.assertEqual(first='too many redelegation entries for (delegator, src-validator, dst-validator) tuple: failed to execute message; message index: 0',
+                             second=result['raw_log'])
+        else:
+            self.assertDictStructure(expect=expect, actual=result)
