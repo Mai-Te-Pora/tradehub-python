@@ -1,7 +1,7 @@
 import asyncio
 from typing import List
 
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
+from tests import APITestCase, MAINNET_VAL_IP, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 from tradehub.websocket_client import DemexWebsocket
 
 

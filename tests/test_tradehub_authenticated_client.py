@@ -1,4 +1,5 @@
 import random
+import time
 from tradehub.authenticated_client import AuthenticatedClient
 from tests import APITestCase, TESTNET_VAL_IP, TRADING_TESTNET_WALLET_MNEMONIC
 import tradehub.types as types
@@ -91,7 +92,7 @@ class TestAuthenticatedClient(APITestCase):
         expect['data'] = str
         txn_message: dict = types.BeginUnbondingTokensMessage(delegator_address=self._wallet.address,
                                                               validator_address=self.validator_address,
-                                                              amount=types.AmountMessage(amount='1.1', denom='swth'))
+                                                              amount=types.AmountMessage(amount='0.1', denom='swth'))
         result: dict = self.authenticated_client.unbond_tokens(message=txn_message)
 
         self.assertDictStructure(expect=expect, actual=result)
@@ -102,7 +103,9 @@ class TestAuthenticatedClient(APITestCase):
         txn_message: dict = types.BeginRedelegatingTokensMessage(delegator_address=self._wallet.address,
                                                                  validator_src_address=self.validator_address,
                                                                  validator_dst_address=self.validator_dst_address,
-                                                                 amount=types.AmountMessage(amount='1.1', denom='swth'))
+                                                                 amount=types.AmountMessage(amount='0.1', denom='swth'))
+
+        time.sleep(2)
         result: dict = self.authenticated_client.redelegate_tokens(message=txn_message)
 
         self.assertDictStructure(expect=expect, actual=result)
