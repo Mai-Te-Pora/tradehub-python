@@ -1,11 +1,11 @@
-from tests import APITestCase, DEVEL_AND_CO_SENTRY
+from tests import APITestCase, MAINNET_VAL_IP
 from tradehub.public_client import PublicClient
 
 
 class TestTradeHubGetPrices(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(DEVEL_AND_CO_SENTRY)
+        self._client = PublicClient(MAINNET_VAL_IP)
 
     def test_get_prices_structure(self):
         """
@@ -62,4 +62,3 @@ class TestTradeHubGetPrices(APITestCase):
 
         # Currently the field market is empty, check if this changed
         self.assertTrue(len(result["market"]) == 0, msg="Expected field 'market' to be empty")
-

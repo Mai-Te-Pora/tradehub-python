@@ -85,19 +85,19 @@ class AuthenticatedClient(TradehubTransactions):
         transaction_type = "EDIT_ORDER_MSG_TYPE"
         return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
-    def set_leverage(self, message: types.SetLeverageMessage, fee: dict = None):
-        return self.set_leverages(messages=[message], fee=fee)
+    # def set_leverage(self, message: types.SetLeverageMessage, fee: dict = None):
+    #     return self.set_leverages(messages=[message], fee=fee)
 
-    def set_leverages(self, messages: [types.SetLeverageMessage], fee: dict = None):
-        transaction_type = "SET_LEVERAGE_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
+    # def set_leverages(self, messages: [types.SetLeverageMessage], fee: dict = None):
+    #     transaction_type = "SET_LEVERAGE_MSG_TYPE"
+    #     return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
-    def edit_margin(self, message: types.EditMarginMessage, fee: dict = None):
-        return self.edit_margins(messages=[message], fee=fee)
+    # def edit_margin(self, message: types.EditMarginMessage, fee: dict = None):
+    #     return self.edit_margins(messages=[message], fee=fee)
 
-    def edit_margins(self, messages: [types.EditMarginMessage], fee: dict = None):
-        transaction_type = "EDIT_MARGIN_MSG_TYPE"
-        return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
+    # def edit_margins(self, messages: [types.EditMarginMessage], fee: dict = None):
+    #     transaction_type = "EDIT_MARGIN_MSG_TYPE"
+    #     return self.submit_transaction_on_chain(messages=messages, transaction_type=transaction_type, fee=fee)
 
     def stake_switcheo(self, message=types.DelegateTokensMessage, fee: dict = None):
         transaction_type = "DELEGATE_TOKENS_MSG_TYPE"
@@ -117,10 +117,12 @@ class AuthenticatedClient(TradehubTransactions):
 
     def unbond_tokens(self, message: types.BeginUnbondingTokensMessage, fee: dict = None):
         transaction_type = "BEGIN_UNBONDING_TOKENS_MSG_TYPE"
+        message.amount.amount = to_tradehub_asset_amount(amount=float(message.amount.amount), decimals=self.tokens["swth"]["decimals"])
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def redelegate_tokens(self, message: types.BeginRedelegatingTokensMessage, fee: dict = None):
         transaction_type = "BEGIN_REDELEGATING_TOKENS_MSG_TYPE"
+        message.amount.amount = to_tradehub_asset_amount(amount=float(message.amount.amount), decimals=self.tokens["swth"]["decimals"])
         return self.submit_transaction_on_chain(messages=[message], transaction_type=transaction_type, fee=fee)
 
     def create_withdraw(self, message: types.CreateWithdrawMessage, blockchain: str, fee: dict = None):

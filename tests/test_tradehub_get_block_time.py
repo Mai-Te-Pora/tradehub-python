@@ -1,11 +1,11 @@
-from tests import APITestCase, DEVEL_AND_CO_SENTRY
+from tests import APITestCase, MAINNET_VAL_IP
 from tradehub.public_client import PublicClient
 
 
 class TestTradeHubGetBlockTime(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(DEVEL_AND_CO_SENTRY)
+        self._client = PublicClient(MAINNET_VAL_IP)
 
     def test_get_block_time_structure(self):
         """
@@ -19,4 +19,4 @@ class TestTradeHubGetBlockTime(APITestCase):
 
         self.assertIsInstance(result, str)
 
-        self.assertAlmostEqual(len(result), len(expect), msg=f"Check if expected length matches actual length failed.", delta=3)
+        self.assertAlmostEqual(len(result), len(expect), msg=f"{Check if expected length matches actual length failed.}", delta=3)

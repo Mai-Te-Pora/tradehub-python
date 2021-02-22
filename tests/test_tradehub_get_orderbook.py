@@ -1,11 +1,11 @@
-from tests import APITestCase, DEVEL_AND_CO_SENTRY
+from tests import APITestCase, MAINNET_VAL_IP
 from tradehub.public_client import PublicClient
 
 
 class TestTradeHubGetOrderbook(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(DEVEL_AND_CO_SENTRY)
+        self._client = PublicClient(MAINNET_VAL_IP)
 
     def test_get_get_orderbook_structure(self):
         """

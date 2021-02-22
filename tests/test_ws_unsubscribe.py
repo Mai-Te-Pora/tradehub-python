@@ -1,8 +1,6 @@
-import asyncio
-import concurrent
-from typing import Optional, List
+from typing import List
 
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_GET_REQUEST
+from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -19,7 +17,7 @@ class TestWSUnsubscribe(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -46,10 +44,9 @@ class TestWSUnsubscribe(APITestCase):
         if not self.response:
             raise RuntimeError("Did not receive a response.")
 
-        self.assertTrue(len(self.response) >= 2, msg=f"Expected at least 2 messages: channel subscription and and first update message")
+        self.assertTrue(len(self.response) >= 2, msg=f"{Expected at least 2 messages: channel subscription and and first update message}")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)
         channel_unsubscription: dict = self.response[1]
         self.assertDictStructure(expect_subscription, channel_unsubscription)
-

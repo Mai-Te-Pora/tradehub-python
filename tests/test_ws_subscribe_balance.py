@@ -1,8 +1,7 @@
 import asyncio
-import concurrent
-from typing import Optional, List
+from typing import List
 
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
+from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -35,7 +34,7 @@ class TestWSSubscribeBalance(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -59,7 +58,7 @@ class TestWSSubscribeBalance(APITestCase):
         if not self.response:
             raise RuntimeError("Did not receive a response.")
 
-        self.assertTrue(len(self.response) >= 2, msg=f"Expected at least 2 messages: channel subscription and and first update message")
+        self.assertTrue(len(self.response) >= 2, msg=f"{Expected at least 2 messages: channel subscription and and first update message}")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)
@@ -67,4 +66,3 @@ class TestWSSubscribeBalance(APITestCase):
         for message in self.response[1:]:
             # if this fails, check if the AMM wallet own other tokens as expected
             self.assertDictStructure(expect, message)
-

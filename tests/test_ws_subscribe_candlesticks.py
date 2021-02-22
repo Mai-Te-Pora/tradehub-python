@@ -1,8 +1,7 @@
 import asyncio
-import concurrent
-from typing import Optional, List
+from typing import List
 
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
+from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -35,9 +34,8 @@ class TestWSSubscribeCandlesticks(APITestCase):
             }
         }
 
-
         # connect to websocket
-        client = DemexWebsocket(f"ws://{DEVEL_AND_CO_SENTRY}:5000/ws")
+        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -62,7 +60,7 @@ class TestWSSubscribeCandlesticks(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         if len(self.response) < 2:
-            self.skipTest(f"Did not receive candlesticks within time, test can not finish.")
+            self.skipTest(f"{Did not receive candlesticks within time, test can not finish.}")
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)

@@ -1,4 +1,4 @@
-from tests import APITestCase, DEVEL_AND_CO_SENTRY, WALLET_DEVEL
+from tests import APITestCase, MAINNET_VAL_IP, WALLET_DEVEL
 from tradehub.public_client import PublicClient
 from typing import Union
 
@@ -6,7 +6,7 @@ from typing import Union
 class TestTradeHubGetExternalTransfers(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(DEVEL_AND_CO_SENTRY)
+        self._client = PublicClient(MAINNET_VAL_IP)
 
     def test_get_external_transfers(self):
         """
