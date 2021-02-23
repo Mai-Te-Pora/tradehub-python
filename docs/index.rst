@@ -7,19 +7,16 @@
 Tradehub Python API
 ===================
 
-.. image:: images/switcheo-logo.png
-   :width: 150px
-   :height: 150px
-   :alt: Tradehub Decentralized Blockchain
-   :align: center
-
 .. raw:: html
 
     <h1 align="center">tradehub-python</h1>
 
-.. image:: https://readthedocs.org/projects/tradehub-python/badge/?version=latest
-    :target: https://tradehub-python.readthedocs.io/en/latest
-    :alt: ReadTheDocs
+.. image:: https://img.shields.io/scrutinizer/quality/g/mai-te-pora/tradehub-python/main
+    :target: https://scrutinizer-ci.com/g/Mai-Te-Pora/tradehub-python/
+    :alt: Scrutinizer
+.. image:: https://codecov.io/gh/mai-te-pora/tradehub-python/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/Mai-Te-Pora/tradehub-python/
+    :alt: Codecov
 .. image:: https://img.shields.io/pypi/v/tradehub.svg
     :target: https://pypi.org/project/tradehub
     :alt: PyPi
