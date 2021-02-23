@@ -49,7 +49,7 @@ class NetworkCrawlerClient(object):
             self.active_sentry_api_list = []
             self.sentry_status_request(uri=True)
         self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
-        self.active_sentry_api_ip = self.active_sentry_api_list.split(':')[1][2:]
+        self.active_sentry_api_ip = self.active_sentry_uri.split(':')[1][2:]
 
     def validator_crawler_mp(self):
         checked_peers_list = []
