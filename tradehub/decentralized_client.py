@@ -7,29 +7,49 @@ import threading
 
 class NetworkCrawlerClient(object):
 
-    def __init__(self, network: str = "testnet"):
+    def __init__(self, network: str = "testnet", trusted_ip_list: list = None, trusted_uri_list: list = None):
         if network.lower() not in ["main", "mainnet", "test", "testnet"]:
             raise ValueError("Parameter network - {} - is not valid, requires main, mainnent, test, or testnet.".format(network))
 
-        self.seed_peers_list = {
-            "main": ["54.255.5.46", "175.41.151.35"],
-            "mainnet": ["54.255.5.46", "175.41.151.35"],
-            "test": ["54.255.42.175", "52.220.152.108"],
-            "testnet": ["54.255.42.175", "52.220.152.108"],
-        }
-        self.tradescan_node_url = {
-            "main": "https://switcheo.org/nodes?net=main",
-            "mainnet": "https://switcheo.org/nodes?net=main",
-            "test": "https://switcheo.org/nodes?net=test",
-            "testnet": "https://switcheo.org/nodes?net=test",
-        }
+        if trusted_ip_list and trusted_uri_list:
+            raise ValueError("Can't use both IP and URI list, only pass one option.")
 
-        self.all_peers_list = self.seed_peers_list[network.lower()]
-        self.active_validator_list = []
-        self.active_sentry_api_list = []
-        self.validator_crawler_mp()
-        self.sentry_status_request()
-        self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+        if trusted_ip_list or trusted_uri_list:
+            BYPASS_NETWORK_CRAWLER = True
+        else:
+            BYPASS_NETWORK_CRAWLER = False
+
+        if not BYPASS_NETWORK_CRAWLER:
+            self.seed_peers_list = {
+                "main": ["54.255.5.46", "175.41.151.35"],
+                "mainnet": ["54.255.5.46", "175.41.151.35"],
+                "test": ["54.255.42.175", "52.220.152.108"],
+                "testnet": ["54.255.42.175", "52.220.152.108"],
+            }
+            self.tradescan_node_url = {
+                "main": "https://switcheo.org/nodes?net=main",
+                "mainnet": "https://switcheo.org/nodes?net=main",
+                "test": "https://switcheo.org/nodes?net=test",
+                "testnet": "https://switcheo.org/nodes?net=test",
+            }
+
+            self.all_peers_list = self.seed_peers_list[network.lower()]
+            self.active_validator_list = []
+            self.active_sentry_api_list = []
+            self.validator_crawler_mp()
+            self.sentry_status_request()
+            self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)].split(':')[1][2:]
+        elif trusted_ip_list:
+            self.all_peers_list = trusted_ip_list
+            self.active_validator_list = trusted_ip_list
+            self.active_sentry_api_list = []
+            self.sentry_status_request()
+        elif trusted_uri_list:
+            self.all_peers_list = trusted_uri_list
+            self.active_validator_list = trusted_uri_list
+            self.active_sentry_api_list = []
+            self.sentry_status_request(uri=True)
+        self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
 
     def validator_crawler_mp(self):
         checked_peers_list = []
@@ -115,14 +135,27 @@ class NetworkCrawlerClient(object):
             "validator_voting_power": request_json["result"]["validator_info"]["voting_power"]
         }
 
-    def sentry_status_request(self):
+    def sentry_status_request(self, uri: bool = False):
         for active_validator in self.active_validator_list:
-            try:
-                Request(api_url="http://{}:5001".format(active_validator), timeout=1).get(path='/get_status')
-                self.active_sentry_api_list.append(active_validator)
-            except (ValueError, ConnectionError, HTTPError, Timeout):
-                pass
+            if uri:
+                try:
+                    Request(api_url=active_validator, timeout=1).get(path='/get_status')
+                    self.active_sentry_api_list.append(active_validator)
+                except (ValueError, ConnectionError, HTTPError, Timeout):
+                    pass
+            else:
+                try:
+                    Request(api_url="http://{}:5001".format(active_validator), timeout=1).get(path='/get_status')
+                    self.active_sentry_api_list.append('http://{}:5001'.format(active_validator))
+                except (ValueError, ConnectionError, HTTPError, Timeout):
+                    pass
+
         self.active_sentry_api_list = list(dict.fromkeys(self.active_sentry_api_list))
+
+        # if uri:
+
+        # else:
+        #     self.active_sentry_api_list = [dict(t) for t in {tuple(d.items()) for d in self.active_sentry_api_list}]
 
     def update_validators_and_sentries(self):
         threading.Timer(5.0, self.update_validators_and_sentries).start()
@@ -132,24 +165,28 @@ class NetworkCrawlerClient(object):
 
     def tradehub_get_request(self, path: str, params=None):
         try:
-            req = Request(api_url="http://{}:5001".format(self.active_sentry_api_ip), timeout=2).get(path=path, params=params)
+            req = Request(api_url=self.active_sentry_uri, timeout=2).get(path=path, params=params)
             return req
         except (ValueError, ConnectionError, HTTPError, Timeout):
-            self.active_sentry_api_list.remove(self.active_sentry_api_ip)
-            if not self.active_sentry_api_list:
+            self.active_sentry_api_list.remove(self.active_sentry_uri)
+            if not self.active_sentry_api_list and not self.BYPASS_NETWORK_CRAWLER:
                 self.validator_crawler_mp()
                 self.sentry_status_request()
-            self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+            elif not self.active_sentry_api_list and self.BYPASS_NETWORK_CRAWLER:
+                raise ValueError("Provided Sentry API IP addresses are not responding.")
+            self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
             return self.tradehub_get_request(path=path, params=params)
 
     def tradehub_post_request(self, path: str, data=None, json_data=None, params=None):
         try:
-            req = Request(api_url="http://{}:5001".format(self.active_sentry_api_ip), timeout=2).post(self, path=path, data=data, json_data=json_data, params=params)
+            req = Request(api_url=self.active_sentry_uri, timeout=2).post(path=path, data=data, json_data=json_data, params=params)
             return req
         except (ValueError, ConnectionError, HTTPError, Timeout):
-            self.active_sentry_api_list.remove(self.active_sentry_api_ip)
-            if not self.active_sentry_api_list:
+            self.active_sentry_api_list.remove(self.active_sentry_uri)
+            if not self.active_sentry_api_list and not self.BYPASS_NETWORK_CRAWLER:
                 self.validator_crawler_mp()
                 self.sentry_status_request()
-            self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+            elif not self.active_sentry_api_list and self.BYPASS_NETWORK_CRAWLER:
+                raise ValueError("Provided Sentry API IP addresses are not responding.")
+            self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
             return self.tradehub_post_request(path=path, data=data, json_data=json_data, params=params)

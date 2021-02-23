@@ -1,13 +1,10 @@
 import os
 from unittest import TestCase
 
-from tradehub.decentralized_client import NetworkCrawlerClient
+from tradehub.public_client import PublicClient
 
-mainnet_active_node_client = NetworkCrawlerClient(network='mainnet')
-MAINNET_VAL_IP = mainnet_active_node_client.active_sentry_api_ip
-
-testnet_active_node_client = NetworkCrawlerClient(network='testnet')
-TESTNET_VAL_IP = testnet_active_node_client.active_sentry_api_ip
+mainnet_client = PublicClient(network='mainnet')
+testnet_client = PublicClient(network='testnet')
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
 WALLET_DEVEL = "swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz"

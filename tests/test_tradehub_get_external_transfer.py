@@ -1,12 +1,11 @@
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_DEVEL
-from tradehub.public_client import PublicClient
+from tests import APITestCase, mainnet_client, WALLET_DEVEL
 from typing import Union
 
 
 class TestTradeHubGetExternalTransfers(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(MAINNET_VAL_IP)
+        self._client = mainnet_client
 
     def test_get_external_transfers(self):
         """

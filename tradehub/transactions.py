@@ -7,10 +7,10 @@ from tradehub.wallet import Wallet
 
 class Transactions(TradehubPublicClient):
 
-    def __init__(self, wallet: Wallet, node_ip: str, node_port: int = 5001, network: str = "testnet"):
+    def __init__(self, wallet: Wallet, trusted_ips: list = None, trusted_uris: list = None, network: str = "testnet"):
         """
         """
-        TradehubPublicClient.__init__(self, node_ip=node_ip, node_port=node_port)
+        TradehubPublicClient.__init__(self, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris)
         self.wallet = wallet
         self.account_blockchain_dict = self.get_account_details()
         self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
@@ -163,4 +163,4 @@ class Transactions(TradehubPublicClient):
         }
 
     def broadcast_transactions(self, transactions: dict):
-        return self.request.post(path='/txs', json_data=transactions)
+        return self.tradehub_post_request(path='/txs', json_data=transactions)

@@ -38,6 +38,7 @@ class TestNetworkCrawlerClient(APITestCase):
         }
 
         result = self.tradehub_client.validator_status_request(validator_ip=self.tradehub_client.active_sentry_api_ip)
+        print(result)
         self.assertDictStructure(expect, result)
 
     def test_parse_validator_status(self):

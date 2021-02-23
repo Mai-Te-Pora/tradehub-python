@@ -1,14 +1,14 @@
 from typing import Union, List, Optional
-from tradehub.utils import Request
+from tradehub.decentralized_client import NetworkCrawlerClient
 
 
-class PublicClient(object):
+class PublicClient(NetworkCrawlerClient):
     """
     This class allows the user to interact with the TradeScan API including information
     available with validators, tokens, delegators, addresses, and blockchain stats.
     """
 
-    def __init__(self, node_ip: Union[None, str], node_port: Union[None, int] = 5001, uri: Union[None, str] = None):
+    def __init__(self, network: str = "testnet", trusted_ips: Union[None, list] = None, trusted_uris: Union[None, list] = None):
         """
         Create a public client using IP:Port or URI format.
 
@@ -23,14 +23,10 @@ class PublicClient(object):
         :param node_port: prt off a tradehub node, default 5001.
         :param uri: URI address off tradehub node.
         """
-        if node_ip and uri:
+        if trusted_ips and trusted_uris:
             raise ValueError("Use IP [+Port] or URI, not both!")
 
-        if node_ip and not node_port:
-            raise ValueError("Port has to be set if an IP address is provided!")
-
-        self.api_url: str = uri or f"http://{node_ip}:{node_port}"
-        self.request: Request = Request(api_url=self.api_url, timeout=30)
+        NetworkCrawlerClient.__init__(self, network=network, trusted_ip_list=trusted_ips, trusted_uri_list=trusted_uris)
 
     def check_username(self, username: str) -> dict:
         """
@@ -41,7 +37,7 @@ class PublicClient(object):
         api_params = {
             "username": username,
         }
-        return self.request.get(path='/username_check', params=api_params)
+        return self.tradehub_get_request(path='/username_check', params=api_params)
 
     def get_account(self, swth_address: str) -> dict:
         """
@@ -111,7 +107,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address,
         }
-        return self.request.get(path='/get_account', params=api_params)
+        return self.tradehub_get_request(path='/get_account', params=api_params)
 
     def get_active_wallets(self, token: str) -> int:
         """
@@ -122,7 +118,7 @@ class PublicClient(object):
         api_params = {
             "token": token,
         }
-        return self.request.get(path='/get_active_wallets', params=api_params)
+        return self.tradehub_get_request(path='/get_active_wallets', params=api_params)
 
     def get_address(self, username: str) -> str:
         """
@@ -149,7 +145,7 @@ class PublicClient(object):
         api_params = {
             "username": username
         }
-        return self.request.get(path='/get_address', params=api_params)
+        return self.tradehub_get_request(path='/get_address', params=api_params)
 
     def get_all_validators(self) -> List[dict]:
         """
@@ -203,7 +199,7 @@ class PublicClient(object):
 
         :return: list with validators.
         """
-        return self.request.get(path='/get_all_validators')
+        return self.tradehub_get_request(path='/get_all_validators')
 
     def get_balance(self, swth_address: str) -> dict:
         """
@@ -273,7 +269,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address
         }
-        return self.request.get(path='/get_balance', params=api_params)
+        return self.tradehub_get_request(path='/get_balance', params=api_params)
 
     def get_block_time(self) -> str:
         """
@@ -292,7 +288,7 @@ class PublicClient(object):
 
         :return: block time as string.
         """
-        return self.request.get(path='/get_block_time')
+        return self.tradehub_get_request(path='/get_block_time')
 
     def get_blocks(self, before_id: Optional[int] = None, after_id: Optional[int] = None, order_by: Optional[str] = None, swth_valcons: Optional[str] = None, limit: Optional[int] = None) -> List[dict]:
         """
@@ -339,7 +335,7 @@ class PublicClient(object):
             "limit": limit
         }
 
-        return self.request.get(path='/get_blocks', params=api_params)
+        return self.tradehub_get_request(path='/get_blocks', params=api_params)
 
     def get_candlesticks(self, market: str, granularity: int, from_epoch: int, to_epoch: int) -> List[dict]:
         """
@@ -404,7 +400,7 @@ class PublicClient(object):
             "from": from_epoch,
             "to": to_epoch
         }
-        return self.request.get(path='/candlesticks', params=api_params)
+        return self.tradehub_get_request(path='/candlesticks', params=api_params)
 
     def get_delegation_rewards(self, swth_address: str) -> dict:
         """
@@ -467,7 +463,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address,
         }
-        return self.request.get(path='/get_delegation_rewards', params=api_params)
+        return self.tradehub_get_request(path='/get_delegation_rewards', params=api_params)
 
     def get_external_transfers(self, swth_address: str) -> List[dict]:
         """
@@ -515,7 +511,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address
         }
-        return self.request.get(path='/get_external_transfers', params=api_params)
+        return self.tradehub_get_request(path='/get_external_transfers', params=api_params)
 
     def get_insurance_fund_balance(self):
         """
@@ -527,7 +523,7 @@ class PublicClient(object):
         :return:
         """
         # TODO result currently []
-        return self.request.get(path='/get_insurance_balance')
+        return self.tradehub_get_request(path='/get_insurance_balance')
 
     def get_leverage(self, swth_address: str, market: str):
         """
@@ -545,7 +541,7 @@ class PublicClient(object):
             "account": swth_address,
             "market": market
         }
-        return self.request.get(path='/get_leverage', params=api_params)
+        return self.tradehub_get_request(path='/get_leverage', params=api_params)
 
     def get_liquidations(self, before_id: int, after_id: int, order_by: str, limit: int):
         """
@@ -567,7 +563,7 @@ class PublicClient(object):
             "order_by": order_by,
             "limit": limit
         }
-        return self.request.get(path='/get_liquidations', params=api_params)
+        return self.tradehub_get_request(path='/get_liquidations', params=api_params)
 
     def get_market(self, market: str) -> dict:
         """
@@ -633,7 +629,7 @@ class PublicClient(object):
         api_params = {
             "market": market,
         }
-        return self.request.get(path='/get_market', params=api_params)
+        return self.tradehub_get_request(path='/get_market', params=api_params)
 
     def get_market_stats(self, market: Optional[str] = None) -> List[dict]:
         """
@@ -675,7 +671,7 @@ class PublicClient(object):
         api_params = {
             "market": market
         }
-        return self.request.get(path='/get_market_stats', params=api_params)
+        return self.tradehub_get_request(path='/get_market_stats', params=api_params)
 
     def get_markets(self, market_type: Optional[str] = None, is_active: Optional[bool] = None, is_settled: Optional[bool] = None) -> List[dict]:
         """
@@ -742,13 +738,13 @@ class PublicClient(object):
             "is_settled": is_settled
         }
 
-        return self.request.get(path='/get_markets', params=api_params)
+        return self.tradehub_get_request(path='/get_markets', params=api_params)
 
     def get_nodes(self) -> dict:
         """
         """
         # TODO no results yet available
-        return self.request.get(path='/monitor')
+        return self.tradehub_get_request(path='/monitor')
 
     def get_oracle_result(self, oracle_id: str):
         """
@@ -764,7 +760,7 @@ class PublicClient(object):
         api_params = {
             "id": oracle_id
         }
-        return self.request.get(path='/get_oracle_result', params=api_params)
+        return self.tradehub_get_request(path='/get_oracle_result', params=api_params)
 
     def get_oracle_results(self):
         """
@@ -776,7 +772,7 @@ class PublicClient(object):
         :return:
         """
         # TODO no results yet available
-        return self.request.get(path='/get_oracle_results')
+        return self.tradehub_get_request(path='/get_oracle_results')
 
     def get_orderbook(self, market: str, limit: Optional[int] = None):
         """
@@ -825,7 +821,7 @@ class PublicClient(object):
             "market": market,
             "limit": limit
         }
-        return self.request.get(path='/get_orderbook', params=api_params)
+        return self.tradehub_get_request(path='/get_orderbook', params=api_params)
 
     def get_order(self, order_id: str) -> dict:
         """
@@ -871,7 +867,7 @@ class PublicClient(object):
         api_params = {
             "order_id": order_id
         }
-        return self.request.get(path='/get_order', params=api_params)
+        return self.tradehub_get_request(path='/get_order', params=api_params)
 
     def get_orders(self, swth_address: Optional[str] = None, before_id: Optional[int] = None,
                    after_id: Optional[int] = None, market: Optional[str] = None, order_type: Optional[str] = None,
@@ -946,7 +942,7 @@ class PublicClient(object):
             "order_status": order_status,
             "limit": limit
         }
-        return self.request.get(path='/get_orders', params=api_params)
+        return self.tradehub_get_request(path='/get_orders', params=api_params)
 
     def get_position(self, swth_address: str, market: str):
         """
@@ -964,7 +960,7 @@ class PublicClient(object):
             "account": swth_address,
             "market": market
         }
-        return self.request.get(path='/get_position', params=api_params)
+        return self.tradehub_get_request(path='/get_position', params=api_params)
 
     def get_positions(self, swth_address: str):
         """
@@ -980,7 +976,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address
         }
-        return self.request.get(path='/get_positions', params=api_params)
+        return self.tradehub_get_request(path='/get_positions', params=api_params)
 
     def get_positions_sorted_by_pnl(self, market):
         """
@@ -996,7 +992,7 @@ class PublicClient(object):
         api_params = {
             "market": market
         }
-        return self.request.get(path='/get_positions_sorted_by_pnl', params=api_params)
+        return self.tradehub_get_request(path='/get_positions_sorted_by_pnl', params=api_params)
 
     def get_positions_sorted_by_risk(self, market):
         """
@@ -1012,7 +1008,7 @@ class PublicClient(object):
         api_params = {
             "market": market
         }
-        return self.request.get(path='/get_positions_sorted_by_risk', params=api_params)
+        return self.tradehub_get_request(path='/get_positions_sorted_by_risk', params=api_params)
 
     def get_positions_sorted_by_size(self, market):
         """
@@ -1028,7 +1024,7 @@ class PublicClient(object):
         api_params = {
             "market": market
         }
-        return self.request.get(path='/get_positions_sorted_by_size', params=api_params)
+        return self.tradehub_get_request(path='/get_positions_sorted_by_size', params=api_params)
 
     def get_prices(self, market: Optional[str]) -> dict:
         """
@@ -1079,7 +1075,7 @@ class PublicClient(object):
         api_params = {
             "market": market
         }
-        return self.request.get(path='/get_prices', params=api_params)
+        return self.tradehub_get_request(path='/get_prices', params=api_params)
 
     def get_profile(self, swth_address: str) -> dict:
         """
@@ -1105,7 +1101,7 @@ class PublicClient(object):
         api_params = {
             "account": swth_address
         }
-        return self.request.get(path='/get_profile', params=api_params)
+        return self.tradehub_get_request(path='/get_profile', params=api_params)
 
     def get_rich_list(self, token: str):
         """
@@ -1120,7 +1116,7 @@ class PublicClient(object):
         api_params = {
             "token": token
         }
-        return self.request.get(path='/get_rich_list', params=api_params)
+        return self.tradehub_get_request(path='/get_rich_list', params=api_params)
 
     def get_status(self) -> dict:
         """
@@ -1177,7 +1173,7 @@ class PublicClient(object):
 
         :return: Status as dict
         """
-        return self.request.get(path='/get_status')
+        return self.tradehub_get_request(path='/get_status')
 
     def get_transaction(self, tx_hash: str):
         """
@@ -1224,7 +1220,7 @@ class PublicClient(object):
         api_params = {
             "hash": tx_hash
         }
-        return self.request.get(path='/get_transaction', params=api_params)
+        return self.tradehub_get_request(path='/get_transaction', params=api_params)
 
     def get_transaction_types(self) -> List[str]:
         """
@@ -1246,7 +1242,7 @@ class PublicClient(object):
 
         :return: List with transaction types as strings.
         """
-        return self.request.get(path='/get_transaction_types')
+        return self.tradehub_get_request(path='/get_transaction_types')
 
     def get_transactions(self, swth_address: Optional[str] = None, msg_type: Optional[str] = None,
                          height: Optional[int] = None, start_block: Optional[int] = None,
@@ -1306,7 +1302,7 @@ class PublicClient(object):
             "order_by": order_by,
             "limit": limit
         }
-        return self.request.get(path='/get_transactions', params=api_params)
+        return self.tradehub_get_request(path='/get_transactions', params=api_params)
 
     def get_token(self, denom) -> dict:
         """
@@ -1344,7 +1340,7 @@ class PublicClient(object):
         api_params = {
             "token": denom
         }
-        return self.request.get(path='/get_token', params=api_params)
+        return self.tradehub_get_request(path='/get_token', params=api_params)
 
     def get_tokens(self) -> List[dict]:
         """
@@ -1379,7 +1375,7 @@ class PublicClient(object):
 
         :return: List with tokens as dict
         """
-        return self.request.get(path='/get_tokens')
+        return self.tradehub_get_request(path='/get_tokens')
 
     def get_token_details(self) -> dict:
         tokens = self.get_tokens()
@@ -1408,7 +1404,7 @@ class PublicClient(object):
             "market": market,
             "limit": limit
         }
-        return self.request.get(path='/get_top_r_profits', params=api_params)
+        return self.tradehub_get_request(path='/get_top_r_profits', params=api_params)
 
     def get_total_balances(self):
         """
@@ -1419,7 +1415,7 @@ class PublicClient(object):
         :return:
         """
         # TODO responses currently not available
-        return self.request.get(path='/get_total_balances')
+        return self.tradehub_get_request(path='/get_total_balances')
 
     def get_trades(self, market: Optional[str] = None, before_id: Optional[int] = None, after_id: Optional[int] = None,
                    order_by: Optional[str] = None, limit: Optional[int] = None,
@@ -1475,10 +1471,10 @@ class PublicClient(object):
             "limit": limit,
             "account": swth_address
         }
-        return self.request.get(path='/get_trades', params=api_params)
+        return self.tradehub_get_request(path='/get_trades', params=api_params)
 
     def get_transactions_fees(self):
-        gas_fees = self.request.get(path='/get_txns_fees')
+        gas_fees = self.tradehub_get_request(path='/get_txns_fees')
         fees = {}
         for gas_fee in gas_fees["result"]:
             fees[gas_fee["msg_type"]] = gas_fee["fee"]
@@ -1505,7 +1501,7 @@ class PublicClient(object):
         api_params = {
             "username": username
         }
-        return self.request.get(path='/username_check', params=api_params)
+        return self.tradehub_get_request(path='/username_check', params=api_params)
 
     def get_vault_types(self) -> list:
         """
@@ -1514,10 +1510,10 @@ class PublicClient(object):
         :return :
         """
         # TODO responses currently not an empty list
-        return self.request.get(path='/get_vault_types')
+        return self.tradehub_get_request(path='/get_vault_types')
 
     def get_vaults(self, swth_address: str) -> dict:
         api_params = {
             "address": swth_address,
         }
-        return self.request.get(path='/get_vaults', params=api_params)
+        return self.tradehub_get_request(path='/get_vaults', params=api_params)
