@@ -38,7 +38,6 @@ class NetworkCrawlerClient(object):
             self.active_sentry_api_list = []
             self.validator_crawler_mp()
             self.sentry_status_request()
-            self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)].split(':')[1][2:]
         elif trusted_ip_list:
             self.all_peers_list = trusted_ip_list
             self.active_validator_list = trusted_ip_list
@@ -50,6 +49,7 @@ class NetworkCrawlerClient(object):
             self.active_sentry_api_list = []
             self.sentry_status_request(uri=True)
         self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+        self.active_sentry_api_ip = self.active_sentry_api_list.split(':')[1][2:]
 
     def validator_crawler_mp(self):
         checked_peers_list = []
