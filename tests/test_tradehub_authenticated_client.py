@@ -1,7 +1,7 @@
 import random
 import time
 from tradehub.authenticated_client import AuthenticatedClient
-from tests import APITestCase, TESTNET_VAL_IP, TRADING_TESTNET_WALLET_MNEMONIC
+from tests import APITestCase, testnet_client, TRADING_TESTNET_WALLET_MNEMONIC
 import tradehub.types as types
 from tradehub.wallet import Wallet
 
@@ -16,8 +16,7 @@ class TestAuthenticatedClient(APITestCase):
         self.validator_dst_address = self.validator_dst_address[0]
         self._wallet: Wallet = Wallet(mnemonic=TRADING_TESTNET_WALLET_MNEMONIC, network="testnet")
         self.authenticated_client: AuthenticatedClient = AuthenticatedClient(wallet=self._wallet,
-                                                                             node_ip=TESTNET_VAL_IP,
-                                                                             node_port=5001,
+                                                                             trusted_uris=testnet_client.active_sentry_api_list,
                                                                              network="testnet")
         self.expect: dict = {
             'height': str,
@@ -97,8 +96,8 @@ class TestAuthenticatedClient(APITestCase):
         result: dict = self.authenticated_client.unbond_tokens(message=txn_message)
 
         if 'code' in result:
-            self.assertEqual(first='too many unbonding delegation entries for (delegator, validator) tuple: failed to execute message; message index: 0',
-                             second=result['raw_log'])
+            unbonding_errors = ['too many unbonding delegation entries for (delegator, validator) tuple: failed to execute message; message index: 0']
+            self.assertTrue(result['raw_log'] in unbonding_errors)
         else:
             self.assertDictStructure(expect=expect, actual=result)
 
@@ -114,7 +113,8 @@ class TestAuthenticatedClient(APITestCase):
         result: dict = self.authenticated_client.redelegate_tokens(message=txn_message)
 
         if 'code' in result:
-            self.assertEqual(first='too many redelegation entries for (delegator, src-validator, dst-validator) tuple: failed to execute message; message index: 0',
-                             second=result['raw_log'])
+            redelegation_errors = ['redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation: failed to execute message; message index: 0',
+                                   'too many redelegation entries for (delegator, src-validator, dst-validator) tuple: failed to execute message; message index: 0']
+            self.assertTrue(result['raw_log'] in redelegation_errors)
         else:
             self.assertDictStructure(expect=expect, actual=result)

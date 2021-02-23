@@ -2,16 +2,14 @@ from decimal import Decimal
 
 import tradehub.types as types
 from tradehub.authenticated_client import AuthenticatedClient as TradehubAuthenticatedClient
-from tradehub.decentralized_client import NetworkCrawlerClient
 from tradehub.wallet import Wallet
 
 
 class DemexClient(object):
 
-    def __init__(self, mnemonic: str, network: str = "testnet"):
+    def __init__(self, mnemonic: str, network: str = "testnet", trusted_ips: list = None, trusted_uris: list = None):
         self.wallet = Wallet(mnemonic=mnemonic, network=network)
-        self.validator_ip = NetworkCrawlerClient(network=network).active_sentry_api_ip
-        self.tradehub = TradehubAuthenticatedClient(wallet=self.wallet, node_ip=self.validator_ip, network=network)
+        self.tradehub = TradehubAuthenticatedClient(wallet=self.wallet, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris)
 
     def limit_buy(self, pair: str, quantity: str, price: str):
         create_order_msg = types.CreateOrderMessage(market=pair,

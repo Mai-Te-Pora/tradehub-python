@@ -1,11 +1,10 @@
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_DEVEL
-from tradehub.public_client import PublicClient
+from tests import APITestCase, mainnet_client, WALLET_DEVEL
 
 
 class TestTradeHubGetProfile(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(MAINNET_VAL_IP)
+        self._client = mainnet_client
 
     def test_get_profile_structure(self):
         """

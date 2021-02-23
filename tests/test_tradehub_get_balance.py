@@ -1,11 +1,10 @@
-from tests import APITestCase, MAINNET_VAL_IP
-from tradehub.public_client import PublicClient
+from tests import APITestCase, mainnet_client
 
 
 class TestTradeHubGetBalance(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(MAINNET_VAL_IP)
+        self._client = mainnet_client
 
     def test_get_balance_structure(self):
         """

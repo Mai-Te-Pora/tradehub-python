@@ -1,11 +1,10 @@
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_VALIDATOR
-from tradehub.public_client import PublicClient
+from tests import APITestCase, mainnet_client, WALLET_VALIDATOR
 
 
 class TestTradeHubGetDelegationRewards(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(MAINNET_VAL_IP)
+        self._client = mainnet_client
 
     def test_get_delegation_rewards_structure(self):
         """

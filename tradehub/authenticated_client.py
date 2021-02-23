@@ -13,10 +13,10 @@ class AuthenticatedClient(TradehubTransactions):
     # Vaults by address -> /get_vaults?address=${address}
     '''
 
-    def __init__(self, wallet: Wallet, node_ip: str, node_port: int = 5001, network: str = "testnet"):
+    def __init__(self, wallet: Wallet, trusted_ips: list = None, trusted_uris: list = None, network: str = "testnet"):
         """
         """
-        TradehubTransactions.__init__(self, wallet=wallet, node_ip=node_ip, node_port=node_port, network=network)
+        TradehubTransactions.__init__(self, wallet=wallet, trusted_ips=trusted_ips, trusted_uris=trusted_uris, network=network)
         self.wallet = wallet
 
     # Authenticated Client Functions

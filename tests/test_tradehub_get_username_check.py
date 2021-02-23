@@ -1,11 +1,10 @@
-from tests import APITestCase, MAINNET_VAL_IP, USERNAME_DEVEL
-from tradehub.public_client import PublicClient
+from tests import APITestCase, mainnet_client, USERNAME_DEVEL
 
 
 class TestTradeHubGetUsernameCheck(APITestCase):
 
     def setUp(self) -> None:
-        self._client = PublicClient(MAINNET_VAL_IP)
+        self._client = mainnet_client
 
     def test_get_username_check_structure(self):
         """
