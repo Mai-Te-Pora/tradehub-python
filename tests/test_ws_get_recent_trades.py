@@ -65,7 +65,3 @@ class TestWSGetRecentTrades(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         self.assertDictStructure(expect, self.response)
-
-        # TODO remove or change if id in trade is no longer 'id'
-        for trade in self.response["result"]:
-            self.assertTrue(trade["id"] == "0", msg="Expected id to be '0'")
