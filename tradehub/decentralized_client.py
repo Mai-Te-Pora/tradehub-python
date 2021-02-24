@@ -2,12 +2,18 @@ import multiprocessing as mp
 from tradehub.utils import Request
 import random
 from requests.exceptions import ConnectionError, HTTPError, Timeout
+import socket
 import threading
 
 
 class NetworkCrawlerClient(object):
 
-    def __init__(self, network: str = "testnet", trusted_ip_list: list = None, trusted_uri_list: list = None):
+    def __init__(self,
+                 network: str = "testnet",
+                 trusted_ip_list: list = None,
+                 trusted_uri_list: list = None,
+                 is_secure: bool = False,
+                 is_websocket_client: bool = False):
         if network.lower() not in ["main", "mainnet", "test", "testnet"]:
             raise ValueError("Parameter network - {} - is not valid, requires main, mainnent, test, or testnet.".format(network))
 
@@ -18,6 +24,16 @@ class NetworkCrawlerClient(object):
             BYPASS_NETWORK_CRAWLER = True
         else:
             BYPASS_NETWORK_CRAWLER = False
+
+        self.is_secure = is_secure
+        if self.is_secure:
+            self.http_string = 'https'
+            self.ws_string = 'wss'
+        else:
+            self.http_string = 'http'
+            self.ws_string = 'ws'
+        self.is_websocket_client = is_websocket_client
+        self.active_ws_uri_list = []
 
         if not BYPASS_NETWORK_CRAWLER:
             self.seed_peers_list = {
@@ -37,12 +53,12 @@ class NetworkCrawlerClient(object):
             self.active_validator_list = []
             self.active_sentry_api_list = []
             self.validator_crawler_mp()
-            self.sentry_status_request()
+            self.sentry_status_request(uri=False)
         elif trusted_ip_list:
             self.all_peers_list = trusted_ip_list
             self.active_validator_list = trusted_ip_list
             self.active_sentry_api_list = []
-            self.sentry_status_request()
+            self.sentry_status_request(uri=False)
         elif trusted_uri_list:
             self.all_peers_list = trusted_uri_list
             self.active_validator_list = trusted_uri_list
@@ -50,6 +66,9 @@ class NetworkCrawlerClient(object):
             self.sentry_status_request(uri=True)
         self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
         self.active_sentry_api_ip = self.active_sentry_uri.split(':')[1][2:]
+        if self.is_websocket_client:
+            self.active_ws_uri = self.active_ws_uri_list[random.randint(a=0, b=len(self.active_ws_uri_list)-1)]
+            self.active_ws_ip = self.active_ws_uri.split(':')[1][2:]
 
     def validator_crawler_mp(self):
         checked_peers_list = []
@@ -86,7 +105,7 @@ class NetworkCrawlerClient(object):
         try:
             process_peer = True
             validator_status["ip"] = validator_ip
-            i = Request(api_url="http://{}:26657".format(validator_ip), timeout=1).get(path='/net_info')
+            i = Request(api_url="{}://{}:26657".format(self.http_string, validator_ip), timeout=1).get(path='/net_info')
         except (ValueError, ConnectionError, HTTPError, Timeout) as e:
             validator_status["validator_status"] = "Unknown - Cannot Connect to Retrieve Validator INFO - {}".format(e)
             validator_status["connected_nodes"] = []
@@ -103,7 +122,7 @@ class NetworkCrawlerClient(object):
                 })
 
             try:
-                s = Request(api_url="http://{}:26657".format(validator_ip), timeout=1).get(path='/status')
+                s = Request(api_url="{}://{}:26657".format(self.http_string, validator_ip), timeout=1).get(path='/status')
             except (ValueError, ConnectionError, HTTPError, Timeout) as e:
                 validator_status["validator_status"] = "Unknown - Cannot Connect to Retrieve Status end point - {}".format(e)
                 validator_status["connected_nodes"] = []
@@ -139,23 +158,38 @@ class NetworkCrawlerClient(object):
         for active_validator in self.active_validator_list:
             if uri:
                 try:
+                    # Have to check the "/get_status" endpoint because the port could be open and the validator fully synced but have the persistence service inactive, shutdown, stopped, or non-repsonsive.
                     Request(api_url=active_validator, timeout=1).get(path='/get_status')
                     self.active_sentry_api_list.append(active_validator)
+                    if self.is_websocket_client:
+                        self.websocket_status_check(ip=active_validator)
                 except (ValueError, ConnectionError, HTTPError, Timeout):
                     pass
             else:
-                try:
-                    Request(api_url="http://{}:5001".format(active_validator), timeout=1).get(path='/get_status')
-                    self.active_sentry_api_list.append('http://{}:5001'.format(active_validator))
-                except (ValueError, ConnectionError, HTTPError, Timeout):
-                    pass
+                # 1318 - Cosmos REST; 5001 - Demex REST; 5002 - Reverse Proxy for Demex and Cosmos REST; Recommended to not use proxy
+                for port in ["5001"]:
+                    try:
+                        # Have to check the "/get_status" endpoint because the port could be open and the validator fully synced but have the persistence service inactive, shutdown, stopped, or non-repsonsive.
+                        Request(api_url="{}://{}:{}".format(self.http_string, active_validator, port), timeout=1).get(path='/get_status')
+                        self.active_sentry_api_list.append('{}://{}:{}'.format(self.http_string, active_validator, port))
+                        if self.is_websocket_client:
+                            self.websocket_status_check(ip=active_validator)
+                    except (ValueError, ConnectionError, HTTPError, Timeout):
+                        pass
 
         self.active_sentry_api_list = list(dict.fromkeys(self.active_sentry_api_list))
+        self.active_ws_uri_list = list(dict.fromkeys(self.active_ws_uri_list))
 
-        # if uri:
-
-        # else:
-        #     self.active_sentry_api_list = [dict(t) for t in {tuple(d.items()) for d in self.active_sentry_api_list}]
+    def websocket_status_check(self, ip: str, port: int = 5000):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            location = (ip, port)
+            result_of_check = s.connect_ex(location)
+            if result_of_check == 0:
+                self.active_ws_uri_list.append('{}://{}:{}/ws'.format(self.ws_string, ip, port))
+            s.close()
+        except socket.error:
+            pass
 
     def update_validators_and_sentries(self):
         threading.Timer(5.0, self.update_validators_and_sentries).start()

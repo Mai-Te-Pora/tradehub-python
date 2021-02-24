@@ -8,16 +8,16 @@ class PublicClient(NetworkCrawlerClient):
     available with validators, tokens, delegators, addresses, and blockchain stats.
     """
 
-    def __init__(self, network: str = "testnet", trusted_ips: Union[None, list] = None, trusted_uris: Union[None, list] = None):
+    def __init__(self, network: str = "testnet", trusted_ips: Union[None, list] = None, trusted_uris: Union[None, list] = None, is_websocket_client: bool = False):
         """
         Create a public client using IP:Port or URI format.
 
         Example::
-            public_client = PublicClient("127.0.0.1", 5001)
+            public_client = PublicClient(trusted_ips=["127.0.0.1"])
 
             # or use uri method
 
-            public_client = PublicClient(uri="https://tradehub-api-server.network/")
+            public_client = PublicClient(trusted_uris=["https://tradehub-api-server.network/"])
 
         :param node_ip: ip address off a tradehub node.
         :param node_port: prt off a tradehub node, default 5001.
@@ -26,7 +26,7 @@ class PublicClient(NetworkCrawlerClient):
         if trusted_ips and trusted_uris:
             raise ValueError("Use IP [+Port] or URI, not both!")
 
-        NetworkCrawlerClient.__init__(self, network=network, trusted_ip_list=trusted_ips, trusted_uri_list=trusted_uris)
+        NetworkCrawlerClient.__init__(self, network=network, trusted_ip_list=trusted_ips, trusted_uri_list=trusted_uris, is_websocket_client=is_websocket_client)
 
     def check_username(self, username: str) -> dict:
         """

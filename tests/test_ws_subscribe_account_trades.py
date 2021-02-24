@@ -1,6 +1,6 @@
 import asyncio
 from tradehub.websocket_client import DemexWebsocket
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
+from tests import APITestCase, MAINNET_WS_URI, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 
 
 class TestWSSubscribeAccountTrades(APITestCase):
@@ -44,7 +44,7 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: List[dict] = []
 
@@ -117,7 +117,7 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: List[dict] = []
 

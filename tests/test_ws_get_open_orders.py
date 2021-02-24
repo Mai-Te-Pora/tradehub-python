@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional
 
-from tests import APITestCase, MAINNET_VAL_IP, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_GET_REQUEST
+from tests import APITestCase, MAINNET_WS_URI, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -46,7 +46,7 @@ class TestWSGetOpenOrders(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: Optional[dict] = None
 

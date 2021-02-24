@@ -1,4 +1,4 @@
-Public Class - :mod:`websocket_client`
+Websocket Class - :mod:`websocket_client`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. contents:: Table of Contents

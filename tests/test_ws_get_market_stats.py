@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional
 
-from tests import APITestCase, MAINNET_VAL_IP, WEBSOCKET_TIMEOUT_GET_REQUEST
+from tests import APITestCase, MAINNET_WS_URI, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -44,7 +44,7 @@ class TestWSGetMarketStats(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: Optional[dict] = None
 
@@ -105,7 +105,7 @@ class TestWSGetMarketStats(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: Optional[dict] = None
 
