@@ -46,7 +46,7 @@ class TestWSGetOpenOrders(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: Optional[dict] = None
 

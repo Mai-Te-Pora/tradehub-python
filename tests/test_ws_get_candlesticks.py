@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional, List
 
-from tests import APITestCase, MAINNET_VAL_IP, WEBSOCKET_TIMEOUT_GET_REQUEST
+from tests import APITestCase, MAINNET_WS_URI, WEBSOCKET_TIMEOUT_GET_REQUEST
 from tradehub.websocket_client import DemexWebsocket
 
 
@@ -23,7 +23,7 @@ class TestWSGetCandlesticks(APITestCase):
         }
 
         # connect to websocket
-        client = DemexWebsocket(f"ws://{MAINNET_VAL_IP}:5000/ws")
+        client = DemexWebsocket(uri=MAINNET_WS_URI)
         # little work around to save the response
         self.response: List[Optional[dict]] = []
 
@@ -57,7 +57,7 @@ class TestWSGetCandlesticks(APITestCase):
         """
 
         # connect to websocket
-        client = DemexWebsocket("")
+        client = DemexWebsocket(uri="")
         for wrong_granularity in [0, 2, 4, 6, 100, 1500]:
             with self.assertRaises(ValueError):
                 loop = asyncio.get_event_loop()
