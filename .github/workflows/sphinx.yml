@@ -1,3 +1,5 @@
+name: GH Pages Documentation via Sphinx
+
 on: [push]
 
 jobs:
