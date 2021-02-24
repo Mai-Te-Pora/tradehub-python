@@ -5,10 +5,10 @@ from tradehub.public_client import PublicClient
 
 mainnet_client = PublicClient(network='mainnet', is_websocket_client=True)
 MAINNET_VAL_IP = mainnet_client.active_sentry_api_ip
-MAINNET_VAL_URI = mainnet_client.active_ws_uri
+MAINNET_WS_URI = mainnet_client.active_ws_uri
 testnet_client = PublicClient(network='testnet', is_websocket_client=True)
 TESTNET_VAL_IP = testnet_client.active_sentry_api_ip
-TESTNET_VAL_URI = testnet_client.active_ws_uri
+TESTNET_WS_URI = testnet_client.active_ws_uri
 
 WALLET_VALIDATOR = "swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl"
 WALLET_DEVEL = "swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz"
