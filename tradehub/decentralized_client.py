@@ -180,16 +180,16 @@ class NetworkCrawlerClient(object):
         self.active_sentry_api_list = list(dict.fromkeys(self.active_sentry_api_list))
         self.active_ws_uri_list = list(dict.fromkeys(self.active_ws_uri_list))
 
-        def websocket_status_check(self, ip: str, port: int = 5000):
-            try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                location = (active_validator, port)
-                result_of_check = s.connect_ex(location)
-                if result_of_check == 0:
-                    self.active_ws_uri_list.append('{}://{}:{}/ws'.format(self.ws_string, active_validator, port))
-                s.close()
-            except socket.error:
-                pass
+    def websocket_status_check(self, ip: str, port: int = 5000):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            location = (ip, port)
+            result_of_check = s.connect_ex(location)
+            if result_of_check == 0:
+                self.active_ws_uri_list.append('{}://{}:{}/ws'.format(self.ws_string, ip, port))
+            s.close()
+        except socket.error:
+            pass
 
     def update_validators_and_sentries(self):
         threading.Timer(5.0, self.update_validators_and_sentries).start()
