@@ -8,7 +8,12 @@ import threading
 
 class NetworkCrawlerClient(object):
 
-    def __init__(self, network: str = "testnet", trusted_ip_list: list = None, trusted_uri_list: list = None, is_websocket_client: bool = False):
+    def __init__(self,
+                 network: str = "testnet",
+                 trusted_ip_list: list = None,
+                 trusted_uri_list: list = None,
+                 is_secure: bool = False,
+                 is_websocket_client: bool = False):
         if network.lower() not in ["main", "mainnet", "test", "testnet"]:
             raise ValueError("Parameter network - {} - is not valid, requires main, mainnent, test, or testnet.".format(network))
 
@@ -20,6 +25,13 @@ class NetworkCrawlerClient(object):
         else:
             BYPASS_NETWORK_CRAWLER = False
 
+        self.is_secure = is_secure
+        if self.is_secure:
+            self.http_string = 'https'
+            self.ws_string = 'wss'
+        else:
+            self.http_string = 'http'
+            self.ws_string = 'ws'
         self.is_websocket_client = is_websocket_client
         self.active_ws_uri_list = []
 
@@ -93,7 +105,7 @@ class NetworkCrawlerClient(object):
         try:
             process_peer = True
             validator_status["ip"] = validator_ip
-            i = Request(api_url="http://{}:26657".format(validator_ip), timeout=1).get(path='/net_info')
+            i = Request(api_url="{}://{}:26657".format(self.http_string, validator_ip), timeout=1).get(path='/net_info')
         except (ValueError, ConnectionError, HTTPError, Timeout) as e:
             validator_status["validator_status"] = "Unknown - Cannot Connect to Retrieve Validator INFO - {}".format(e)
             validator_status["connected_nodes"] = []
@@ -110,7 +122,7 @@ class NetworkCrawlerClient(object):
                 })
 
             try:
-                s = Request(api_url="http://{}:26657".format(validator_ip), timeout=1).get(path='/status')
+                s = Request(api_url="{}://{}:26657".format(self.http_string, validator_ip), timeout=1).get(path='/status')
             except (ValueError, ConnectionError, HTTPError, Timeout) as e:
                 validator_status["validator_status"] = "Unknown - Cannot Connect to Retrieve Status end point - {}".format(e)
                 validator_status["connected_nodes"] = []
@@ -158,8 +170,8 @@ class NetworkCrawlerClient(object):
                 for port in ["5001"]:
                     try:
                         # Have to check the "/get_status" endpoint because the port could be open and the validator fully synced but have the persistence service inactive, shutdown, stopped, or non-repsonsive.
-                        Request(api_url="http://{}:{}".format(active_validator, port), timeout=1).get(path='/get_status')
-                        self.active_sentry_api_list.append('http://{}:{}'.format(active_validator, port))
+                        Request(api_url="{}://{}:{}".format(self.http_string, active_validator, port), timeout=1).get(path='/get_status')
+                        self.active_sentry_api_list.append('{}://{}:{}'.format(self.http_string, active_validator, port))
                         if self.is_websocket_client:
                             self.websocket_status_check(ip=active_validator)
                     except (ValueError, ConnectionError, HTTPError, Timeout):
@@ -174,7 +186,7 @@ class NetworkCrawlerClient(object):
                 location = (active_validator, port)
                 result_of_check = s.connect_ex(location)
                 if result_of_check == 0:
-                    self.active_ws_uri_list.append('ws://{}:{}/ws'.format(active_validator, port))
+                    self.active_ws_uri_list.append('{}://{}:{}/ws'.format(self.ws_string, active_validator, port))
                 s.close()
             except socket.error:
                 pass
