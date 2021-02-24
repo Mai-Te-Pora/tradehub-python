@@ -149,6 +149,8 @@ class NetworkCrawlerClient(object):
                     # Have to check the "/get_status" endpoint because the port could be open and the validator fully synced but have the persistence service inactive, shutdown, stopped, or non-repsonsive.
                     Request(api_url=active_validator, timeout=1).get(path='/get_status')
                     self.active_sentry_api_list.append(active_validator)
+                    if self.is_websocket_client:
+                        self.websocket_status_check(ip=active_validator)
                 except (ValueError, ConnectionError, HTTPError, Timeout):
                     pass
             else:
@@ -158,22 +160,24 @@ class NetworkCrawlerClient(object):
                         # Have to check the "/get_status" endpoint because the port could be open and the validator fully synced but have the persistence service inactive, shutdown, stopped, or non-repsonsive.
                         Request(api_url="http://{}:{}".format(active_validator, port), timeout=1).get(path='/get_status')
                         self.active_sentry_api_list.append('http://{}:{}'.format(active_validator, port))
+                        if self.is_websocket_client:
+                            self.websocket_status_check(ip=active_validator)
                     except (ValueError, ConnectionError, HTTPError, Timeout):
                         pass
-            if self.is_websocket_client:
-                port = 5000
-                try:
-                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    location = (active_validator, port)
-                    result_of_check = s.connect_ex(location)
-                    if result_of_check == 0:
-                        self.active_ws_uri_list.append('ws://{}:{}/ws'.format(active_validator, port))
-                    s.close()
-                except socket.error:
-                    pass
 
         self.active_sentry_api_list = list(dict.fromkeys(self.active_sentry_api_list))
         self.active_ws_uri_list = list(dict.fromkeys(self.active_ws_uri_list))
+
+        def websocket_status_check(self, ip: str, port: int = 5000):
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                location = (active_validator, port)
+                result_of_check = s.connect_ex(location)
+                if result_of_check == 0:
+                    self.active_ws_uri_list.append('ws://{}:{}/ws'.format(active_validator, port))
+                s.close()
+            except socket.error:
+                pass
 
     def update_validators_and_sentries(self):
         threading.Timer(5.0, self.update_validators_and_sentries).start()
