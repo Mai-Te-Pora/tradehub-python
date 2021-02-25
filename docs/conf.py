@@ -25,6 +25,10 @@ project_root = os.path.dirname(cwd)
 sys.path.insert(0, project_root)
 
 
+def setup(app):
+    app.add_css_file('width_style.css')
+
+
 # -- Project information -----------------------------------------------------
 
 project = 'Tradehub Python'
