@@ -1,0 +1,1181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tradehub.websocket_client &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../clients.html">Client Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tradehub.websocket_client</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tradehub.websocket_client</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">websockets</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="DemexWebsocket"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket">[docs]</a><span class="k">class</span> <span class="nc">DemexWebsocket</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DemexWebsocket is a high-level async implementation off the official Tradehub Demex websocket and provides all</span>
+<span class="sd">    functionalities described in the documentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ping_interval</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">ping_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a websocket which is complaint with the specification provided by the offical documentation.</span>
+
+<span class="sd">        .. see::</span>
+<span class="sd">            https://docs.switcheo.org/#/?id=websocket</span>
+
+<span class="sd">        :param uri: Websocket URI, starting with &#39;ws://&#39; or &#39;wss://&#39; e.g. &#39;ws://85.214.81.155:5000/ws&#39;</span>
+<span class="sd">        :param ping_interval: Interval for pinging the server in seconds.</span>
+<span class="sd">        :param ping_timeout: Time after no response for pings are considered as timeout in seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">uri</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ping_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ping_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ping_timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_websocket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">websockets</span><span class="o">.</span><span class="n">WebSocketClientProtocol</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to one or many channels.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param channels: List with channels to join.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;subscribe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="n">channels</span><span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.unsubscribe"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.unsubscribe">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">channels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unsubscribe to one or many channels.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param channels: List with channels to leave.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;unsubscribe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="n">channels</span><span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_leverages"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_leverages">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_leverages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to wallet specific leverages channel.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This channel has not been tested yet.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO not tested yet</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;leverages.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_market_stats"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_market_stats">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_market_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to market stats.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_market_stats(&#39;market_stats&#39;)</span>
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;:&#39;market_stats&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;market_stats&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The subscription and channel messages are expected as follow::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;market_stats&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 484,</span>
+<span class="sd">                &#39;result&#39;: {</span>
+<span class="sd">                    &#39;cel1_usdc1&#39;: {</span>
+<span class="sd">                        &#39;day_high&#39;: &#39;5.97&#39;,</span>
+<span class="sd">                        &#39;day_low&#39;: &#39;5.72&#39;,</span>
+<span class="sd">                        &#39;day_open&#39;: &#39;5.86&#39;,</span>
+<span class="sd">                        &#39;day_close&#39;: &#39;5.74&#39;,</span>
+<span class="sd">                        &#39;day_volume&#39;: &#39;414.4&#39;,</span>
+<span class="sd">                        &#39;day_quote_volume&#39;: &#39;2429.009&#39;,</span>
+<span class="sd">                        &#39;index_price&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;mark_price&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;last_price&#39;: &#39;5.74&#39;,</span>
+<span class="sd">                        &#39;market&#39;: &#39;cel1_usdc1&#39;,</span>
+<span class="sd">                        &#39;market_type&#39;: &#39;spot&#39;,</span>
+<span class="sd">                        &#39;open_interest&#39;: &#39;0&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    ...</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;market_stats&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_books"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_books">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_books</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to book channel.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_books(&#39;orderbook&#39;, &quot;swth_eth1&#39;)</span>
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;:&#39;orderbook&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;books.eth1_usdc1&#39;, ...]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The initial subscription message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;books.eth1_usdc1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 924,</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1797.1&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0.02&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;type&#39;: &#39;new&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1790.1&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0.02&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;buy&#39;,</span>
+<span class="sd">                        &#39;type&#39;: &#39;new&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The channel update messages are expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;books.eth1_usdc1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 924,</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1797.1&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;type&#39;: &#39;delete&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;market&#39;:&#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1800.18&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;-0.43&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;type&#39;: &#39;update&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1114.48&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;182.716&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;buy&#39;,</span>
+<span class="sd">                        &#39;type&#39;: &#39;new&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The initial message is a snapshot of the current orderbook. The following messages are delta messages to the</span>
+<span class="sd">            snapshot. Each message has a &#39;sequence_number&#39;.</span>
+
+<span class="sd">            Updates can contain update types: &#39;new&#39;, &#39;update&#39; or &#39;delete&#39;. The quantity in a &#39;update&#39; message can be</span>
+<span class="sd">            negative indicating a reduction, while positive value means an increment.</span>
+
+<span class="sd">            All updates need to be processed in the provided order to maintain an consistent orderbook.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;books.</span><span class="si">{market}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_orders"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_orders">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to orders channel.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_orders(&#39;orders&#39;, &quot;swth1...abcd&#39;)</span>
+
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;:&#39;orders&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;orders.swth1...abcd&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The channel update messages are expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;orders.swth1...abcd&#39;,</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;order_id&#39;: &#39;7CBBF51B75CF2E046726BB...56757D6D502B01F4BB62178DCF&#39;,</span>
+<span class="sd">                        &#39;block_height&#39;: 7375724,</span>
+<span class="sd">                        &#39;triggered_block_height&#39;: 0,</span>
+<span class="sd">                        &#39;address&#39;: &#39;swth1...abcd&#39;,</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_wbtc1&#39;,</span>
+<span class="sd">                        &#39;side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0.08&#39;,</span>
+<span class="sd">                        &#39;available&#39;: &#39;0.08&#39;,</span>
+<span class="sd">                        &#39;filled&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;order_status&#39;: &#39;pending&#39;,</span>
+<span class="sd">                        &#39;order_type&#39;: &#39;market&#39;,</span>
+<span class="sd">                        &#39;initiator&#39;: &#39;user&#39;,</span>
+<span class="sd">                        &#39;time_in_force&#39;: &#39;fok&#39;,</span>
+<span class="sd">                        &#39;stop_price&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;trigger_type&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;allocated_margin_denom&#39;: &#39;eth1&#39;,</span>
+<span class="sd">                        &#39;allocated_margin_amount&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;is_liquidation&#39;: False,</span>
+<span class="sd">                        &#39;is_post_only&#39;: False,</span>
+<span class="sd">                        &#39;is_reduce_only&#39;: False,</span>
+<span class="sd">                        &#39;type&#39;: &#39;new&#39;,</span>
+<span class="sd">                        &#39;block_created_at&#39;: &#39;2021-02-11T20:36:02.244175356Z&#39;,</span>
+<span class="sd">                        &#39;username&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;id&#39;: &#39;&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">market</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;orders_by_market.</span><span class="si">{market}</span><span class="s2">.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;orders.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_positions"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_positions">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to positions channel.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This channel is not tested yet.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO not tested yet</span>
+        <span class="k">if</span> <span class="n">market</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;positions_by_market.</span><span class="si">{market}</span><span class="s2">.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;positions.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_recent_trades"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_recent_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to recent trades.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_recent_trades(&#39;trades&#39;, &quot;swth_eth1&#39;)</span>
+
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: &#39;trades&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;recent_trades.swth_eth1&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The channel update messages are expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;recent_trades.eth1_usdc1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 812,</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;id&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;block_created_at&#39;: &#39;2021-02-11T20:49:07.095418551Z&#39;,</span>
+<span class="sd">                        &#39;taker_id&#39;: &#39;5FF349410F9CF59BED36D412D1223424835342274BC0E504ED0A17EE4B5B0856&#39;,</span>
+<span class="sd">                        &#39;taker_address&#39;: &#39;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;,</span>
+<span class="sd">                        &#39;taker_fee_amount&#39;: &#39;0.00002&#39;,</span>
+<span class="sd">                        &#39;taker_fee_denom&#39;: &#39;eth1&#39;,</span>
+<span class="sd">                        &#39;taker_side&#39;: &#39;buy&#39;,</span>
+<span class="sd">                        &#39;maker_id&#39;: &#39;8334A9C97CAEFAF84774AAADB0D5666E7764BA023DF145C8AF90BB6A6862EA2E&#39;,</span>
+<span class="sd">                        &#39;maker_address&#39;: &#39;swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5&#39;,</span>
+<span class="sd">                        &#39;maker_fee_amount&#39;: &#39;-0.00001&#39;,</span>
+<span class="sd">                        &#39;maker_fee_denom&#39;: &#39;eth1&#39;,</span>
+<span class="sd">                        &#39;maker_side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1797.1&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0.02&#39;,</span>
+<span class="sd">                        &#39;liquidation&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;taker_username&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;maker_username&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;block_height&#39;: &#39;7376096&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The field &#39;id&#39; is &#39;0&#39; all the time. This endpoint/channel does not seem to work correct.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;recent_trades.</span><span class="si">{market}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_account_trades"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_account_trades">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_account_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to account trades.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_account_trades(&#39;account&#39;, &#39;swth...abcd&#39;, &#39;eth1_usdc1&#39;)</span>
+<span class="sd">            # or for all markets</span>
+<span class="sd">            ws_client.subscribe_account_trades(&#39;account&#39;, &quot;swth...abcd&#39;)</span>
+
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: &#39;account&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;account_trades_by_market.eth1_usdc1.swth1...abcd&#39;]</span>
+<span class="sd">            }</span>
+<span class="sd">            # or for all markets</span>
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: &#39;account&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;account_trades.swth1...abcd&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The channel update messages are expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;recent_trades.eth1_usdc1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 812,</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;id&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;block_created_at&#39;: &#39;2021-02-11T20:49:07.095418551Z&#39;,</span>
+<span class="sd">                        &#39;taker_id&#39;: &#39;5FF349410F9CF59BED36D412D1223424835342274BC0E504ED0A17EE4B5B0856&#39;,</span>
+<span class="sd">                        &#39;taker_address&#39;: &#39;swth1...taker&#39;,</span>
+<span class="sd">                        &#39;taker_fee_amount&#39;: &#39;0.00002&#39;,</span>
+<span class="sd">                        &#39;taker_fee_denom&#39;: &#39;eth1&#39;,</span>
+<span class="sd">                        &#39;taker_side&#39;: &#39;buy&#39;,</span>
+<span class="sd">                        &#39;maker_id&#39;: &#39;8334A9C97CAEFAF84774AAADB0D5666E7764BA023DF145C8AF90BB6A6862EA2E&#39;,</span>
+<span class="sd">                        &#39;maker_address&#39;: &#39;swth1...maker&#39;,</span>
+<span class="sd">                        &#39;maker_fee_amount&#39;: &#39;-0.00001&#39;,</span>
+<span class="sd">                        &#39;maker_fee_denom&#39;: &#39;eth1&#39;,</span>
+<span class="sd">                        &#39;maker_side&#39;: &#39;sell&#39;,</span>
+<span class="sd">                        &#39;market&#39;: &#39;eth1_usdc1&#39;,</span>
+<span class="sd">                        &#39;price&#39;: &#39;1797.1&#39;,</span>
+<span class="sd">                        &#39;quantity&#39;: &#39;0.02&#39;,</span>
+<span class="sd">                        &#39;liquidation&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;taker_username&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;maker_username&#39;: &#39;&#39;,</span>
+<span class="sd">                        &#39;block_height&#39;: &#39;7376096&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The field &#39;id&#39; is &#39;0&#39; all the time. This endpoint/channel does not seem to work correct.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">market</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;account_trades_by_market.</span><span class="si">{market}</span><span class="s2">.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;account_trades.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_balances"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_balances">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_balances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to wallet specific balance channel.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_balances(&#39;balance&#39;, &quot;swth1...abcd&#39;)</span>
+
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: &#39;balance&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;balances.swth1...abcd&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The subscription and channel messages are expected as follow::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;balances.swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;,</span>
+<span class="sd">                &#39;result&#39;: {</span>
+<span class="sd">                    &#39;eth1&#39;: {</span>
+<span class="sd">                        &#39;available&#39;: &#39;0.83941506825&#39;,</span>
+<span class="sd">                        &#39;order&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;position&#39;: &#39;0&#39;,</span>
+<span class="sd">                        &#39;denom&#39;: &#39;eth1&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;balances.</span><span class="si">{swth_address}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.subscribe_candlesticks"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">subscribe_candlesticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">granularity</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subscribe to candlesticks channel.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.subscribe_candlesticks(&#39;candle&#39;, &quot;swth_eth1&#39;, 1)</span>
+
+
+<span class="sd">        The initial channel message is expected as::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: &#39;candle&#39;,</span>
+<span class="sd">                &#39;result&#39;: [&#39;candlesticks.swth_eth1.1&#39;]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The subscription and channel messages are expected as follow::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;candlesticks.swth_eth1.1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 57,</span>
+<span class="sd">                &#39;result&#39;: {</span>
+<span class="sd">                    &#39;id&#39;: 0,</span>
+<span class="sd">                    &#39;market&#39;:&#39;swth_eth1&#39;,</span>
+<span class="sd">                    &#39;time&#39;: &#39;2021-02-17T10:59:00Z&#39;,</span>
+<span class="sd">                    &#39;resolution&#39;: 1,</span>
+<span class="sd">                    &#39;open&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;close&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;high&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;low&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;volume&#39;: &#39;5555&#39;,</span>
+<span class="sd">                    &#39;quote_volume&#39;: &#39;0.09999&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">granularity</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">1440</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Granularity &#39;</span><span class="si">{granularity}</span><span class="s2">&#39; not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440&quot;</span><span class="p">)</span>
+        <span class="n">channel_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;candlesticks.</span><span class="si">{market}</span><span class="s2">.</span><span class="si">{granularity}</span><span class="s2">&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">message_id</span><span class="p">,</span> <span class="p">[</span><span class="n">channel_name</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_order_history"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_order_history">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_order_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request up to 200 order histories.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_order_history(&#39;order_history&#39;, &quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;order_history&quot;,</span>
+<span class="sd">                &quot;result&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;order_id&quot;: &quot;C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD&quot;,</span>
+<span class="sd">                        &quot;block_height&quot;: 7561537,</span>
+<span class="sd">                        &quot;triggered_block_height&quot;: 0,</span>
+<span class="sd">                        &quot;address&quot;: &quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;,</span>
+<span class="sd">                        &quot;market&quot;: &quot;wbtc1_usdc1&quot;,</span>
+<span class="sd">                        &quot;side&quot;: &quot;sell&quot;,</span>
+<span class="sd">                        &quot;price&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;quantity&quot;: &quot;0.0011&quot;,</span>
+<span class="sd">                        &quot;available&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;filled&quot;: &quot;0.0011&quot;,</span>
+<span class="sd">                        &quot;order_status&quot;: &quot;filled&quot;,</span>
+<span class="sd">                        &quot;order_type&quot;: &quot;market&quot;,</span>
+<span class="sd">                        &quot;initiator&quot;: &quot;user&quot;,</span>
+<span class="sd">                        &quot;time_in_force&quot;: &quot;fok&quot;,</span>
+<span class="sd">                        &quot;stop_price&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;trigger_type&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;allocated_margin_denom&quot;: &quot;wbtc1&quot;,</span>
+<span class="sd">                        &quot;allocated_margin_amount&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;is_liquidation&quot;: false,</span>
+<span class="sd">                        &quot;is_post_only&quot;: false,</span>
+<span class="sd">                        &quot;is_reduce_only&quot;: false,</span>
+<span class="sd">                        &quot;type&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;block_created_at&quot;: &quot;2021-02-16T08:31:13.225303Z&quot;,</span>
+<span class="sd">                        &quot;username&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;id&quot;: &quot;2315998&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_order_history&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_recent_trades"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_recent_trades">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_recent_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request up  to 100 recent trades for a market.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_recent_trades(&#39;recent_trades&#39;, &quot;swth_eth1&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;recent_trades&quot;,</span>
+<span class="sd">                &quot;sequence_number&quot;: 3,</span>
+<span class="sd">                &quot;result&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;id&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;block_created_at&quot;: &quot;2021-02-16T10:21:31.346041707Z&quot;,</span>
+<span class="sd">                        &quot;taker_id&quot;: &quot;3F71918F83D84639F505464335FD355105EE63E622CBB819AAFBBAC97368CC7A&quot;,</span>
+<span class="sd">                        &quot;taker_address&quot;: &quot;swth1ysezxr46dhd4dzjsswqte35wfm0ml5dxx97aqt&quot;,</span>
+<span class="sd">                        &quot;taker_fee_amount&quot;: &quot;3.2475&quot;,</span>
+<span class="sd">                        &quot;taker_fee_denom&quot;: &quot;swth&quot;,</span>
+<span class="sd">                        &quot;taker_side&quot;: &quot;buy&quot;,</span>
+<span class="sd">                        &quot;maker_id&quot;: &quot;343590CF4F54FEB1E2429F60B77CD3BED701A040418AEB914BB41D561E24E7DE&quot;,</span>
+<span class="sd">                        &quot;maker_address&quot;: &quot;swth1a5v8pyhkzjjmyw03mh9zqfakwyu0t5wkv0tf66&quot;,</span>
+<span class="sd">                        &quot;maker_fee_amount&quot;: &quot;-0.6495&quot;,</span>
+<span class="sd">                        &quot;maker_fee_denom&quot;: &quot;swth&quot;,</span>
+<span class="sd">                        &quot;maker_side&quot;: &quot;sell&quot;,</span>
+<span class="sd">                        &quot;market&quot;: &quot;swth_eth1&quot;,</span>
+<span class="sd">                        &quot;price&quot;: &quot;0.0000182&quot;,</span>
+<span class="sd">                        &quot;quantity&quot;: &quot;1299&quot;,</span>
+<span class="sd">                        &quot;liquidation&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;taker_username&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;maker_username&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;block_height&quot;: &quot;7564715&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The field &#39;id&#39; is &#39;0&#39; all the time. This endpoint/channel does not seem to work correct.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_recent_trades&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_candlesticks"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_candlesticks">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_candlesticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">granularity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                               <span class="n">from_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">to_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Requests candlesticks for market with granularity.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_candlesticks(&#39;recent_trades&#39;, &quot;swth_eth1&quot;)</span>
+
+<span class="sd">        The subscription and channel messages are expected as follow::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;channel&#39;: &#39;candlesticks.swth_eth1.1&#39;,</span>
+<span class="sd">                &#39;sequence_number&#39;: 57,</span>
+<span class="sd">                &#39;result&#39;: {</span>
+<span class="sd">                    &#39;id&#39;: 0,</span>
+<span class="sd">                    &#39;market&#39;:&#39;swth_eth1&#39;,</span>
+<span class="sd">                    &#39;time&#39;: &#39;2021-02-17T10:59:00Z&#39;,</span>
+<span class="sd">                    &#39;resolution&#39;: 1,</span>
+<span class="sd">                    &#39;open&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;close&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;high&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;low&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                    &#39;volume&#39;: &#39;5555&#39;,</span>
+<span class="sd">                    &#39;quote_volume&#39;: &#39;0.09999&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint does not seem to work and results in an error message.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :param granularity: Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.</span>
+<span class="sd">        :param from_epoch: Starting from epoch seconds.</span>
+<span class="sd">        :param to_epoch: Ending to epoch seconds.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">granularity</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">1440</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Granularity &#39;</span><span class="si">{granularity}</span><span class="s2">&#39; not supported. Allowed values: 1, 5, 15, 30, 60, 360, 1440&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_candlesticks&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
+                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="n">granularity</span><span class="p">,</span>
+                <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="n">from_epoch</span><span class="p">,</span>
+                <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="n">to_epoch</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_open_orders"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_open_orders">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_open_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request open orders.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_open_orders(&#39;open_orders&#39;, &quot;swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;open_orders&quot;,</span>
+<span class="sd">                &quot;result&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;order_id&quot;: &quot;A7C488A6AE25249E90523FCD603236342025340E3DCAE6A6312133905C41794C&quot;,</span>
+<span class="sd">                        &quot;block_height&quot;: 7564973,</span>
+<span class="sd">                        &quot;triggered_block_height&quot;: 0,</span>
+<span class="sd">                        &quot;address&quot;: &quot;swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk&quot;,</span>
+<span class="sd">                        &quot;market&quot;: &quot;swth_eth1&quot;,</span>
+<span class="sd">                        &quot;side&quot;: &quot;sell&quot;,</span>
+<span class="sd">                        &quot;price&quot;: &quot;0.0000181&quot;,</span>
+<span class="sd">                        &quot;quantity&quot;: &quot;58806&quot;,</span>
+<span class="sd">                        &quot;available&quot;: &quot;58806&quot;,</span>
+<span class="sd">                        &quot;filled&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;order_status&quot;: &quot;open&quot;,</span>
+<span class="sd">                        &quot;order_type&quot;: &quot;limit&quot;,</span>
+<span class="sd">                        &quot;initiator&quot;: &quot;amm&quot;,</span>
+<span class="sd">                        &quot;time_in_force&quot;: &quot;gtc&quot;,</span>
+<span class="sd">                        &quot;stop_price&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;trigger_type&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;allocated_margin_denom&quot;: &quot;swth&quot;,</span>
+<span class="sd">                        &quot;allocated_margin_amount&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;is_liquidation&quot;: false,</span>
+<span class="sd">                        &quot;is_post_only&quot;: false,</span>
+<span class="sd">                        &quot;is_reduce_only&quot;: false,</span>
+<span class="sd">                        &quot;type&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;block_created_at&quot;: &quot;2021-02-16T10:30:27.079962Z&quot;,</span>
+<span class="sd">                        &quot;username&quot;: &quot;&quot;,</span>
+<span class="sd">                        &quot;id&quot;: &quot;2316597&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_open_orders&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_account_trades"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_account_trades">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_account_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                 <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request up to 100 account trades.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_account_trades(&#39;account_trades&#39;, &#39;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;account_trades&quot;,</span>
+<span class="sd">                &quot;result&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;base_precision&quot;: 8,</span>
+<span class="sd">                        &quot;quote_precision&quot;: 6,</span>
+<span class="sd">                        &quot;fee_precision&quot;: 6,</span>
+<span class="sd">                        &quot;order_id&quot;: &quot;C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD&quot;,</span>
+<span class="sd">                        &quot;market&quot;: &quot;wbtc1_usdc1&quot;,</span>
+<span class="sd">                        &quot;side&quot;: &quot;sell&quot;,</span>
+<span class="sd">                        &quot;quantity&quot;: &quot;0.0001&quot;,</span>
+<span class="sd">                        &quot;price&quot;: &quot;48745.12&quot;,</span>
+<span class="sd">                        &quot;fee_amount&quot;: &quot;0.004875&quot;,</span>
+<span class="sd">                        &quot;fee_denom&quot;: &quot;usdc1&quot;,</span>
+<span class="sd">                        &quot;address&quot;: &quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;,</span>
+<span class="sd">                        &quot;block_height&quot;: &quot;7561537&quot;,</span>
+<span class="sd">                        &quot;block_created_at&quot;: &quot;2021-02-16T08:31:13.225303Z&quot;,</span>
+<span class="sd">                        &quot;id&quot;: 289733</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The parameter page results in an error. Do not use it(yet).</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;.</span>
+<span class="sd">        :param page: Used for pagination.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO page does not work and causes an error</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_account_trades&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
+                <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_market_stats"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_market_stats">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_market_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request market stats.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            ws_client.get_market_stats(&#39;market_stats&#39;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;market_stats&quot;,</span>
+<span class="sd">                &quot;result&quot;: {</span>
+<span class="sd">                    &quot;eth1_usdc1&quot;: {</span>
+<span class="sd">                        &quot;day_high&quot;: &quot;1818.51&quot;,</span>
+<span class="sd">                        &quot;day_low&quot;: &quot;1751.81&quot;,</span>
+<span class="sd">                        &quot;day_open&quot;: &quot;1760.07&quot;,</span>
+<span class="sd">                        &quot;day_close&quot;: &quot;1788.19&quot;,</span>
+<span class="sd">                        &quot;day_volume&quot;: &quot;36.503&quot;,</span>
+<span class="sd">                        &quot;day_quote_volume&quot;: &quot;65153.50224&quot;,</span>
+<span class="sd">                        &quot;index_price&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;mark_price&quot;: &quot;0&quot;,</span>
+<span class="sd">                        &quot;last_price&quot;: &quot;1788.19&quot;,</span>
+<span class="sd">                        &quot;market&quot;: &quot;eth1_usdc1&quot;,</span>
+<span class="sd">                        &quot;market_type&quot;: &quot;spot&quot;,</span>
+<span class="sd">                        &quot;open_interest&quot;: &quot;0&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Parameter &#39;market&#39; has no effect. Maybe not intended as parameter. Request will result in all market stats.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO market has no effect</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_market_stats&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_leverages"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_leverages">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_leverages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request leverages.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The request method has not been tested yet.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO not tested yet</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_leverages&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_open_positions"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_open_positions">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_open_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request open positions.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The request method has not been tested yet.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO not tested yet</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_open_positions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.get_closed_positions"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_closed_positions">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_closed_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request closed positions.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The market identifier is optional and acts as a filter.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The request method has not been tested yet.</span>
+
+<span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
+<span class="sd">                           identify which channel the notification is originated from.</span>
+<span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
+<span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO not tested yet</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_closed_positions&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+                <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+            <span class="p">}</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.send"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.send">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send data to websocket server. Provided data will be translated to json.</span>
+
+<span class="sd">        :param data: data as dictionary.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.disconnect"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.disconnect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Safely close the websocket connection.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_websocket</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DemexWebsocket.connect"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.connect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">on_receive_message_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+                      <span class="n">on_connect_callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">on_error_callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connect to websocket server.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Callbacks need to be NON-BLOCKING! Otherwise the PING-PONG coroutine is blocked and the server will close</span>
+<span class="sd">            the connection. You will not receive any notification about this.</span>
+
+<span class="sd">        :param on_receive_message_callback: async callback which is called with the received message as dict.</span>
+<span class="sd">        :param on_connect_callback: async callback which is called if websocket is connected.</span>
+<span class="sd">        :param on_error_callback: async callback which is called if websocket has an error.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">websockets</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_uri</span><span class="p">,</span>
+                                          <span class="n">ping_interval</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ping_interval</span><span class="p">,</span>
+                                          <span class="n">ping_timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ping_timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">websocket</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_websocket</span> <span class="o">=</span> <span class="n">websocket</span>
+
+                <span class="k">if</span> <span class="n">on_connect_callback</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">on_connect_callback</span><span class="p">()</span>
+
+                <span class="k">async</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">websocket</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="k">await</span> <span class="n">on_receive_message_callback</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">on_error_callback</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">on_error_callback</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

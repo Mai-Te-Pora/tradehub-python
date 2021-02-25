@@ -167,6 +167,1099 @@
 <li><a class="reference internal" href="#websocket-class-websocket-client" id="id1">Websocket Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">websocket_client</span></code></a></li>
 </ul>
 </div>
+<span class="target" id="module-tradehub.websocket_client"></span><dl class="class">
+<dt id="tradehub.websocket_client.DemexWebsocket">
+<em class="property">class </em><code class="descclassname">tradehub.websocket_client.</code><code class="descname">DemexWebsocket</code><span class="sig-paren">(</span><em>uri: str</em>, <em>ping_interval: Optional[int] = 10</em>, <em>ping_timeout: Optional[int] = 30</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>DemexWebsocket is a high-level async implementation off the official Tradehub Demex websocket and provides all
+functionalities described in the documentation.</p>
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.connect">
+<code class="descname">connect</code><span class="sig-paren">(</span><em>on_receive_message_callback: Callable</em>, <em>on_connect_callback: Optional[Callable] = None</em>, <em>on_error_callback: Optional[Callable] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to websocket server.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Callbacks need to be NON-BLOCKING! Otherwise the PING-PONG coroutine is blocked and the server will close
+the connection. You will not receive any notification about this.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>on_receive_message_callback</strong> – async callback which is called with the received message as dict.</li>
+<li><strong>on_connect_callback</strong> – async callback which is called if websocket is connected.</li>
+<li><strong>on_error_callback</strong> – async callback which is called if websocket has an error.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.disconnect">
+<code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safely close the websocket connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_account_trades">
+<code class="descname">get_account_trades</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em>, <em>page: Optional[int] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_account_trades"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_account_trades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request up to 100 account trades.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_account_trades</span><span class="p">(</span><span class="s1">&#39;account_trades&#39;</span><span class="p">,</span> <span class="s1">&#39;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;account_trades&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;base_precision&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;quote_precision&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">&quot;fee_precision&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="s2">&quot;wbtc1_usdc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="s2">&quot;sell&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0001&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;48745.12&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fee_amount&quot;</span><span class="p">:</span> <span class="s2">&quot;0.004875&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fee_denom&quot;</span><span class="p">:</span> <span class="s2">&quot;usdc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_height&quot;</span><span class="p">:</span> <span class="s2">&quot;7561537&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_created_at&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-02-16T08:31:13.225303Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">289733</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The parameter page results in an error. Do not use it(yet).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’.</li>
+<li><strong>page</strong> – Used for pagination.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_candlesticks">
+<code class="descname">get_candlesticks</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: str</em>, <em>granularity: int</em>, <em>from_epoch: Optional[int] = None</em>, <em>to_epoch: Optional[int] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_candlesticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_candlesticks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests candlesticks for market with granularity.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_candlesticks</span><span class="p">(</span><span class="s1">&#39;recent_trades&#39;</span><span class="p">,</span> <span class="s2">&quot;swth_eth1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The subscription and channel messages are expected as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;candlesticks.swth_eth1.1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;market&#39;</span><span class="p">:</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-17T10:59:00Z&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;open&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;close&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;volume&#39;</span><span class="p">:</span> <span class="s1">&#39;5555&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;quote_volume&#39;</span><span class="p">:</span> <span class="s1">&#39;0.09999&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This endpoint does not seem to work and results in an error message.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+<li><strong>granularity</strong> – Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.</li>
+<li><strong>from_epoch</strong> – Starting from epoch seconds.</li>
+<li><strong>to_epoch</strong> – Ending to epoch seconds.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_closed_positions">
+<code class="descname">get_closed_positions</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_closed_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_closed_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request closed positions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The request method has not been tested yet.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_leverages">
+<code class="descname">get_leverages</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_leverages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_leverages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request leverages.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The request method has not been tested yet.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_market_stats">
+<code class="descname">get_market_stats</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_market_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_market_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request market stats.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_market_stats</span><span class="p">(</span><span class="s1">&#39;market_stats&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;market_stats&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;eth1_usdc1&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;day_high&quot;</span><span class="p">:</span> <span class="s2">&quot;1818.51&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;day_low&quot;</span><span class="p">:</span> <span class="s2">&quot;1751.81&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;day_open&quot;</span><span class="p">:</span> <span class="s2">&quot;1760.07&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;day_close&quot;</span><span class="p">:</span> <span class="s2">&quot;1788.19&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;day_volume&quot;</span><span class="p">:</span> <span class="s2">&quot;36.503&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;day_quote_volume&quot;</span><span class="p">:</span> <span class="s2">&quot;65153.50224&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;index_price&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mark_price&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;last_price&quot;</span><span class="p">:</span> <span class="s2">&quot;1788.19&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="s2">&quot;eth1_usdc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market_type&quot;</span><span class="p">:</span> <span class="s2">&quot;spot&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;open_interest&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Parameter ‘market’ has no effect. Maybe not intended as parameter. Request will result in all market stats.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_open_orders">
+<code class="descname">get_open_orders</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_open_orders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_open_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request open orders.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_open_orders</span><span class="p">(</span><span class="s1">&#39;open_orders&#39;</span><span class="p">,</span> <span class="s2">&quot;swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;open_orders&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;A7C488A6AE25249E90523FCD603236342025340E3DCAE6A6312133905C41794C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_height&quot;</span><span class="p">:</span> <span class="mi">7564973</span><span class="p">,</span>
+            <span class="s2">&quot;triggered_block_height&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;swth1p5hjhag5glkpqaj0y0vn3au7x0vz33k0gxuejk&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="s2">&quot;swth_eth1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="s2">&quot;sell&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0000181&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;58806&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="s2">&quot;58806&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;filled&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;order_status&quot;</span><span class="p">:</span> <span class="s2">&quot;open&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;order_type&quot;</span><span class="p">:</span> <span class="s2">&quot;limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;initiator&quot;</span><span class="p">:</span> <span class="s2">&quot;amm&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time_in_force&quot;</span><span class="p">:</span> <span class="s2">&quot;gtc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;stop_price&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;trigger_type&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allocated_margin_denom&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allocated_margin_amount&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_liquidation&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;is_post_only&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;is_reduce_only&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_created_at&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-02-16T10:30:27.079962Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;2316597&quot;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_open_positions">
+<code class="descname">get_open_positions</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_open_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_open_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request open positions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The request method has not been tested yet.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_order_history">
+<code class="descname">get_order_history</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_order_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_order_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request up to 200 order histories.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_order_history</span><span class="p">(</span><span class="s1">&#39;order_history&#39;</span><span class="p">,</span> <span class="s2">&quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;order_history&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;C7D7DDDCFDC68DF2D078CBD8630B657148893AC24CF8DB8F2E23293C6EDC90AD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_height&quot;</span><span class="p">:</span> <span class="mi">7561537</span><span class="p">,</span>
+            <span class="s2">&quot;triggered_block_height&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="s2">&quot;wbtc1_usdc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="s2">&quot;sell&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0011&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;filled&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0011&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;order_status&quot;</span><span class="p">:</span> <span class="s2">&quot;filled&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;order_type&quot;</span><span class="p">:</span> <span class="s2">&quot;market&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;initiator&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time_in_force&quot;</span><span class="p">:</span> <span class="s2">&quot;fok&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;stop_price&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;trigger_type&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allocated_margin_denom&quot;</span><span class="p">:</span> <span class="s2">&quot;wbtc1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allocated_margin_amount&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_liquidation&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;is_post_only&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;is_reduce_only&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_created_at&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-02-16T08:31:13.225303Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;2315998&quot;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.get_recent_trades">
+<code class="descname">get_recent_trades</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.get_recent_trades"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.get_recent_trades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request up  to 100 recent trades for a market.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">get_recent_trades</span><span class="p">(</span><span class="s1">&#39;recent_trades&#39;</span><span class="p">,</span> <span class="s2">&quot;swth_eth1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;recent_trades&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sequence_number&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_created_at&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-02-16T10:21:31.346041707Z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_id&quot;</span><span class="p">:</span> <span class="s2">&quot;3F71918F83D84639F505464335FD355105EE63E622CBB819AAFBBAC97368CC7A&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_address&quot;</span><span class="p">:</span> <span class="s2">&quot;swth1ysezxr46dhd4dzjsswqte35wfm0ml5dxx97aqt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_fee_amount&quot;</span><span class="p">:</span> <span class="s2">&quot;3.2475&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_fee_denom&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_side&quot;</span><span class="p">:</span> <span class="s2">&quot;buy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_id&quot;</span><span class="p">:</span> <span class="s2">&quot;343590CF4F54FEB1E2429F60B77CD3BED701A040418AEB914BB41D561E24E7DE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_address&quot;</span><span class="p">:</span> <span class="s2">&quot;swth1a5v8pyhkzjjmyw03mh9zqfakwyu0t5wkv0tf66&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_fee_amount&quot;</span><span class="p">:</span> <span class="s2">&quot;-0.6495&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_fee_denom&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_side&quot;</span><span class="p">:</span> <span class="s2">&quot;sell&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="s2">&quot;swth_eth1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0000182&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;1299&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;liquidation&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;taker_username&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maker_username&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;block_height&quot;</span><span class="p">:</span> <span class="s2">&quot;7564715&quot;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The field ‘id’ is ‘0’ all the time. This endpoint/channel does not seem to work correct.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>data: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data to websocket server. Provided data will be translated to json.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> – data as dictionary.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>message_id: str, channels: List[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to one or many channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>channels</strong> – List with channels to join.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_account_trades">
+<code class="descname">subscribe_account_trades</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_account_trades"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_account_trades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to account trades.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_account_trades</span><span class="p">(</span><span class="s1">&#39;account&#39;</span><span class="p">,</span> <span class="s1">&#39;swth...abcd&#39;</span><span class="p">,</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">)</span>
+<span class="c1"># or for all markets</span>
+<span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_account_trades</span><span class="p">(</span><span class="s1">&#39;account&#39;</span><span class="p">,</span> <span class="s2">&quot;swth...abcd&#39;)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;account&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;account_trades_by_market.eth1_usdc1.swth1...abcd&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="c1"># or for all markets</span>
+<span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;account&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;account_trades.swth1...abcd&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The channel update messages are expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;recent_trades.eth1_usdc1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">812</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_created_at&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-11T20:49:07.095418551Z&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_id&#39;</span><span class="p">:</span> <span class="s1">&#39;5FF349410F9CF59BED36D412D1223424835342274BC0E504ED0A17EE4B5B0856&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_address&#39;</span><span class="p">:</span> <span class="s1">&#39;swth1...taker&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_fee_amount&#39;</span><span class="p">:</span> <span class="s1">&#39;0.00002&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_fee_denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_side&#39;</span><span class="p">:</span> <span class="s1">&#39;buy&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_id&#39;</span><span class="p">:</span> <span class="s1">&#39;8334A9C97CAEFAF84774AAADB0D5666E7764BA023DF145C8AF90BB6A6862EA2E&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_address&#39;</span><span class="p">:</span> <span class="s1">&#39;swth1...maker&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_fee_amount&#39;</span><span class="p">:</span> <span class="s1">&#39;-0.00001&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_fee_denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1797.1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0.02&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;liquidation&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_username&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_username&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7376096&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The field ‘id’ is ‘0’ all the time. This endpoint/channel does not seem to work correct.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_balances">
+<code class="descname">subscribe_balances</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_balances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_balances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to wallet specific balance channel.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_balances</span><span class="p">(</span><span class="s1">&#39;balance&#39;</span><span class="p">,</span> <span class="s2">&quot;swth1...abcd&#39;)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;balance&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;balances.swth1...abcd&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The subscription and channel messages are expected as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;balances.swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;eth1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="s1">&#39;0.83941506825&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;order&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;position&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_books">
+<code class="descname">subscribe_books</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_books"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_books" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to book channel.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_books</span><span class="p">(</span><span class="s1">&#39;orderbook&#39;</span><span class="p">,</span> <span class="s2">&quot;swth_eth1&#39;)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;orderbook&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;books.eth1_usdc1&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The initial subscription message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;books.eth1_usdc1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">924</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1797.1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0.02&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1790.1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0.02&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;buy&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span>
+        <span class="p">}</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The channel update messages are expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;books.eth1_usdc1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">924</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1797.1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;delete&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span><span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1800.18&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;-0.43&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1114.48&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;182.716&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;buy&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The initial message is a snapshot of the current orderbook. The following messages are delta messages to the
+snapshot. Each message has a ‘sequence_number’.</p>
+<p>Updates can contain update types: ‘new’, ‘update’ or ‘delete’. The quantity in a ‘update’ message can be
+negative indicating a reduction, while positive value means an increment.</p>
+<p class="last">All updates need to be processed in the provided order to maintain an consistent orderbook.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks">
+<code class="descname">subscribe_candlesticks</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: str</em>, <em>granularity: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_candlesticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to candlesticks channel.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_candlesticks</span><span class="p">(</span><span class="s1">&#39;candle&#39;</span><span class="p">,</span> <span class="s2">&quot;swth_eth1&#39;, 1)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;candle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;candlesticks.swth_eth1.1&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The subscription and channel messages are expected as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;candlesticks.swth_eth1.1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;market&#39;</span><span class="p">:</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-17T10:59:00Z&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;open&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;close&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;high&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="s1">&#39;0.000018&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;volume&#39;</span><span class="p">:</span> <span class="s1">&#39;5555&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;quote_volume&#39;</span><span class="p">:</span> <span class="s1">&#39;0.09999&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+<li><strong>granularity</strong> – Define the candlesticks granularity. Allowed values: 1, 5, 15, 30, 60, 360, 1440.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_leverages">
+<code class="descname">subscribe_leverages</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_leverages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_leverages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to wallet specific leverages channel.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This channel has not been tested yet.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_market_stats">
+<code class="descname">subscribe_market_stats</code><span class="sig-paren">(</span><em>message_id: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_market_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_market_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to market stats.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_market_stats</span><span class="p">(</span><span class="s1">&#39;market_stats&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;market_stats&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;market_stats&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The subscription and channel messages are expected as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;market_stats&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">484</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;cel1_usdc1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;day_high&#39;</span><span class="p">:</span> <span class="s1">&#39;5.97&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;day_low&#39;</span><span class="p">:</span> <span class="s1">&#39;5.72&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;day_open&#39;</span><span class="p">:</span> <span class="s1">&#39;5.86&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;day_close&#39;</span><span class="p">:</span> <span class="s1">&#39;5.74&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;day_volume&#39;</span><span class="p">:</span> <span class="s1">&#39;414.4&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;day_quote_volume&#39;</span><span class="p">:</span> <span class="s1">&#39;2429.009&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;index_price&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;mark_price&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;last_price&#39;</span><span class="p">:</span> <span class="s1">&#39;5.74&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;cel1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;market_type&#39;</span><span class="p">:</span> <span class="s1">&#39;spot&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;open_interest&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span>
+        <span class="p">}</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_orders">
+<code class="descname">subscribe_orders</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_orders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to orders channel.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_orders</span><span class="p">(</span><span class="s1">&#39;orders&#39;</span><span class="p">,</span> <span class="s2">&quot;swth1...abcd&#39;)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;orders&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;orders.swth1...abcd&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The channel update messages are expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;orders.swth1...abcd&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;order_id&#39;</span><span class="p">:</span> <span class="s1">&#39;7CBBF51B75CF2E046726BB...56757D6D502B01F4BB62178DCF&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_height&#39;</span><span class="p">:</span> <span class="mi">7375724</span><span class="p">,</span>
+            <span class="s1">&#39;triggered_block_height&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;swth1...abcd&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_wbtc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0.08&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="s1">&#39;0.08&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;filled&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;order_status&#39;</span><span class="p">:</span> <span class="s1">&#39;pending&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;order_type&#39;</span><span class="p">:</span> <span class="s1">&#39;market&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;initiator&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;time_in_force&#39;</span><span class="p">:</span> <span class="s1">&#39;fok&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;stop_price&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;trigger_type&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;allocated_margin_denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;allocated_margin_amount&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;is_liquidation&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;is_post_only&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;is_reduce_only&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;new&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_created_at&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-11T20:36:02.244175356Z&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+        <span class="p">}</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_positions">
+<code class="descname">subscribe_positions</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>swth_address: str</em>, <em>market: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to positions channel.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The market identifier is optional and acts as a filter.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This channel is not tested yet.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>swth_address</strong> – Tradehub wallet address starting with ‘swth1’ for mainnet and ‘tswth1’ for testnet.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades">
+<code class="descname">subscribe_recent_trades</code><span class="sig-paren">(</span><em>message_id: str</em>, <em>market: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.subscribe_recent_trades"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to recent trades.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ws_client</span><span class="o">.</span><span class="n">subscribe_recent_trades</span><span class="p">(</span><span class="s1">&#39;trades&#39;</span><span class="p">,</span> <span class="s2">&quot;swth_eth1&#39;)</span>
+</pre></div>
+</div>
+<p>The initial channel message is expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;trades&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;recent_trades.swth_eth1&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The channel update messages are expected as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;recent_trades.eth1_usdc1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">812</span><span class="p">,</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_created_at&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-11T20:49:07.095418551Z&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_id&#39;</span><span class="p">:</span> <span class="s1">&#39;5FF349410F9CF59BED36D412D1223424835342274BC0E504ED0A17EE4B5B0856&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_address&#39;</span><span class="p">:</span> <span class="s1">&#39;swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_fee_amount&#39;</span><span class="p">:</span> <span class="s1">&#39;0.00002&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_fee_denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_side&#39;</span><span class="p">:</span> <span class="s1">&#39;buy&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_id&#39;</span><span class="p">:</span> <span class="s1">&#39;8334A9C97CAEFAF84774AAADB0D5666E7764BA023DF145C8AF90BB6A6862EA2E&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_address&#39;</span><span class="p">:</span> <span class="s1">&#39;swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_fee_amount&#39;</span><span class="p">:</span> <span class="s1">&#39;-0.00001&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_fee_denom&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_side&#39;</span><span class="p">:</span> <span class="s1">&#39;sell&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;market&#39;</span><span class="p">:</span> <span class="s1">&#39;eth1_usdc1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;1797.1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="s1">&#39;0.02&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;liquidation&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;taker_username&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;maker_username&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7376096&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The field ‘id’ is ‘0’ all the time. This endpoint/channel does not seem to work correct.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>market</strong> – Tradehub market identifier, e.g. ‘swth_eth1’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tradehub.websocket_client.DemexWebsocket.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>message_id: str, channels: List[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unsubscribe to one or many channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message_id</strong> – Identifier that will be included in the websocket message response to allow the subscriber to
+identify which channel the notification is originated from.</li>
+<li><strong>channels</strong> – List with channels to leave.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
