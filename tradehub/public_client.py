@@ -24,7 +24,7 @@ class PublicClient(NetworkCrawlerClient):
         :param uri: URI address off tradehub node.
         """
         if trusted_ips and trusted_uris:
-            raise ValueError("Use IP [+Port] or URI, not both!")
+            raise ValueError("Use IP's or URI's, not both!")
 
         NetworkCrawlerClient.__init__(self, network=network, trusted_ip_list=trusted_ips, trusted_uri_list=trusted_uris, is_websocket_client=is_websocket_client)
 
