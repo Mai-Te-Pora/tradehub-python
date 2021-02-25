@@ -28,8 +28,8 @@ sys.path.insert(0, project_root)
 # -- Project information -----------------------------------------------------
 
 project = 'Tradehub Python'
-copyright = '2021, Keith Smith & Pascal Kelbing'
-author = 'Keith Smith & Pascal Kelbing'
+copyright = '2021, Switcheolytics & Pascal Kelbing'
+author = 'Switcheolytics & Pascal Kelbing'
 
 # The short X.Y version
 version = ''
@@ -139,7 +139,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'TradehubPython.tex', 'Tradehub Python Documentation',
-     'Keith Smith & Pascal Kelbing', 'manual'),
+     'Switcheolytics & Pascal Kelbing', 'manual'),
 ]
 
 
