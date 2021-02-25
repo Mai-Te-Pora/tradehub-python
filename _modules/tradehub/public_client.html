@@ -176,7 +176,7 @@
 <span class="sd">        :param uri: URI address off tradehub node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">trusted_ips</span> <span class="ow">and</span> <span class="n">trusted_uris</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Use IP [+Port] or URI, not both!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Use IP&#39;s or URI&#39;s, not both!&quot;</span><span class="p">)</span>
 
         <span class="n">NetworkCrawlerClient</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">trusted_ip_list</span><span class="o">=</span><span class="n">trusted_ips</span><span class="p">,</span> <span class="n">trusted_uri_list</span><span class="o">=</span><span class="n">trusted_uris</span><span class="p">,</span> <span class="n">is_websocket_client</span><span class="o">=</span><span class="n">is_websocket_client</span><span class="p">)</span>
 

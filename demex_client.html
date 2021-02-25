@@ -181,26 +181,171 @@ To get started you will need to use your mnemonic to access your wallet and defi
 <dt id="tradehub.demex_client.DemexClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tradehub.demex_client.</span></code><code class="sig-name descname"><span class="pre">DemexClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mnemonic</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'testnet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_ips</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_uris</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.</p>
+<p>This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DemexClient</span><span class="p">(</span><span class="n">mnemonic</span><span class="o">=</span><span class="s1">&#39;lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore magna&#39;</span><span class="p">,</span>
+            <span class="n">network</span><span class="o">=</span><span class="s1">&#39;mainnet&#39;</span><span class="p">,</span>
+            <span class="n">trusted_ips</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">trusted_uris</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;http://175.41.151.35:5001&#39;</span><span class="p">,</span> <span class="s1">&#39;http://54.255.5.46:5001&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.cancel_all_open_orders_for_pair">
 <code class="sig-name descname"><span class="pre">cancel_all_open_orders_for_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_all_open_orders_for_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_all_open_orders_for_pair" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a cancel all open orders for a trading pair on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cancel_all_open_orders_for_pair</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the cancel all orders for pair details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.cancel_order">
 <code class="sig-name descname"><span class="pre">cancel_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_order" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a cancel order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cancel_order</span><span class="p">(</span><span class="n">order_id</span><span class="o">=</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the cancel order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.cancel_orders">
 <code class="sig-name descname"><span class="pre">cancel_orders</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_orders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a cancel orders on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cancel_order</span><span class="p">(</span><span class="n">order_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the cancel orders details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.edit_limit_order">
 <code class="sig-name descname"><span class="pre">edit_limit_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.edit_limit_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.edit_limit_order" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to edit an open limit order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">edit_limit_order</span><span class="p">(</span><span class="n">order_id</span><span class="o">=</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span>
+                 <span class="n">quantity</span><span class="o">=</span><span class="s1">&#39;10000&#39;</span><span class="p">,</span>
+                 <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.00011&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the edit limit order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.edit_orders">
@@ -210,105 +355,431 @@ To get started you will need to use your mnemonic to access your wallet and defi
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.edit_stop_order">
 <code class="sig-name descname"><span class="pre">edit_stop_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.edit_stop_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.edit_stop_order" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to edit an open stop order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">edit_stop_order</span><span class="p">(</span><span class="n">order_id</span><span class="o">=</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span>
+                <span class="n">quantity</span><span class="o">=</span><span class="s1">&#39;10000&#39;</span><span class="p">,</span>
+                <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.00011&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the edit stop order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.get_open_limit_orders">
 <code class="sig-name descname"><span class="pre">get_open_limit_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_limit_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_limit_orders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to get all open limit orders for the wallet attached to the Demex Client.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_open_limit_orders</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span> <span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of order IDs.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.get_open_orders">
 <code class="sig-name descname"><span class="pre">get_open_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_orders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to get all open orders for the wallet attached to the Demex Client.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_open_orders</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span> <span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of order IDs.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.get_open_orders_by_pair">
 <code class="sig-name descname"><span class="pre">get_open_orders_by_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_orders_by_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_orders_by_pair" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to get all open orders for a specific pair for the wallet attached to the Demex Client.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_open_orders</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span> <span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of order IDs.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.get_open_stop_orders">
 <code class="sig-name descname"><span class="pre">get_open_stop_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_stop_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_stop_orders" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to get all open stop orders for the wallet attached to the Demex Client.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_open_stop_orders</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">,</span> <span class="s1">&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of order IDs.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.limit_buy">
 <code class="sig-name descname"><span class="pre">limit_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.limit_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.limit_buy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to place a limit buy order on Demex.
 Execution of this function is as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">limit_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0001&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">limit_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0001&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The expected return result for this function is as follows::
-{</p>
-<blockquote>
-<div><p>‘height’: str,
-‘txhash’: str,
-‘raw_log’: str,
-‘logs’: [{</p>
-<blockquote>
-<div><p>‘msg_index’: int,
-‘log’: str,
-‘events’: [{</p>
-<blockquote>
-<div><p>‘type’: str,
-‘attributes’: [{</p>
-<blockquote>
-<div><p>‘key’: str,
-‘value’: str</p>
-</div></blockquote>
-<dl class="simple">
-<dt>}, {</dt><dd><p>‘key’: str,
-‘value’: str</p>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the limit order details.</p>
 </dd>
 </dl>
-<p>}]</p>
-</div></blockquote>
-<p>}]</p>
-</div></blockquote>
-<p>}],
-‘gas_wanted’: str,
-‘gas_used’: str</p>
-</div></blockquote>
-<p>}
-:return: Dictionary in the form of a JSON message with the limit order details.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.limit_sell">
 <code class="sig-name descname"><span class="pre">limit_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.limit_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.limit_sell" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a limit sell order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">limit_sell</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0002&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the limit order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.market_buy">
 <code class="sig-name descname"><span class="pre">market_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.market_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.market_buy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a market buy order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">market_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the market order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.market_sell">
 <code class="sig-name descname"><span class="pre">market_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.market_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.market_sell" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a market sell order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">market_sell</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the market order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.stop_limit_buy">
 <code class="sig-name descname"><span class="pre">stop_limit_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_limit_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_limit_buy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a stop limit buy order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop_limit_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0001&#39;</span><span class="p">,</span> <span class="n">stop_price</span><span class="o">=</span><span class="s1">&#39;0.00015&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the stop limit order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.stop_limit_sell">
 <code class="sig-name descname"><span class="pre">stop_limit_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_limit_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_limit_sell" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a stop limit sell order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop_limit_sell</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0002&#39;</span><span class="p">,</span> <span class="n">stop_price</span><span class="o">=</span><span class="s1">&#39;0.00015&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the stop limit order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.stop_market_buy">
 <code class="sig-name descname"><span class="pre">stop_market_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_market_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_market_buy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a stop market buy order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop_market_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">stop_price</span><span class="o">=</span><span class="s1">&#39;0.00015&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the stop market order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.demex_client.DemexClient.stop_market_sell">
 <code class="sig-name descname"><span class="pre">stop_market_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_market_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_market_sell" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to place a stop market sell order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop_market_sell</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">stop_price</span><span class="o">=</span><span class="s1">&#39;0.00015&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+    &#39;height&#39;: str,
+    &#39;txhash&#39;: str,
+    `&#39;raw_log&#39;: str,
+    &#39;logs&#39;: [{
+        &#39;msg_index&#39;: int,
+        &#39;log&#39;: str,
+        &#39;events&#39;: [{
+            &#39;type&#39;: str,
+            &#39;attributes&#39;: [{
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }, {
+                &#39;key&#39;: str,
+                &#39;value&#39;: str
+            }]
+        }]
+    }],
+    &#39;gas_wanted&#39;: str,
+    &#39;gas_used&#39;: str
+}
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary in the form of a JSON message with the stop market order details.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
