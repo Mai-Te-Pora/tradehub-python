@@ -1,3 +1,12 @@
+"""
+Description:
+    Demex Client for the Switcheo Tradehub decentralized exchange.
+    This is the client that you should use to start trading with Demex.
+    You will find the necessary trading functions to trade on the exchange that you would find in the UI.
+    To get started you will need to use your mnemonic to access your wallet and define the network you want to use.
+Usage:
+    from tradehub.demex_client import DemexClient
+"""
 from decimal import Decimal
 
 import tradehub.types as types
@@ -6,12 +15,53 @@ from tradehub.wallet import Wallet
 
 
 class DemexClient(object):
+    """
+    This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.
+    """
 
     def __init__(self, mnemonic: str, network: str = "testnet", trusted_ips: list = None, trusted_uris: list = None):
+        """
+        :param mnemonic: The 12 or 24 word seed required to access your wallet and trade on Demex
+        :type mnemonic: str
+        :param network: The network you want to interact with. Accepts "testnet" or "mainnet".
+        :type network: str
+        :param trusted_ips: A list of Validator IP addresses that the user trusts, providing this value bypasses the network crawler.
+        :type trusted_ips: list
+        :param trusted_uris: A list of Validator URIs that the user trusts, providing this value bypasses the network crawler.
+        :type trusted_uris: list
+        """
         self.wallet = Wallet(mnemonic=mnemonic, network=network)
         self.tradehub = TradehubAuthenticatedClient(wallet=self.wallet, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris)
 
     def limit_buy(self, pair: str, quantity: str, price: str):
+        """
+        Function to place a limit buy order on Demex.
+        Execution of this function is as follows::
+            limit_buy(pair='swth_eth1', price='0.0001')
+        The expected return result for this function is as follows::
+        {
+            'height': str,
+            'txhash': str,
+            'raw_log': str,
+            'logs': [{
+                'msg_index': int,
+                'log': str,
+                'events': [{
+                    'type': str,
+                    'attributes': [{
+                        'key': str,
+                        'value': str
+                    }, {
+                        'key': str,
+                        'value': str
+                    }]
+                }]
+            }],
+            'gas_wanted': str,
+            'gas_used': str
+        }
+        :return: Dictionary in the form of a JSON message with the limit order details.
+        """
         create_order_msg = types.CreateOrderMessage(market=pair,
                                                     side="buy",
                                                     quantity=quantity,
