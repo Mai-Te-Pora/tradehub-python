@@ -1,10 +1,10 @@
-Websocket Class - :mod:`websocket_client`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Demex Class - :mod:`demex_client`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. contents:: Table of Contents
 
 
-.. automodule:: tradehub.websocket_client
+.. automodule:: tradehub.demex_client
     :members:
     :private-members:
     :undoc-members:

@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Demex Class - demex_client &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Websocket Class - websocket_client" href="websocket_client.html" />
+    <link rel="prev" title="Public Class - public_client" href="public_client.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="clients.html">Client Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="public_client.html">Public Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">public_client</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket_client.html">Websocket Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">websocket_client</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="clients.html">Client Documentation</a> &raquo;</li>
+        
+      <li>Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/demex_client.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="demex-class-demex-client">
+<h1><a class="toc-backref" href="#id1">Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></a><a class="headerlink" href="#demex-class-demex-client" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#demex-class-demex-client" id="id1">Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></a></p></li>
+</ul>
+</div>
+<span class="target" id="module-tradehub.demex_client"></span><dl class="simple">
+<dt>Description:</dt><dd><p>Demex Client for the Switcheo Tradehub decentralized exchange.
+This is the client that you should use to start trading with Demex.
+You will find the necessary trading functions to trade on the exchange that you would find in the UI.
+To get started you will need to use your mnemonic to access your wallet and define the network you want to use.</p>
+</dd>
+<dt>Usage:</dt><dd><p>from tradehub.demex_client import DemexClient</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="tradehub.demex_client.DemexClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tradehub.demex_client.</span></code><code class="sig-name descname"><span class="pre">DemexClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mnemonic</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'testnet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_ips</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_uris</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.</p>
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.cancel_all_open_orders_for_pair">
+<code class="sig-name descname"><span class="pre">cancel_all_open_orders_for_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_all_open_orders_for_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_all_open_orders_for_pair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.cancel_order">
+<code class="sig-name descname"><span class="pre">cancel_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.cancel_orders">
+<code class="sig-name descname"><span class="pre">cancel_orders</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_ids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.cancel_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.cancel_orders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.edit_limit_order">
+<code class="sig-name descname"><span class="pre">edit_limit_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.edit_limit_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.edit_limit_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.edit_orders">
+<code class="sig-name descname"><span class="pre">edit_orders</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">orders:</span> <span class="pre">[&lt;class</span> <span class="pre">'tradehub.types.EditOrderMessage'&gt;]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.edit_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.edit_orders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.edit_stop_order">
+<code class="sig-name descname"><span class="pre">edit_stop_order</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.edit_stop_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.edit_stop_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.get_open_limit_orders">
+<code class="sig-name descname"><span class="pre">get_open_limit_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_limit_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_limit_orders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.get_open_orders">
+<code class="sig-name descname"><span class="pre">get_open_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_orders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.get_open_orders_by_pair">
+<code class="sig-name descname"><span class="pre">get_open_orders_by_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_orders_by_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_orders_by_pair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.get_open_stop_orders">
+<code class="sig-name descname"><span class="pre">get_open_stop_orders</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.get_open_stop_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.get_open_stop_orders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.limit_buy">
+<code class="sig-name descname"><span class="pre">limit_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.limit_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.limit_buy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to place a limit buy order on Demex.
+Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">limit_buy</span><span class="p">(</span><span class="n">pair</span><span class="o">=</span><span class="s1">&#39;swth_eth1&#39;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="s1">&#39;0.0001&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows::
+{</p>
+<blockquote>
+<div><p>‘height’: str,
+‘txhash’: str,
+‘raw_log’: str,
+‘logs’: [{</p>
+<blockquote>
+<div><p>‘msg_index’: int,
+‘log’: str,
+‘events’: [{</p>
+<blockquote>
+<div><p>‘type’: str,
+‘attributes’: [{</p>
+<blockquote>
+<div><p>‘key’: str,
+‘value’: str</p>
+</div></blockquote>
+<dl class="simple">
+<dt>}, {</dt><dd><p>‘key’: str,
+‘value’: str</p>
+</dd>
+</dl>
+<p>}]</p>
+</div></blockquote>
+<p>}]</p>
+</div></blockquote>
+<p>}],
+‘gas_wanted’: str,
+‘gas_used’: str</p>
+</div></blockquote>
+<p>}
+:return: Dictionary in the form of a JSON message with the limit order details.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.limit_sell">
+<code class="sig-name descname"><span class="pre">limit_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.limit_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.limit_sell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.market_buy">
+<code class="sig-name descname"><span class="pre">market_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.market_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.market_buy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.market_sell">
+<code class="sig-name descname"><span class="pre">market_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.market_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.market_sell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.stop_limit_buy">
+<code class="sig-name descname"><span class="pre">stop_limit_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_limit_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_limit_buy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.stop_limit_sell">
+<code class="sig-name descname"><span class="pre">stop_limit_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_limit_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_limit_sell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.stop_market_buy">
+<code class="sig-name descname"><span class="pre">stop_market_buy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_market_buy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_market_buy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.demex_client.DemexClient.stop_market_sell">
+<code class="sig-name descname"><span class="pre">stop_market_sell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_price</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/demex_client.html#DemexClient.stop_market_sell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.demex_client.DemexClient.stop_market_sell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="websocket_client.html" class="btn btn-neutral float-right" title="Websocket Class - websocket_client" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="public_client.html" class="btn btn-neutral float-left" title="Public Class - public_client" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
