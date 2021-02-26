@@ -351,6 +351,11 @@
 
 <span class="sd">            All updates need to be processed in the provided order to maintain an consistent orderbook.</span>
 
+<span class="sd">        .. warning::</span>
+<span class="sd">            The initial snapshot is a partial orderbook with a total of 100 entries!</span>
+<span class="sd">            Expect receiving updates for orders outside the local managed orderbook.</span>
+<span class="sd">            Ignore or reconnect to maintain the local orderbook.</span>
+
 <span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
 <span class="sd">                           identify which channel the notification is originated from.</span>
 <span class="sd">        :param market: Tradehub market identifier, e.g. &#39;swth_eth1&#39;</span>
@@ -499,7 +504,7 @@
 <span class="sd">            }</span>
 
 <span class="sd">        .. warning::</span>
-<span class="sd">            The field &#39;id&#39; is &#39;0&#39; all the time. This endpoint/channel does not seem to work correct.</span>
+<span class="sd">            The field &#39;id&#39; is sometimes &#39;0&#39;. This endpoint/channel does not seem to work correct.</span>
 
 <span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
 <span class="sd">                           identify which channel the notification is originated from.</span>
@@ -769,7 +774,7 @@
 <span class="sd">            }</span>
 
 <span class="sd">        .. warning::</span>
-<span class="sd">            The field &#39;id&#39; is &#39;0&#39; all the time. This endpoint/channel does not seem to work correct.</span>
+<span class="sd">            The field &#39;id&#39; is sometimes &#39;0&#39;. This endpoint/channel does not seem to work correct.</span>
 
 <span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
 <span class="sd">                           identify which channel the notification is originated from.</span>
@@ -785,7 +790,7 @@
         <span class="p">})</span></div>
 
 <div class="viewcode-block" id="DemexWebsocket.get_candlesticks"><a class="viewcode-back" href="../../websocket_client.html#tradehub.websocket_client.DemexWebsocket.get_candlesticks">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_candlesticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">granularity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                               <span class="n">from_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">to_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                               <span class="n">from_epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">to_epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Requests candlesticks for market with granularity.</span>
 
@@ -796,24 +801,27 @@
 <span class="sd">        The subscription and channel messages are expected as follow::</span>
 
 <span class="sd">            {</span>
-<span class="sd">                &#39;channel&#39;: &#39;candlesticks.swth_eth1.1&#39;,</span>
+<span class="sd">                &#39;id&#39;: &#39;candlesticks.swth_eth1.1&#39;,</span>
 <span class="sd">                &#39;sequence_number&#39;: 57,</span>
-<span class="sd">                &#39;result&#39;: {</span>
-<span class="sd">                    &#39;id&#39;: 0,</span>
-<span class="sd">                    &#39;market&#39;:&#39;swth_eth1&#39;,</span>
-<span class="sd">                    &#39;time&#39;: &#39;2021-02-17T10:59:00Z&#39;,</span>
-<span class="sd">                    &#39;resolution&#39;: 1,</span>
-<span class="sd">                    &#39;open&#39;: &#39;0.000018&#39;,</span>
-<span class="sd">                    &#39;close&#39;: &#39;0.000018&#39;,</span>
-<span class="sd">                    &#39;high&#39;: &#39;0.000018&#39;,</span>
-<span class="sd">                    &#39;low&#39;: &#39;0.000018&#39;,</span>
-<span class="sd">                    &#39;volume&#39;: &#39;5555&#39;,</span>
-<span class="sd">                    &#39;quote_volume&#39;: &#39;0.09999&#39;</span>
-<span class="sd">                }</span>
+<span class="sd">                &#39;result&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;id&#39;: 0,</span>
+<span class="sd">                        &#39;market&#39;:&#39;swth_eth1&#39;,</span>
+<span class="sd">                        &#39;time&#39;: &#39;2021-02-17T10:59:00Z&#39;,</span>
+<span class="sd">                        &#39;resolution&#39;: 1,</span>
+<span class="sd">                        &#39;open&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                        &#39;close&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                        &#39;high&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                        &#39;low&#39;: &#39;0.000018&#39;,</span>
+<span class="sd">                        &#39;volume&#39;: &#39;5555&#39;,</span>
+<span class="sd">                        &#39;quote_volume&#39;: &#39;0.09999&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                ]</span>
 <span class="sd">            }</span>
 
-<span class="sd">        .. warning::</span>
-<span class="sd">            This endpoint does not seem to work and results in an error message.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Only candles with non empty volume will be returned. Expect almost none or just a few candles with a low</span>
+<span class="sd">            granularity.</span>
 
 <span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
 <span class="sd">                           identify which channel the notification is originated from.</span>
@@ -830,9 +838,9 @@
             <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_candlesticks&quot;</span><span class="p">,</span>
             <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
-                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="n">granularity</span><span class="p">,</span>
-                <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="n">from_epoch</span><span class="p">,</span>
-                <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="n">to_epoch</span>
+                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">granularity</span><span class="p">),</span>
+                <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">from_epoch</span><span class="p">),</span>
+                <span class="s2">&quot;to&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">to_epoch</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">})</span></div>
 
@@ -935,9 +943,6 @@
 <span class="sd">        .. note::</span>
 <span class="sd">            The market identifier is optional and acts as a filter.</span>
 
-<span class="sd">        .. warning::</span>
-<span class="sd">            The parameter page results in an error. Do not use it(yet).</span>
-
 <span class="sd">        :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to</span>
 <span class="sd">                           identify which channel the notification is originated from.</span>
 <span class="sd">        :param swth_address: Tradehub wallet address starting with &#39;swth1&#39; for mainnet and &#39;tswth1&#39; for testnet.</span>
@@ -945,14 +950,13 @@
 <span class="sd">        :param page: Used for pagination.</span>
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO page does not work and causes an error</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">({</span>
             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">message_id</span><span class="p">,</span>
             <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;get_account_trades&quot;</span><span class="p">,</span>
             <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
                 <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
-                <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span>
+                <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">page</span><span class="p">)</span> <span class="k">if</span> <span class="n">page</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="p">}</span>
         <span class="p">})</span></div>
 
