@@ -651,18 +651,13 @@ class PublicClient(NetworkCrawlerClient):
                     "day_quote_volume":"9.2787298",
                     "index_price":"0",
                     "mark_price":"0",
-                    "last_price":"212000",
+                    "last_price":"0.00212000",
                     "market":"swth_eth1",
                     "market_type":"spot",
                     "open_interest":"0"
                 }
                 ...
             ]
-
-        .. warning::
-            Values are in human readable format EXCEPT field: "last_price":"212000" which is: 0.0000212.
-            Consider 'base_precision' and 'quote_precision' to calculate a multiplication
-            factor = 10 ^ ('base_precision' - 'quote_precision')
 
 
         :param market: Market ticker used by blockchain (eg. swth_eth1).
