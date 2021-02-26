@@ -10,6 +10,10 @@ class TestTradeHubDemexClient(APITestCase):
     def setUp(self) -> None:
         self.demex_client = DemexClient(mnemonic=TRADING_TESTNET_WALLET_MNEMONIC, network='testnet')
 
+    def checkResponse(self, response):
+        if 'code' in response:
+            self.skipTest(f"Skip test because of unknown error: {response['code']}")
+
     def test_limit_buy(self):
         expect: dict = {
             'height': str,
@@ -35,6 +39,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000091')
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_limit_sell(self):
@@ -62,6 +67,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.limit_sell(pair='swth_eth', quantity='400', price='0.0000227')
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_market_buy(self):
@@ -89,6 +95,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.market_buy(pair='swth_eth', quantity='400')
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_market_sell(self):
@@ -116,6 +123,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.market_sell(pair='swth_eth', quantity='400')
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_stop_limit_buy(self):
@@ -147,6 +155,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.stop_limit_buy(pair=pair, quantity='400', price='0.0000091', stop_price=stop_price)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_stop_limit_sell(self):
@@ -178,6 +187,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.stop_limit_sell(pair=pair, quantity='400', price='0.0000227', stop_price=stop_price)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_stop_market_buy(self):
@@ -209,6 +219,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.stop_market_buy(pair=pair, quantity='400', stop_price=stop_price)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_stop_market_sell(self):
@@ -240,6 +251,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         result: dict = self.demex_client.stop_market_sell(pair=pair, quantity='400', stop_price=stop_price)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_cancel_order(self):
@@ -261,11 +273,12 @@ class TestTradeHubDemexClient(APITestCase):
             'gas_wanted': str,
             'gas_used': str
         }
-
         time.sleep(2)
         limit_order: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order)
         order_id: str = json.loads(limit_order["logs"][0]['log'])["order"]["order_id"]
         result: dict = self.demex_client.cancel_order(order_id=order_id)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_cancel_orders(self):
@@ -290,12 +303,15 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         limit_order_1: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order_1)
         order_id_1: str = json.loads(limit_order_1["logs"][0]['log'])["order"]["order_id"]
         time.sleep(2)
         limit_order_2: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order_2)
         order_id_2: str = json.loads(limit_order_2["logs"][0]['log'])["order"]["order_id"]
         order_ids = [order_id_1, order_id_2]
         result: dict = self.demex_client.cancel_orders(order_ids=order_ids)
+        self.checkResponse(result)
         self.assertDictStructure(expect, result)
 
     def test_cancel_all_open_orders_for_pair(self):
@@ -315,9 +331,11 @@ class TestTradeHubDemexClient(APITestCase):
     def test_edit_orders(self):
         time.sleep(2)
         limit_order_1: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order_1)
         order_id_1: str = json.loads(limit_order_1["logs"][0]['log'])["order"]["order_id"]
         time.sleep(2)
         limit_order_2: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order_2)
         order_id_2: str = json.loads(limit_order_2["logs"][0]['log'])["order"]["order_id"]
 
         edit_order_1: dict = types.EditOrderMessage(id=order_id_1, quantity='500')
@@ -335,6 +353,7 @@ class TestTradeHubDemexClient(APITestCase):
     def test_edit_limit_order(self):
         time.sleep(2)
         limit_order_1: dict = self.demex_client.limit_buy(pair='swth_eth', quantity='400', price='0.0000075')
+        self.checkResponse(limit_order_1)
         order_id_1: str = json.loads(limit_order_1["logs"][0]['log'])["order"]["order_id"]
 
         time.sleep(2)
@@ -351,6 +370,7 @@ class TestTradeHubDemexClient(APITestCase):
 
         time.sleep(2)
         limit_order_1: dict = self.demex_client.stop_limit_buy(pair=pair, quantity='400', price='0.0000091', stop_price=stop_price)
+        self.checkResponse(limit_order_1)
         order_id_1: str = json.loads(limit_order_1["logs"][0]['log'])["order"]["order_id"]
 
         time.sleep(2)
