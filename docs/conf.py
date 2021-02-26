@@ -53,6 +53,7 @@ release = '0.0.1'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'autodocsumm'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

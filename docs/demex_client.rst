@@ -5,6 +5,7 @@ Demex Class - :mod:`demex_client`
 
 
 .. automodule:: tradehub.demex_client
+    :autosummary:
     :members:
     :private-members:
     :undoc-members:

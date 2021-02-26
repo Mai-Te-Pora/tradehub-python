@@ -1,5 +1,6 @@
 sphinx==3.5.1
 sphinx_rtd_theme==0.5.1
+autodocsumm==0.2.2
 
 requests==2.25.1
 ecdsa==0.16.1
