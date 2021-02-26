@@ -198,6 +198,11 @@ class DemexWebsocket:
 
             All updates need to be processed in the provided order to maintain an consistent orderbook.
 
+        .. warning::
+            The initial snapshot is a partial orderbook with a total of 100 entries!
+            Expect receiving updates for orders outside the local managed orderbook.
+            Ignore or reconnect to maintain the local orderbook.
+
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
@@ -346,7 +351,7 @@ class DemexWebsocket:
             }
 
         .. warning::
-            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
+            The field 'id' is sometimes '0'. This endpoint/channel does not seem to work correct.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -616,7 +621,7 @@ class DemexWebsocket:
             }
 
         .. warning::
-            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
+            The field 'id' is sometimes '0'. This endpoint/channel does not seem to work correct.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -632,7 +637,7 @@ class DemexWebsocket:
         })
 
     async def get_candlesticks(self, message_id: str, market: str, granularity: int,
-                               from_epoch: Optional[int] = None, to_epoch: Optional[int] = None):
+                               from_epoch: int, to_epoch: int):
         """
         Requests candlesticks for market with granularity.
 
@@ -643,24 +648,27 @@ class DemexWebsocket:
         The subscription and channel messages are expected as follow::
 
             {
-                'channel': 'candlesticks.swth_eth1.1',
+                'id': 'candlesticks.swth_eth1.1',
                 'sequence_number': 57,
-                'result': {
-                    'id': 0,
-                    'market':'swth_eth1',
-                    'time': '2021-02-17T10:59:00Z',
-                    'resolution': 1,
-                    'open': '0.000018',
-                    'close': '0.000018',
-                    'high': '0.000018',
-                    'low': '0.000018',
-                    'volume': '5555',
-                    'quote_volume': '0.09999'
-                }
+                'result': [
+                    {
+                        'id': 0,
+                        'market':'swth_eth1',
+                        'time': '2021-02-17T10:59:00Z',
+                        'resolution': 1,
+                        'open': '0.000018',
+                        'close': '0.000018',
+                        'high': '0.000018',
+                        'low': '0.000018',
+                        'volume': '5555',
+                        'quote_volume': '0.09999'
+                    }
+                ]
             }
 
-        .. warning::
-            This endpoint does not seem to work and results in an error message.
+        .. note::
+            Only candles with non empty volume will be returned. Expect almost none or just a few candles with a low
+            granularity.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
@@ -677,9 +685,9 @@ class DemexWebsocket:
             "method": "get_candlesticks",
             "params": {
                 "market": market,
-                "resolution": granularity,
-                "from": from_epoch,
-                "to": to_epoch
+                "resolution": str(granularity),
+                "from": str(from_epoch),
+                "to": str(to_epoch)
             }
         })
 
@@ -782,9 +790,6 @@ class DemexWebsocket:
         .. note::
             The market identifier is optional and acts as a filter.
 
-        .. warning::
-            The parameter page results in an error. Do not use it(yet).
-
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param swth_address: Tradehub wallet address starting with 'swth1' for mainnet and 'tswth1' for testnet.
@@ -792,14 +797,13 @@ class DemexWebsocket:
         :param page: Used for pagination.
         :return: None
         """
-        # TODO page does not work and causes an error
         await self.send({
             "id": message_id,
             "method": "get_account_trades",
             "params": {
                 "address": swth_address,
                 "market": market,
-                "page": page
+                "page": str(page) if page else None
             }
         })
 
