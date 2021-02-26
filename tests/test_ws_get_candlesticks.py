@@ -61,7 +61,8 @@ class TestWSGetCandlesticks(APITestCase):
             raise RuntimeError("Did not receive a response.")
 
         for response in self.response:
-            self.assertDictStructure(expect, response)
+            if response["result"]:
+                self.assertDictStructure(expect, response)
 
     def test_get_candlesticks_wrong_granularity(self):
         """
