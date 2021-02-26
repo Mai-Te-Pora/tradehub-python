@@ -779,9 +779,6 @@ class DemexWebsocket:
         .. note::
             The market identifier is optional and acts as a filter.
 
-        .. warning::
-            The parameter page results in an error. Do not use it(yet).
-
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param swth_address: Tradehub wallet address starting with 'swth1' for mainnet and 'tswth1' for testnet.
@@ -796,7 +793,7 @@ class DemexWebsocket:
             "params": {
                 "address": swth_address,
                 "market": market,
-                "page": page
+                "page": str(page)
             }
         })
 
