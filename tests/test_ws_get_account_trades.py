@@ -70,13 +70,26 @@ class TestWSGetAccountTrades(APITestCase):
         :return:
         """
 
-        # TODO This endpoint does not work currently
         expect: dict = {
-            'id': str,
-            'error': {
-                'code': str,
-                'message': str
-            }
+            "id": str,
+            "result": [
+                {
+                    "base_precision": int,
+                    "quote_precision": int,
+                    "fee_precision": int,
+                    "order_id": str,
+                    "market": str,
+                    "side": str,
+                    "quantity": str,
+                    "price": str,
+                    "fee_amount": str,
+                    "fee_denom": str,
+                    "address": str,
+                    "block_height": str,
+                    "block_created_at": str,
+                    "id": int
+                }
+            ]
         }
 
         # connect to websocket

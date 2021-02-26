@@ -1,4 +1,5 @@
 import asyncio
+import time
 from typing import Optional, List
 
 from tests import APITestCase, MAINNET_WS_URI, WEBSOCKET_TIMEOUT_GET_REQUEST
@@ -13,13 +14,23 @@ class TestWSGetCandlesticks(APITestCase):
         :return:
         """
 
-        # TODO This endpoint does not work currently
         expect: dict = {
             'id': str,
-            'error': {
-                'code': str,
-                'message': str
-            }
+            'sequence_number': int,
+            'result': [
+                {
+                    'id': int,
+                    'market': str,
+                    'time': str,
+                    'resolution': int,
+                    'open': str,
+                    'close': str,
+                    'high': str,
+                    'low': str,
+                    'volume': str,
+                    'quote_volume': str
+                }
+            ]
         }
 
         # connect to websocket
@@ -29,7 +40,9 @@ class TestWSGetCandlesticks(APITestCase):
 
         async def on_connect():
             for granularity in [1, 5, 15, 30, 60, 360, 1440]:
-                await client.get_candlesticks('candlesticks', "swth_eth1", granularity)
+                from_epoch = int(time.time() - granularity * 1000)
+                to_epoch = int(time.time())
+                await client.get_candlesticks('candlesticks', "eth1_usdc1", granularity, from_epoch, to_epoch)
 
         async def on_message(message: dict):
             # save response into self
