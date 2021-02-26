@@ -1,10 +1,13 @@
 """
 Description:
+
     Demex Client for the Switcheo Tradehub decentralized exchange.
     This is the client that you should use to start trading with Demex.
     You will find the necessary trading functions to trade on the exchange that you would find in the UI.
     To get started you will need to use your mnemonic to access your wallet and define the network you want to use.
-Usage:
+
+Usage::
+
     from tradehub.demex_client import DemexClient
 """
 from decimal import Decimal
@@ -18,6 +21,7 @@ class DemexClient(object):
     """
     This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.
     Execution of this function is as follows::
+
         DemexClient(mnemonic='lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore magna',
                     network='mainnet',
                     trusted_ips=None,
@@ -41,8 +45,11 @@ class DemexClient(object):
     def limit_buy(self, pair: str, quantity: str, price: str):
         """
         Function to place a limit buy order on Demex.
+
         Execution of this function is as follows::
+
             limit_buy(pair='swth_eth1', quantity=1000, price='0.0001')
+
         The expected return result for this function is as follows::
 
             {
@@ -79,8 +86,11 @@ class DemexClient(object):
     def limit_sell(self, pair: str, quantity: str, price: str):
         """
         Function to place a limit sell order on Demex.
+
         Execution of this function is as follows::
+
             limit_sell(pair='swth_eth1', quantity=1000, price='0.0002')
+
         The expected return result for this function is as follows::
 
             {
@@ -117,8 +127,11 @@ class DemexClient(object):
     def market_buy(self, pair: str, quantity: str):
         """
         Function to place a market buy order on Demex.
+
         Execution of this function is as follows::
+
             market_buy(pair='swth_eth1', quantity=1000)
+
         The expected return result for this function is as follows::
 
             {
@@ -154,8 +167,11 @@ class DemexClient(object):
     def market_sell(self, pair: str, quantity: str):
         """
         Function to place a market sell order on Demex.
+
         Execution of this function is as follows::
+
             market_sell(pair='swth_eth1', quantity=1000)
+
         The expected return result for this function is as follows::
 
             {
@@ -191,8 +207,11 @@ class DemexClient(object):
     def stop_limit_buy(self, pair: str, price: str, quantity: str, stop_price: str):
         """
         Function to place a stop limit buy order on Demex.
+
         Execution of this function is as follows::
+
             stop_limit_buy(pair='swth_eth1', quantity=1000, price='0.0001', stop_price='0.00015')
+
         The expected return result for this function is as follows::
 
             {
@@ -235,8 +254,11 @@ class DemexClient(object):
     def stop_limit_sell(self, pair: str, price: str, quantity: str, stop_price: str):
         """
         Function to place a stop limit sell order on Demex.
+
         Execution of this function is as follows::
+
             stop_limit_sell(pair='swth_eth1', quantity=1000, price='0.0002', stop_price='0.00015')
+
         The expected return result for this function is as follows::
 
             {
@@ -279,8 +301,11 @@ class DemexClient(object):
     def stop_market_buy(self, pair: str, quantity: str, stop_price: str):
         """
         Function to place a stop market buy order on Demex.
+
         Execution of this function is as follows::
+
             stop_market_buy(pair='swth_eth1', quantity=1000, stop_price='0.00015')
+
         The expected return result for this function is as follows::
 
             {
@@ -322,8 +347,11 @@ class DemexClient(object):
     def stop_market_sell(self, pair: str, quantity: str, stop_price: str):
         """
         Function to place a stop market sell order on Demex.
+
         Execution of this function is as follows::
+
             stop_market_sell(pair='swth_eth1', quantity=1000, stop_price='0.00015')
+
         The expected return result for this function is as follows::
 
             {
@@ -365,8 +393,11 @@ class DemexClient(object):
     def cancel_order(self, order_id: str):
         """
         Function to place a cancel order on Demex.
+
         Execution of this function is as follows::
+
             cancel_order(order_id='86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6')
+
         The expected return result for this function is as follows::
 
             {
@@ -399,8 +430,11 @@ class DemexClient(object):
     def cancel_orders(self, order_ids: list):
         """
         Function to place a cancel orders on Demex.
+
         Execution of this function is as follows::
+
             cancel_order(order_ids=['86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6'])
+
         The expected return result for this function is as follows::
 
             {
@@ -435,8 +469,11 @@ class DemexClient(object):
     def cancel_all_open_orders_for_pair(self, pair: str):
         """
         Function to place a cancel all open orders for a trading pair on Demex.
+
         Execution of this function is as follows::
+
             cancel_all_open_orders_for_pair(pair='swth_eth1')
+
         The expected return result for this function is as follows::
 
             {
@@ -472,10 +509,13 @@ class DemexClient(object):
     def edit_limit_order(self, order_id: str, quantity: str = None, price: str = None):
         """
         Function to edit an open limit order on Demex.
+
         Execution of this function is as follows::
+
             edit_limit_order(order_id='86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
                              quantity='10000',
                              price='0.00011')
+
         The expected return result for this function is as follows::
 
             {
@@ -513,10 +553,13 @@ class DemexClient(object):
     def edit_stop_order(self, order_id: str, quantity: str = None, price: str = None, stop_price: str = None):
         """
         Function to edit an open stop order on Demex.
+
         Execution of this function is as follows::
+
             edit_stop_order(order_id='86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
                             quantity='10000',
                             price='0.00011')
+
         The expected return result for this function is as follows::
 
             {
@@ -555,11 +598,17 @@ class DemexClient(object):
     def get_open_orders(self):
         """
         Function to get all open orders for the wallet attached to the Demex Client.
+
         Execution of this function is as follows::
+
             get_open_orders()
+
         The expected return result for this function is as follows::
 
-            ['86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6', '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6']
+            [
+                '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
+                ...
+            ]
 
         :return: List of order IDs.
         """
@@ -572,11 +621,17 @@ class DemexClient(object):
     def get_open_orders_by_pair(self, pair: str):
         """
         Function to get all open orders for a specific pair for the wallet attached to the Demex Client.
+
         Execution of this function is as follows::
+
             get_open_orders(pair='swth_eth1')
+
         The expected return result for this function is as follows::
 
-            ['86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6', '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6']
+            [
+                '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
+                ...
+            ]
 
         :return: List of order IDs.
         """
@@ -589,11 +644,17 @@ class DemexClient(object):
     def get_open_limit_orders(self):
         """
         Function to get all open limit orders for the wallet attached to the Demex Client.
+
         Execution of this function is as follows::
+
             get_open_limit_orders()
+
         The expected return result for this function is as follows::
 
-            ['86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6', '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6']
+            [
+                '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
+                ...
+            ]
 
         :return: List of order IDs.
         """
@@ -606,11 +667,17 @@ class DemexClient(object):
     def get_open_stop_orders(self):
         """
         Function to get all open stop orders for the wallet attached to the Demex Client.
+
         Execution of this function is as follows::
+
             get_open_stop_orders()
+
         The expected return result for this function is as follows::
 
-            ['86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6', '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6']
+            [
+                '86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6',
+                ...
+            ]
 
         :return: List of order IDs.
         """

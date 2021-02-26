@@ -5,6 +5,7 @@ Public Class - :mod:`public_client`
 
 
 .. automodule:: tradehub.public_client
+    :autosummary:
     :members:
     :private-members:
     :undoc-members:
