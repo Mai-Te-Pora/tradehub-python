@@ -153,14 +153,11 @@
   <h1>Source code for tradehub.demex_client</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Description:</span>
-
 <span class="sd">    Demex Client for the Switcheo Tradehub decentralized exchange.</span>
 <span class="sd">    This is the client that you should use to start trading with Demex.</span>
 <span class="sd">    You will find the necessary trading functions to trade on the exchange that you would find in the UI.</span>
 <span class="sd">    To get started you will need to use your mnemonic to access your wallet and define the network you want to use.</span>
-
-<span class="sd">Usage::</span>
-
+<span class="sd">Usage:</span>
 <span class="sd">    from tradehub.demex_client import DemexClient</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
@@ -174,7 +171,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class allows the user to interact with the Demex API to manage and trade the users Tradehub account.</span>
 <span class="sd">    Execution of this function is as follows::</span>
-
 <span class="sd">        DemexClient(mnemonic=&#39;lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore magna&#39;,</span>
 <span class="sd">                    network=&#39;mainnet&#39;,</span>
 <span class="sd">                    trusted_ips=None,</span>
@@ -198,11 +194,8 @@
 <div class="viewcode-block" id="DemexClient.limit_buy"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.limit_buy">[docs]</a>    <span class="k">def</span> <span class="nf">limit_buy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a limit buy order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            limit_buy(pair=&#39;swth_eth1&#39;, quantity=1000, price=&#39;0.0001&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -239,11 +232,8 @@
 <div class="viewcode-block" id="DemexClient.limit_sell"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.limit_sell">[docs]</a>    <span class="k">def</span> <span class="nf">limit_sell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a limit sell order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            limit_sell(pair=&#39;swth_eth1&#39;, quantity=1000, price=&#39;0.0002&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -280,11 +270,8 @@
 <div class="viewcode-block" id="DemexClient.market_buy"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.market_buy">[docs]</a>    <span class="k">def</span> <span class="nf">market_buy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a market buy order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            market_buy(pair=&#39;swth_eth1&#39;, quantity=1000)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -320,11 +307,8 @@
 <div class="viewcode-block" id="DemexClient.market_sell"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.market_sell">[docs]</a>    <span class="k">def</span> <span class="nf">market_sell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a market sell order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            market_sell(pair=&#39;swth_eth1&#39;, quantity=1000)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -360,11 +344,8 @@
 <div class="viewcode-block" id="DemexClient.stop_limit_buy"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.stop_limit_buy">[docs]</a>    <span class="k">def</span> <span class="nf">stop_limit_buy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stop_price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a stop limit buy order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            stop_limit_buy(pair=&#39;swth_eth1&#39;, quantity=1000, price=&#39;0.0001&#39;, stop_price=&#39;0.00015&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -407,11 +388,8 @@
 <div class="viewcode-block" id="DemexClient.stop_limit_sell"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.stop_limit_sell">[docs]</a>    <span class="k">def</span> <span class="nf">stop_limit_sell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stop_price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a stop limit sell order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            stop_limit_sell(pair=&#39;swth_eth1&#39;, quantity=1000, price=&#39;0.0002&#39;, stop_price=&#39;0.00015&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -454,11 +432,8 @@
 <div class="viewcode-block" id="DemexClient.stop_market_buy"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.stop_market_buy">[docs]</a>    <span class="k">def</span> <span class="nf">stop_market_buy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stop_price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a stop market buy order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            stop_market_buy(pair=&#39;swth_eth1&#39;, quantity=1000, stop_price=&#39;0.00015&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -500,11 +475,8 @@
 <div class="viewcode-block" id="DemexClient.stop_market_sell"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.stop_market_sell">[docs]</a>    <span class="k">def</span> <span class="nf">stop_market_sell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stop_price</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a stop market sell order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            stop_market_sell(pair=&#39;swth_eth1&#39;, quantity=1000, stop_price=&#39;0.00015&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -546,11 +518,8 @@
 <div class="viewcode-block" id="DemexClient.cancel_order"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.cancel_order">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a cancel order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            cancel_order(order_id=&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -583,11 +552,8 @@
 <div class="viewcode-block" id="DemexClient.cancel_orders"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.cancel_orders">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a cancel orders on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            cancel_order(order_ids=[&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;])</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -622,11 +588,8 @@
 <div class="viewcode-block" id="DemexClient.cancel_all_open_orders_for_pair"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.cancel_all_open_orders_for_pair">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_all_open_orders_for_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to place a cancel all open orders for a trading pair on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            cancel_all_open_orders_for_pair(pair=&#39;swth_eth1&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -662,13 +625,10 @@
 <div class="viewcode-block" id="DemexClient.edit_limit_order"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.edit_limit_order">[docs]</a>    <span class="k">def</span> <span class="nf">edit_limit_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to edit an open limit order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            edit_limit_order(order_id=&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
 <span class="sd">                             quantity=&#39;10000&#39;,</span>
 <span class="sd">                             price=&#39;0.00011&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -706,13 +666,10 @@
 <div class="viewcode-block" id="DemexClient.edit_stop_order"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.edit_stop_order">[docs]</a>    <span class="k">def</span> <span class="nf">edit_stop_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stop_price</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to edit an open stop order on Demex.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            edit_stop_order(order_id=&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
 <span class="sd">                            quantity=&#39;10000&#39;,</span>
 <span class="sd">                            price=&#39;0.00011&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
 <span class="sd">            {</span>
@@ -751,17 +708,11 @@
 <div class="viewcode-block" id="DemexClient.get_open_orders"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.get_open_orders">[docs]</a>    <span class="k">def</span> <span class="nf">get_open_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get all open orders for the wallet attached to the Demex Client.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            get_open_orders()</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
-<span class="sd">            [</span>
-<span class="sd">                &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
+<span class="sd">            [&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;, &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;]</span>
 
 <span class="sd">        :return: List of order IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -774,17 +725,11 @@
 <div class="viewcode-block" id="DemexClient.get_open_orders_by_pair"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.get_open_orders_by_pair">[docs]</a>    <span class="k">def</span> <span class="nf">get_open_orders_by_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pair</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get all open orders for a specific pair for the wallet attached to the Demex Client.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            get_open_orders(pair=&#39;swth_eth1&#39;)</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
-<span class="sd">            [</span>
-<span class="sd">                &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
+<span class="sd">            [&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;, &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;]</span>
 
 <span class="sd">        :return: List of order IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -797,17 +742,11 @@
 <div class="viewcode-block" id="DemexClient.get_open_limit_orders"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.get_open_limit_orders">[docs]</a>    <span class="k">def</span> <span class="nf">get_open_limit_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get all open limit orders for the wallet attached to the Demex Client.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            get_open_limit_orders()</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
-<span class="sd">            [</span>
-<span class="sd">                &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
+<span class="sd">            [&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;, &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;]</span>
 
 <span class="sd">        :return: List of order IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -820,17 +759,11 @@
 <div class="viewcode-block" id="DemexClient.get_open_stop_orders"><a class="viewcode-back" href="../../demex_client.html#tradehub.demex_client.DemexClient.get_open_stop_orders">[docs]</a>    <span class="k">def</span> <span class="nf">get_open_stop_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to get all open stop orders for the wallet attached to the Demex Client.</span>
-
 <span class="sd">        Execution of this function is as follows::</span>
-
 <span class="sd">            get_open_stop_orders()</span>
-
 <span class="sd">        The expected return result for this function is as follows::</span>
 
-<span class="sd">            [</span>
-<span class="sd">                &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;,</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
+<span class="sd">            [&#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;, &#39;86BE018C4691E1495DA439647A2246ADFB6101D6292A0C9D365AD88E4A6285B6&#39;]</span>
 
 <span class="sd">        :return: List of order IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
