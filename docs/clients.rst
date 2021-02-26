@@ -7,3 +7,4 @@ Client Documentation
    public_client
    demex_client
    websocket_client
+   wallet
