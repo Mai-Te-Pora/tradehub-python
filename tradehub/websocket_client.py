@@ -659,9 +659,6 @@ class DemexWebsocket:
                 }
             }
 
-        .. warning::
-            This endpoint does not seem to work and results in an error message.
-
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
@@ -677,9 +674,9 @@ class DemexWebsocket:
             "method": "get_candlesticks",
             "params": {
                 "market": market,
-                "resolution": granularity,
-                "from": from_epoch,
-                "to": to_epoch
+                "resolution": str(granularity),
+                "from": str(from_epoch),
+                "to": str(to_epoch)
             }
         })
 
