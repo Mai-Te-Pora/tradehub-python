@@ -168,12 +168,102 @@
 <li><p><a class="reference internal" href="#websocket-class-websocket-client" id="id1">Websocket Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">websocket_client</span></code></a></p></li>
 </ul>
 </div>
-<span class="target" id="module-tradehub.websocket_client"></span><dl class="py class">
+<span class="target" id="module-tradehub.websocket_client"></span><p><strong>Classes:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket" title="tradehub.websocket_client.DemexWebsocket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DemexWebsocket</span></code></a>(uri, ping_interval, ping_timeout)</p></td>
+<td><p>DemexWebsocket is a high-level async implementation off the official Tradehub Demex websocket and provides all functionalities described in the documentation.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
 <dt id="tradehub.websocket_client.DemexWebsocket">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tradehub.websocket_client.</span></code><code class="sig-name descname"><span class="pre">DemexWebsocket</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ping_interval</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ping_timeout</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>DemexWebsocket is a high-level async implementation off the official Tradehub Demex websocket and provides all
 functionalities described in the documentation.</p>
+<p><strong>Methods:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.connect" title="tradehub.websocket_client.DemexWebsocket.connect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect</span></code></a>(on_receive_message_callback[, …])</p></td>
+<td><p>Connect to websocket server.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.disconnect" title="tradehub.websocket_client.DemexWebsocket.disconnect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disconnect</span></code></a>()</p></td>
+<td><p>Safely close the websocket connection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_account_trades" title="tradehub.websocket_client.DemexWebsocket.get_account_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_account_trades</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Request up to 100 account trades.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_candlesticks" title="tradehub.websocket_client.DemexWebsocket.get_candlesticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_candlesticks</span></code></a>(message_id, market, …)</p></td>
+<td><p>Requests candlesticks for market with granularity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_closed_positions" title="tradehub.websocket_client.DemexWebsocket.get_closed_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_closed_positions</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Request closed positions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_leverages" title="tradehub.websocket_client.DemexWebsocket.get_leverages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_leverages</span></code></a>(message_id, swth_address[, market])</p></td>
+<td><p>Request leverages.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_market_stats" title="tradehub.websocket_client.DemexWebsocket.get_market_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_market_stats</span></code></a>(message_id[, market])</p></td>
+<td><p>Request market stats.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_open_orders" title="tradehub.websocket_client.DemexWebsocket.get_open_orders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_open_orders</span></code></a>(message_id, swth_address[, …])</p></td>
+<td><p>Request open orders.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_open_positions" title="tradehub.websocket_client.DemexWebsocket.get_open_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_open_positions</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Request open positions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_order_history" title="tradehub.websocket_client.DemexWebsocket.get_order_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_order_history</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Request up to 200 order histories.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_recent_trades" title="tradehub.websocket_client.DemexWebsocket.get_recent_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_recent_trades</span></code></a>(message_id, market)</p></td>
+<td><p>Request up  to 100 recent trades for a market.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.send" title="tradehub.websocket_client.DemexWebsocket.send"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code></a>(data)</p></td>
+<td><p>Send data to websocket server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe" title="tradehub.websocket_client.DemexWebsocket.subscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe</span></code></a>(message_id, channels)</p></td>
+<td><p>Subscribe to one or many channels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_account_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_account_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_account_trades</span></code></a>(message_id, …[, …])</p></td>
+<td><p>Subscribe to account trades.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_balances" title="tradehub.websocket_client.DemexWebsocket.subscribe_balances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_balances</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Subscribe to wallet specific balance channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_books" title="tradehub.websocket_client.DemexWebsocket.subscribe_books"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_books</span></code></a>(message_id, market)</p></td>
+<td><p>Subscribe to book channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks" title="tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_candlesticks</span></code></a>(message_id, market, …)</p></td>
+<td><p>Subscribe to candlesticks channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_leverages" title="tradehub.websocket_client.DemexWebsocket.subscribe_leverages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_leverages</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Subscribe to wallet specific leverages channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_market_stats" title="tradehub.websocket_client.DemexWebsocket.subscribe_market_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_market_stats</span></code></a>(message_id)</p></td>
+<td><p>Subscribe to market stats.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_orders" title="tradehub.websocket_client.DemexWebsocket.subscribe_orders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_orders</span></code></a>(message_id, swth_address[, …])</p></td>
+<td><p>Subscribe to orders channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_positions" title="tradehub.websocket_client.DemexWebsocket.subscribe_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_positions</span></code></a>(message_id, swth_address)</p></td>
+<td><p>Subscribe to positions channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_recent_trades</span></code></a>(message_id, market)</p></td>
+<td><p>Subscribe to recent trades.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.unsubscribe" title="tradehub.websocket_client.DemexWebsocket.unsubscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unsubscribe</span></code></a>(message_id, channels)</p></td>
+<td><p>Unsubscribe to one or many channels.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt id="tradehub.websocket_client.DemexWebsocket.connect">
 <em class="property"><span class="pre">async</span> </em><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_receive_message_callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_connect_callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_error_callback</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.connect" title="Permalink to this definition">¶</a></dt>

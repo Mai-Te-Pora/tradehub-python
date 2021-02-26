@@ -5,6 +5,7 @@ Websocket Class - :mod:`websocket_client`
 
 
 .. automodule:: tradehub.websocket_client
+    :autosummary:
     :members:
     :private-members:
     :undoc-members:
