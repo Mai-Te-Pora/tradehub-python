@@ -621,7 +621,7 @@ class DemexWebsocket:
             }
 
         .. warning::
-            The field 'id' is '0' all the time. This endpoint/channel does not seem to work correct.
+            The field 'id' is sometimes '0'. This endpoint/channel does not seem to work correct.
 
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
