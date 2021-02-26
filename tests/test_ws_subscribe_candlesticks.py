@@ -66,7 +66,8 @@ class TestWSSubscribeCandlesticks(APITestCase):
         self.assertDictStructure(expect_subscription, channel_subscription)
 
         for message in self.response[1:]:
-            self.assertDictStructure(expect, message)
+            if message["result"]:
+                self.assertDictStructure(expect, message)
 
     def test_subscribe_candlesticks_wrong_granularity(self):
         """
