@@ -74,4 +74,4 @@ class TestWSGetCandlesticks(APITestCase):
         for wrong_granularity in [0, 2, 4, 6, 100, 1500]:
             with self.assertRaises(ValueError):
                 loop = asyncio.get_event_loop()
-                loop.run_until_complete(client.get_candlesticks("candle", "swth_eth1", wrong_granularity))
+                loop.run_until_complete(client.get_candlesticks("candle", "swth_eth1", wrong_granularity, 0, 0))
