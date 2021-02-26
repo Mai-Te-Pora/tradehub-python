@@ -19,7 +19,7 @@ class TestWSSubscribeRecentTrades(APITestCase):
 
         expect: dict = {
             'channel': str,
-            'sequence_number': 812,
+            'sequence_number': int,
             'result': [
                 {
                     'id': str,
