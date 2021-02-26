@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tradehub.wallet &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/width_style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../clients.html">Client Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tradehub.wallet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tradehub.wallet</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    Wallet Class for signing, generating, and interacting with a Tradehub account.</span>
+<span class="sd">    This client is called as part of the Authenticated Client and the Demex Client.</span>
+<span class="sd">    This class is designed to generate mnemonics, convert mnemonics, private keys, public keys, and addresses.</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">    from tradehub.wallet import Wallet</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">bech32</span>
+<span class="kn">import</span> <span class="nn">ecdsa</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">hdwallets</span>
+<span class="kn">import</span> <span class="nn">mnemonic</span>
+
+<span class="kn">from</span> <span class="nn">tradehub.utils</span> <span class="kn">import</span> <span class="n">sort_and_stringify_json</span>
+
+
+<div class="viewcode-block" id="Wallet"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet">[docs]</a><span class="k">class</span> <span class="nc">Wallet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class allows the user to interact with the Demex and Tradehub wallet functions.</span>
+<span class="sd">    Execution of this function is as follows::</span>
+
+<span class="sd">        Wallet(mnemonic=&#39;lorem ipsum dolor consectetur adipiscing eiusmod tempor incididunt labore magna&#39;,</span>
+<span class="sd">               network=&#39;mainnet&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_DEFAULT_DERIVATION_PATH</span> <span class="o">=</span> <span class="s2">&quot;m/44&#39;/118&#39;/0&#39;/0/0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mnemonic</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;testnet&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param mnemonic: The 12 or 24 word seed required to access your wallet and trade on Demex</span>
+<span class="sd">        :type mnemonic: str</span>
+<span class="sd">        :param network: The network you want to interact with. Accepts &quot;testnet&quot; or &quot;mainnet&quot;.</span>
+<span class="sd">        :type network: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BECH32_PREFIX_DICT</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;main&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mainnet&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;tswth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;testnet&quot;</span><span class="p">:</span> <span class="s2">&quot;tswth&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BECH32_PREFIX</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BECH32_PREFIX_DICT</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+
+        <span class="k">if</span> <span class="n">mnemonic</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mnemonic</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mnemonic</span> <span class="o">=</span> <span class="n">mnemonic</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mnemonic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_12_word_wallet</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mnemonic_to_private_key</span><span class="p">(</span><span class="n">mnemonic_phrase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mnemonic</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_key_to_public_key</span><span class="p">(</span><span class="n">private_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base64_public_key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">public_key</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_key_to_address</span><span class="p">(</span><span class="n">private_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Wallet.generate_12_word_wallet"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.generate_12_word_wallet">[docs]</a>    <span class="k">def</span> <span class="nf">generate_12_word_wallet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to generate a 12 word mnemonic.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            generate_12_word_wallet()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            venture consider cool fury front middle junk person suit assist garbage category</span>
+
+<span class="sd">        :return: 12 word String that should be highly protected if storing any funds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mnemonic</span><span class="o">.</span><span class="n">Mnemonic</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">strength</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wallet.generate_24_word_wallet"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.generate_24_word_wallet">[docs]</a>    <span class="k">def</span> <span class="nf">generate_24_word_wallet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to generate a 24 word mnemonic.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            generate_24_word_wallet()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            refuse flag merge fiction choose dream frown gauge need fabric once pizza actual armed reopen couple family fury reopen slush blue try focus minute</span>
+
+<span class="sd">        :return: 24 word String that should be highly protected if storing any funds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mnemonic</span><span class="o">.</span><span class="n">Mnemonic</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">strength</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wallet.mnemonic_to_private_key"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.mnemonic_to_private_key">[docs]</a>    <span class="k">def</span> <span class="nf">mnemonic_to_private_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mnemonic_phrase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wallet_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DERIVATION_PATH</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the private key based on the mnemonic passed to the function.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            mnemonic_to_private_key(mnemonic_phrase=&#39;venture consider cool fury front middle junk person suit assist garbage category&#39;,</span>
+<span class="sd">                                    wallet_path=_DEFAULT_DERIVATION_PATH)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            b&#39;\x15\xcf\xdd\xdf\xead\x88\xd2y!\xdb\xb61\xa6\x98\xeeQm\x05\xed\x8d%43!\n\xccS\xcbsf\x90&#39;</span>
+
+<span class="sd">        :param mnemonic_phrase: String mnemonic phrase for a tradehub wallet.</span>
+<span class="sd">        :param wallet_path: String Derivation path to generated the private key from the mnemonic.</span>
+<span class="sd">        :return: Byte value that is equal to the private key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mnemonic_bytes</span> <span class="o">=</span> <span class="n">mnemonic</span><span class="o">.</span><span class="n">Mnemonic</span><span class="o">.</span><span class="n">to_seed</span><span class="p">(</span><span class="n">mnemonic_phrase</span><span class="p">,</span> <span class="n">passphrase</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">hd_wallet</span> <span class="o">=</span> <span class="n">hdwallets</span><span class="o">.</span><span class="n">BIP32</span><span class="o">.</span><span class="n">from_seed</span><span class="p">(</span><span class="n">mnemonic_bytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span> <span class="o">=</span> <span class="n">hd_wallet</span><span class="o">.</span><span class="n">get_privkey_from_path</span><span class="p">(</span><span class="n">wallet_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span></div>
+
+<div class="viewcode-block" id="Wallet.private_key_to_public_key"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.private_key_to_public_key">[docs]</a>    <span class="k">def</span> <span class="nf">private_key_to_public_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private_key</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the public key based on the private key passed to the function.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            private_key_to_public_key(private_key=b&#39;\x15\xcf\xdd\xdf\xead\x88\xd2y!\xdb\xb61\xa6\x98\xeeQm\x05\xed\x8d%43!\n\xccS\xcbsf\x90&#39;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            b&#39;\x02o\x1f\xfbL\x96\xe8\x1e\xb0\x12V\x80\xc7t\xfc\xb40R\xaeu\xf3{\xf6\xd7m]\xd1\xa9\x91\xa8\xe0Df&#39;</span>
+
+<span class="sd">        :param private_key: Byte representation of the wallets private key.</span>
+<span class="sd">        :return: Binary value that is equal to the public key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">privkey_obj</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">SigningKey</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">ecdsa</span><span class="o">.</span><span class="n">SECP256k1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_key_obj</span> <span class="o">=</span> <span class="n">privkey_obj</span><span class="o">.</span><span class="n">get_verifying_key</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_key_obj</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="s2">&quot;compressed&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_key</span></div>
+
+<div class="viewcode-block" id="Wallet.public_key_to_address"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.public_key_to_address">[docs]</a>    <span class="k">def</span> <span class="nf">public_key_to_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">public_key</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hrp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the readable address from the public key.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            public_key_to_address(public_key=b&#39;\x02o\x1f\xfbL\x96\xe8\x1e\xb0\x12V\x80\xc7t\xfc\xb40R\xaeu\xf3{\xf6\xd7m]\xd1\xa9\x91\xa8\xe0Df&#39;,</span>
+<span class="sd">                                  hrp=None)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            tswth1upcgussnx4p3jegwj3x2fccwlajwckkzgstrp8</span>
+
+<span class="sd">        :param public_key: Byte representation of the wallets public key.</span>
+<span class="sd">        :return: String and human readable Tradehub address.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hrp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hrp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BECH32_PREFIX</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;sha256&quot;</span><span class="p">,</span> <span class="n">public_key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;ripemd160&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+        <span class="n">five_bit_r</span> <span class="o">=</span> <span class="n">bech32</span><span class="o">.</span><span class="n">convertbits</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">five_bit_r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Unsuccessful bech32.convertbits call&quot;</span>
+        <span class="k">return</span> <span class="n">bech32</span><span class="o">.</span><span class="n">bech32_encode</span><span class="p">(</span><span class="n">hrp</span><span class="p">,</span> <span class="n">five_bit_r</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wallet.private_key_to_address"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet.private_key_to_address">[docs]</a>    <span class="k">def</span> <span class="nf">private_key_to_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">private_key</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hrp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the readable address from the private key.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            public_key_to_address(public_key=b&#39;\x15\xcf\xdd\xdf\xead\x88\xd2y!\xdb\xb61\xa6\x98\xeeQm\x05\xed\x8d%43!\n\xccS\xcbsf\x90&#39;,</span>
+<span class="sd">                                  hrp=None)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            tswth1upcgussnx4p3jegwj3x2fccwlajwckkzgstrp8</span>
+
+<span class="sd">        :param private_key: Byte representation of the wallets private key.</span>
+<span class="sd">        :return: String and human readable Tradehub address.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">hrp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hrp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_BECH32_PREFIX</span>
+        <span class="n">public_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">private_key_to_public_key</span><span class="p">(</span><span class="n">private_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_key_to_address</span><span class="p">(</span><span class="n">public_key</span><span class="o">=</span><span class="n">public_key</span><span class="p">,</span> <span class="n">hrp</span><span class="o">=</span><span class="n">hrp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wallet._sign"><a class="viewcode-back" href="../../wallet.html#tradehub.wallet.Wallet._sign">[docs]</a>    <span class="k">def</span> <span class="nf">_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to find the readable address from the public key.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            _sign(message={&#39;message&#39;: &#39;This is a Tradehub test.&#39;})</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            XP4s5fCY6UKh/dvscYsDylhYeD64WOTYohEU3QuuUygPCiQF9uFS9mHgwLaTFfFL41mdTRZclxq6CETr8bcZ5w==</span>
+
+<span class="sd">        :param message: Dictionary message to sign.</span>
+<span class="sd">        :return: Signed message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">message_str</span> <span class="o">=</span> <span class="n">sort_and_stringify_json</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">message_bytes</span> <span class="o">=</span> <span class="n">message_str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+        <span class="n">private_key</span> <span class="o">=</span> <span class="n">ecdsa</span><span class="o">.</span><span class="n">SigningKey</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_private_key</span><span class="p">,</span> <span class="n">curve</span><span class="o">=</span><span class="n">ecdsa</span><span class="o">.</span><span class="n">SECP256k1</span><span class="p">)</span>
+        <span class="n">signature_compact</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">sign_deterministic</span><span class="p">(</span>
+            <span class="n">message_bytes</span><span class="p">,</span>
+            <span class="n">hashfunc</span><span class="o">=</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">,</span>
+            <span class="n">sigencode</span><span class="o">=</span><span class="n">ecdsa</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">sigencode_string_canonize</span>
+        <span class="p">)</span>
+
+        <span class="n">signature_base64_str</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_compact</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">signature_base64_str</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
