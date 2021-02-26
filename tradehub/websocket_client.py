@@ -637,7 +637,7 @@ class DemexWebsocket:
         })
 
     async def get_candlesticks(self, message_id: str, market: str, granularity: int,
-                               from_epoch: Optional[int] = None, to_epoch: Optional[int] = None):
+                               from_epoch: int, to_epoch: int):
         """
         Requests candlesticks for market with granularity.
 
@@ -648,20 +648,22 @@ class DemexWebsocket:
         The subscription and channel messages are expected as follow::
 
             {
-                'channel': 'candlesticks.swth_eth1.1',
+                'id': 'candlesticks.swth_eth1.1',
                 'sequence_number': 57,
-                'result': {
-                    'id': 0,
-                    'market':'swth_eth1',
-                    'time': '2021-02-17T10:59:00Z',
-                    'resolution': 1,
-                    'open': '0.000018',
-                    'close': '0.000018',
-                    'high': '0.000018',
-                    'low': '0.000018',
-                    'volume': '5555',
-                    'quote_volume': '0.09999'
-                }
+                'result': [
+                    {
+                        'id': 0,
+                        'market':'swth_eth1',
+                        'time': '2021-02-17T10:59:00Z',
+                        'resolution': 1,
+                        'open': '0.000018',
+                        'close': '0.000018',
+                        'high': '0.000018',
+                        'low': '0.000018',
+                        'volume': '5555',
+                        'quote_volume': '0.09999'
+                    }
+                ]
             }
 
         .. note::
@@ -801,7 +803,7 @@ class DemexWebsocket:
             "params": {
                 "address": swth_address,
                 "market": market,
-                "page": str(page)
+                "page": str(page) if page else None
             }
         })
 
