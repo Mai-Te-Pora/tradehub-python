@@ -479,7 +479,7 @@ class DemexClient(object):
             {
                 'height': str,
                 'txhash': str,
-                `'raw_log': str,
+                'raw_log': str,
                 'logs': [{
                     'msg_index': int,
                     'log': str,
