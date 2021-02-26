@@ -659,6 +659,10 @@ class DemexWebsocket:
                 }
             }
 
+        .. note::
+            Only candles with non empty volume will be returned. Expect almost none or just a few candles with a low
+            granularity.
+
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
