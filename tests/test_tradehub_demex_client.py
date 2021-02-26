@@ -324,7 +324,7 @@ class TestTradeHubDemexClient(APITestCase):
         self.assertTrue(result)
         time.sleep(4)
         result: dict = self.demex_client.cancel_all_open_orders_for_pair(pair=pair)
-        self.assertFalse(result)
+        self.checkResponse(result)
         time.sleep(2)
         result: list = self.demex_client.get_open_orders_by_pair(pair=pair)
         self.assertFalse(result)
