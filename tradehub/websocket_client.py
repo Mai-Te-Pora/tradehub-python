@@ -198,6 +198,11 @@ class DemexWebsocket:
 
             All updates need to be processed in the provided order to maintain an consistent orderbook.
 
+        .. warning::
+            The initial snapshot is a partial orderbook with a total of 100 entries!
+            Expect receiving updates for orders outside the local managed orderbook.
+            Ignore or reconnect to maintain the local orderbook.
+
         :param message_id: Identifier that will be included in the websocket message response to allow the subscriber to
                            identify which channel the notification is originated from.
         :param market: Tradehub market identifier, e.g. 'swth_eth1'
