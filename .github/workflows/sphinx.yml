@@ -1,6 +1,8 @@
 name: GH Pages Documentation via Sphinx
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   build:
