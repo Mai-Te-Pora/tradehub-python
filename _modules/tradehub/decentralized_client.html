@@ -294,7 +294,7 @@
             <span class="c1">#     for validator in validators:</span>
             <span class="c1">#         unchecked_peers_list.append(validator[&quot;ip&quot;])</span>
 
-<div class="viewcode-block" id="NetworkCrawlerClient.validator_status_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.validator_status_request">[docs]</a>    <span class="k">def</span> <span class="nf">validator_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.validator_status_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.validator_status_request">[docs]</a>    <span class="k">def</span> <span class="nf">validator_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that makes the network requests to the Tradehub validators across the network.</span>
 
@@ -331,6 +331,7 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 
+<span class="sd">        :param validator_ip: String of the IP address to connect to.</span>
 <span class="sd">        :return: Dictionary of validators that the crawler has found with the status.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">validator_status</span> <span class="o">=</span> <span class="p">{}</span>
@@ -367,7 +368,7 @@
 
         <span class="k">return</span> <span class="n">validator_status</span></div>
 
-<div class="viewcode-block" id="NetworkCrawlerClient.parse_validator_status"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.parse_validator_status">[docs]</a>    <span class="k">def</span> <span class="nf">parse_validator_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_json</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.parse_validator_status"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.parse_validator_status">[docs]</a>    <span class="k">def</span> <span class="nf">parse_validator_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_json</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to parse each peer&#39;s JSON element and build information about each.</span>
 
@@ -395,6 +396,8 @@
 <span class="sd">                &#39;validator_voting_power&#39;: &#39;0&#39;</span>
 <span class="sd">            }</span>
 
+<span class="sd">        :param request_json: Dictionary of the return response from the validator status request.</span>
+<span class="sd">        :param validator_ip: String of the IP address to connect to.</span>
 <span class="sd">        :return: Dictionary of validator information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -423,6 +426,8 @@
 <span class="sd">        Execution of this function is as follows::</span>
 
 <span class="sd">            sentry_status_request(uri=True)</span>
+
+<span class="sd">        :param uri: Bool value for a URI or IP address.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">active_validator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_validator_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">uri</span><span class="p">:</span>
@@ -457,6 +462,9 @@
 <span class="sd">        Execution of this function is as follows::</span>
 
 <span class="sd">            websocket_status_check(ip=&#39;54.255.5.46&#39;, port=5000)</span>
+
+<span class="sd">        :param ip: String of the IP address to connect to.</span>
+<span class="sd">        :param port: Int value for the port to be checked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
@@ -474,7 +482,7 @@
     <span class="c1">#     self.sentry_status_request()</span>
     <span class="c1">#     self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]</span>
 
-<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_get_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_get_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_get_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_get_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_get_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_get_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</span>
 
@@ -482,6 +490,8 @@
 
 <span class="sd">            tradehub_get_request(path=&#39;/txs&#39;)</span>
 
+<span class="sd">        :param path: String of the path being used for the network request that is going to be made.</span>
+<span class="sd">        :param params: Dict values that will added to the get request.</span>
 <span class="sd">        :return: Dictionary of the return request based on the network path sent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -497,7 +507,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_post_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_post_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_post_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_post_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_post_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_post_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">json_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</span>
 
@@ -505,6 +515,10 @@
 
 <span class="sd">            tradehub_post_request(path=&#39;/txs&#39;)</span>
 
+<span class="sd">        :param path: String of the path being used for the network request that is going to be made.</span>
+<span class="sd">        :param data: Dict values that will added to the post request.</span>
+<span class="sd">        :param json_data: Dict values that will added to the post request.</span>
+<span class="sd">        :param params: Dict values that will added to the post request.</span>
 <span class="sd">        :return: Dictionary of the return request based on the network path sent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
