@@ -45,45 +45,51 @@ Or Using Poetry - https://python-poetry.org/
 poetry add tradehub
 ```
 
+## Documentation
+
+The documentation site can be found at: https://mai-te-pora.github.io/tradehub-python/
+
+### Examples and Tests
+
+We have provided examples and tests (unittests) for the majority of the functions available across this project. We are always looking for help with this because having tests pass has proven to be the most difficult part of this project.
+
+## Usage
+
+There are many clients to choose from and depending on your needs there are only one or two you should mainly interact with because most of these inheret from the building blocks.
+
+Traders should use the `Demex Client`
+Validators could use the `Demex Client` but combining the `Wallet` Client and `Authenticated Client` together is effectively the same.
+
 ### Demex Client
 
 This client utilizes all the other clients and can call wallet, authenticated, and public endpoints.
 
 ```
-dmx = DemexClient(mnemonic=mnemonic, network="mainnet")
-print(dmx.tradehub.get_account_details())
-dmx.limit_sell(pair="swth_eth1", quantity="200", price="0.000021"))
-dmx.limit_buy(pair="swth_eth1", quantity="200", price="0.0000165"))
-dmx.market_sell(pair="swth_eth1", quantity="200"))
-dmx.market_buy(pair="swth_eth1", quantity="200"))
+from tradehub.demex_client import DemexClient
+
+demex_crawl = DemexClient(mnemonic=mnemonic, network="mainnet", trusted_ips=None, trusted_uris=None)
+demex_ips = DemexClient(mnemonic=mnemonic, network="mainnet", trusted_ips=["54.255.5.46", "175.41.151.35"], trusted_uris=None)
+demex_uris = DemexClient(mnemonic=mnemonic, network="mainnet", trusted_ips=None, trusted_uris=["http://54.255.5.46:5001", "http://175.41.151.35:5001"])
 ```
 
-### Wallet and Tradehub Authenticated Client
+`demex_crawl` will crawl the Tradehub network for active validators to interact with. There is ~5 second startup time to perform this but if you are running a long running process this should be acceptable.
+`demex_ips` will respond very quickly as we are assuming trust and only checking that they have their persistence service turned on, can be used for quick interaction or lookups.
+`demex_uris` similar to `demex_ips`, can be used for quick interaction or lookups.
+
+#### Wallet
 
 ```
-from tradehub.authenticated_client import AuthenticatedClient as TradehubAuthenticatedClient
-from tradehub.wallet import Wallet
-mnemonic = 'ENTER'
-wallet = Wallet(mnemonic = mnemonic, network = "mainnet")
-pk = TradehubAuthenticatedClient(wallet = wallet, node_ip = validator_ip, network = "mainnet")
-
-profile_update_dict = {
-    "username": "pythonapi",
-    "twitter": "test3",
-}
-print(pk.update_profile(message = profile_update_dict))
+demex_ips.wallet.address
 ```
 
-### Tradehub Public Client
+#### Authenticated Client
 
 ```
-from tradehub.utils import validator_crawler_mp
-from tradehub.public_client import PublicClient as TradehubPublicClient
-import random
+demex_ips.tradehub.send_tokens()
+```
 
-validator_dict = validator_crawler_mp(network = 'main')
-active_peers = validator_dict["active_peers"]
-decentralized_client = TradehubPublicClient(validator_ip=active_peers[random.randint(a=0, b=len(active_peers)-1)])
+#### Public Client
 
-print(decentralized_client.get_tokens())
+```
+demex_ips.tradehub.get_all_validators()
 ```
