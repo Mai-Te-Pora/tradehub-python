@@ -141,7 +141,7 @@ class NetworkCrawlerClient(object):
             #     for validator in validators:
             #         unchecked_peers_list.append(validator["ip"])
 
-    def validator_status_request(self, validator_ip):
+    def validator_status_request(self, validator_ip: str):
         """
         Function that makes the network requests to the Tradehub validators across the network.
 
@@ -178,6 +178,7 @@ class NetworkCrawlerClient(object):
                 ]
             }
 
+        :param validator_ip: String of the IP address to connect to.
         :return: Dictionary of validators that the crawler has found with the status.
         """
         validator_status = {}
@@ -214,7 +215,7 @@ class NetworkCrawlerClient(object):
 
         return validator_status
 
-    def parse_validator_status(self, request_json, validator_ip):
+    def parse_validator_status(self, request_json: dict, validator_ip: str):
         """
         Function to parse each peer's JSON element and build information about each.
 
@@ -242,6 +243,8 @@ class NetworkCrawlerClient(object):
                 'validator_voting_power': '0'
             }
 
+        :param request_json: Dictionary of the return response from the validator status request.
+        :param validator_ip: String of the IP address to connect to.
         :return: Dictionary of validator information.
         """
         return {
@@ -270,6 +273,8 @@ class NetworkCrawlerClient(object):
         Execution of this function is as follows::
 
             sentry_status_request(uri=True)
+
+        :param uri: Bool value for a URI or IP address.
         """
         for active_validator in self.active_validator_list:
             if uri:
@@ -304,6 +309,9 @@ class NetworkCrawlerClient(object):
         Execution of this function is as follows::
 
             websocket_status_check(ip='54.255.5.46', port=5000)
+
+        :param ip: String of the IP address to connect to.
+        :param port: Int value for the port to be checked.
         """
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -321,7 +329,7 @@ class NetworkCrawlerClient(object):
     #     self.sentry_status_request()
     #     self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
 
-    def tradehub_get_request(self, path: str, params=None):
+    def tradehub_get_request(self, path: str, params: dict = None):
         """
         This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.
 
@@ -329,6 +337,8 @@ class NetworkCrawlerClient(object):
 
             tradehub_get_request(path='/txs')
 
+        :param path: String of the path being used for the network request that is going to be made.
+        :param params: Dict values that will added to the get request.
         :return: Dictionary of the return request based on the network path sent.
         """
         try:
@@ -344,7 +354,7 @@ class NetworkCrawlerClient(object):
             self.active_sentry_uri = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
             return self.tradehub_get_request(path=path, params=params)
 
-    def tradehub_post_request(self, path: str, data=None, json_data=None, params=None):
+    def tradehub_post_request(self, path: str, data: dict = None, json_data: dict = None, params: dict = None):
         """
         This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.
 
@@ -352,6 +362,10 @@ class NetworkCrawlerClient(object):
 
             tradehub_post_request(path='/txs')
 
+        :param path: String of the path being used for the network request that is going to be made.
+        :param data: Dict values that will added to the post request.
+        :param json_data: Dict values that will added to the post request.
+        :param params: Dict values that will added to the post request.
         :return: Dictionary of the return request based on the network path sent.
         """
         try:
