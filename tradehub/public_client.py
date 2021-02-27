@@ -147,6 +147,20 @@ class PublicClient(NetworkCrawlerClient):
         }
         return self.tradehub_get_request(path='/get_address', params=api_params)
 
+    def get_address_rewards(self, address: str):
+        return self.tradehub_get_request(path='/distribution/delegators/{}/rewards'.format(address))
+
+    def get_address_staking(self, address: str):
+        return self.tradehub_get_request(path='/staking/delegators/{}/delegations'.format(address))
+
+    def get_address_trades(self, limit: int = 200, pagination: bool = None, address: str = None):
+        api_params = {}
+        if pagination is not None:
+            api_params["pagination"] = pagination
+        if address is not None:
+            api_params["account"] = address
+        return self.tradehub_get_request(path='/get_trades_by_account', params=api_params)
+
     def get_all_validators(self) -> List[dict]:
         """
         Get all validators. This includes active, unbonding and unbonded validators.
@@ -270,6 +284,9 @@ class PublicClient(NetworkCrawlerClient):
             "account": swth_address
         }
         return self.tradehub_get_request(path='/get_balance', params=api_params)
+
+    def get_block(self, block_nbr: int = 1):
+        return self.tradehub_get_request(path='/blocks/{}'.format(block_nbr))
 
     def get_block_time(self) -> str:
         """
@@ -402,6 +419,9 @@ class PublicClient(NetworkCrawlerClient):
         }
         return self.tradehub_get_request(path='/candlesticks', params=api_params)
 
+    def get_commitment_curve(self):
+        return self.tradehub_get_request(path='/get_commitment_curve')
+
     def get_delegation_rewards(self, swth_address: str) -> dict:
         """
         Request delegation rewards made by a tradehub wallet.
@@ -465,6 +485,9 @@ class PublicClient(NetworkCrawlerClient):
         }
         return self.tradehub_get_request(path='/get_delegation_rewards', params=api_params)
 
+    def get_distribution_parameters(self):
+        return self.tradehub_get_request(path='/distribution/parameters')
+
     def get_external_transfers(self, swth_address: str) -> List[dict]:
         """
         Get external transfers(withdraws or deposits) from other blockchains.
@@ -513,6 +536,9 @@ class PublicClient(NetworkCrawlerClient):
         }
         return self.tradehub_get_request(path='/get_external_transfers', params=api_params)
 
+    def get_inflation_start_time(self):
+        return self.tradehub_get_request(path='/get_inflation_start_time')
+
     def get_insurance_fund_balance(self):
         """
 
@@ -524,6 +550,9 @@ class PublicClient(NetworkCrawlerClient):
         """
         # TODO result currently []
         return self.tradehub_get_request(path='/get_insurance_balance')
+
+    def get_latest_blocks(self):
+        return self.tradehub_get_request(path='/blocks/latest')
 
     def get_leverage(self, swth_address: str, market: str):
         """
@@ -542,6 +571,9 @@ class PublicClient(NetworkCrawlerClient):
             "market": market
         }
         return self.tradehub_get_request(path='/get_leverage', params=api_params)
+
+    def get_liquidity_pools(self):
+        return self.tradehub_get_request(path='/get_liquidity_pools')
 
     def get_liquidations(self, before_id: int, after_id: int, order_by: str, limit: int):
         """
@@ -1098,6 +1130,9 @@ class PublicClient(NetworkCrawlerClient):
         }
         return self.tradehub_get_request(path='/get_profile', params=api_params)
 
+    def get_reward_curve(self):
+        return self.tradehub_get_request(path='/get_reward_curve')
+
     def get_rich_list(self, token: str):
         """
 
@@ -1112,6 +1147,9 @@ class PublicClient(NetworkCrawlerClient):
             "token": token
         }
         return self.tradehub_get_request(path='/get_rich_list', params=api_params)
+
+    def get_staking_pool(self):
+        return self.tradehub_get_request(path='/staking/pool')
 
     def get_status(self) -> dict:
         """
@@ -1170,6 +1208,62 @@ class PublicClient(NetworkCrawlerClient):
         """
         return self.tradehub_get_request(path='/get_status')
 
+    def get_trades(self, market: Optional[str] = None, before_id: Optional[int] = None, after_id: Optional[int] = None,
+                   order_by: Optional[str] = None, limit: Optional[int] = None,
+                   swth_address: Optional[str] = None) -> List[dict]:
+        """
+        Get recent trades or filter trades.
+
+        Example::
+
+            public_client.get_trades()
+
+        The expected return result for this function is as follows::
+
+            [
+                {
+                    "id":"103965",
+                    "block_created_at":"2021-01-10T21:59:53.563633+01:00",
+                    "taker_id":"11DCD0B7B0A0021476B8C801FD627B297EBDBBE7436BFEEC5ADB734DCF3C9291",
+                    "taker_address":"swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz",
+                    "taker_fee_amount":"0.000007",
+                    "taker_fee_denom":"eth1",
+                    "taker_side":"buy",
+                    "maker_id":"A59962E7A61F361F7DE5BF00D7A6A8225668F449D73301FB9D3787E4C13DEE60",
+                    "maker_address":"swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5",
+                    "maker_fee_amount":"-0.0000035",
+                    "maker_fee_denom":"eth1",
+                    "maker_side":"sell",
+                    "market":"eth1_usdc1",
+                    "price":"1251.51",
+                    "quantity":"0.007",
+                    "liquidation":"",
+                    "taker_username":"devel484",
+                    "maker_username":"",
+                    "block_height":"6156871"
+                },
+                ...
+            ]
+
+
+        :param market: Market ticker used by blockchain (eg. swth_eth1).
+        :param before_id: get orders before id(exclusive).
+        :param after_id: get orders after id(exclusive).
+        :param order_by: TODO no official documentation.
+        :param limit: limit the responded result, values above 200 have no effect.
+        :param swth_address: tradehub switcheo address starting with 'swth1' on mainnet and 'tswth1' on testnet.
+        :return: List off trades as dict
+        """
+        api_params = {
+            "market": market,
+            "before_id": before_id,
+            "after_id": after_id,
+            "order_by": order_by,
+            "limit": limit,
+            "account": swth_address
+        }
+        return self.tradehub_get_request(path='/get_trades', params=api_params)
+
     def get_transaction(self, tx_hash: str):
         """
         Get a transaction by providing the hash.
@@ -1216,6 +1310,11 @@ class PublicClient(NetworkCrawlerClient):
             "hash": tx_hash
         }
         return self.tradehub_get_request(path='/get_transaction', params=api_params)
+
+    def get_transaction_log(self, transaction_hash: str):
+        api_params = {}
+        api_params["hash"] = transaction_hash
+        return self.tradehub_get_request(path='/get_tx_log', params=api_params)
 
     def get_transaction_types(self) -> List[str]:
         """
@@ -1298,6 +1397,13 @@ class PublicClient(NetworkCrawlerClient):
             "limit": limit
         }
         return self.tradehub_get_request(path='/get_transactions', params=api_params)
+
+    def get_transactions_fees(self):
+        gas_fees = self.tradehub_get_request(path='/get_txns_fees')
+        fees = {}
+        for gas_fee in gas_fees["result"]:
+            fees[gas_fee["msg_type"]] = gas_fee["fee"]
+        return fees
 
     def get_token(self, denom) -> dict:
         """
@@ -1412,69 +1518,6 @@ class PublicClient(NetworkCrawlerClient):
         # TODO responses currently not available
         return self.tradehub_get_request(path='/get_total_balances')
 
-    def get_trades(self, market: Optional[str] = None, before_id: Optional[int] = None, after_id: Optional[int] = None,
-                   order_by: Optional[str] = None, limit: Optional[int] = None,
-                   swth_address: Optional[str] = None) -> List[dict]:
-        """
-        Get recent trades or filter trades.
-
-        Example::
-
-            public_client.get_trades()
-
-        The expected return result for this function is as follows::
-
-            [
-                {
-                    "id":"103965",
-                    "block_created_at":"2021-01-10T21:59:53.563633+01:00",
-                    "taker_id":"11DCD0B7B0A0021476B8C801FD627B297EBDBBE7436BFEEC5ADB734DCF3C9291",
-                    "taker_address":"swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz",
-                    "taker_fee_amount":"0.000007",
-                    "taker_fee_denom":"eth1",
-                    "taker_side":"buy",
-                    "maker_id":"A59962E7A61F361F7DE5BF00D7A6A8225668F449D73301FB9D3787E4C13DEE60",
-                    "maker_address":"swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5",
-                    "maker_fee_amount":"-0.0000035",
-                    "maker_fee_denom":"eth1",
-                    "maker_side":"sell",
-                    "market":"eth1_usdc1",
-                    "price":"1251.51",
-                    "quantity":"0.007",
-                    "liquidation":"",
-                    "taker_username":"devel484",
-                    "maker_username":"",
-                    "block_height":"6156871"
-                },
-                ...
-            ]
-
-
-        :param market: Market ticker used by blockchain (eg. swth_eth1).
-        :param before_id: get orders before id(exclusive).
-        :param after_id: get orders after id(exclusive).
-        :param order_by: TODO no official documentation.
-        :param limit: limit the responded result, values above 200 have no effect.
-        :param swth_address: tradehub switcheo address starting with 'swth1' on mainnet and 'tswth1' on testnet.
-        :return: List off trades as dict
-        """
-        api_params = {
-            "market": market,
-            "before_id": before_id,
-            "after_id": after_id,
-            "order_by": order_by,
-            "limit": limit,
-            "account": swth_address
-        }
-        return self.tradehub_get_request(path='/get_trades', params=api_params)
-
-    def get_transactions_fees(self):
-        gas_fees = self.tradehub_get_request(path='/get_txns_fees')
-        fees = {}
-        for gas_fee in gas_fees["result"]:
-            fees[gas_fee["msg_type"]] = gas_fee["fee"]
-        return fees
-
     def get_username_check(self, username: str) -> bool:
         """
         Check if a username is taken or not.
@@ -1497,6 +1540,41 @@ class PublicClient(NetworkCrawlerClient):
             "username": username
         }
         return self.tradehub_get_request(path='/username_check', params=api_params)
+
+    def get_validator_delegations(self, operator_address):
+        return self.tradehub_get_request(path='/staking/validators/{}/delegations'.format(operator_address))
+
+    def get_validator_public_nodes(self):
+        public_nodes = {}
+        tradehub_state = self.get_tradehub_monitor()
+        for validator in tradehub_state:
+            public_nodes[validator["moniker"]] = validator["ip"]
+        return public_nodes
+
+    def get_validator_public_node_ips(self):
+        public_node_ips = []
+        nodes_dict = self.get_validator_public_nodes()
+        for key in nodes_dict.keys():
+            public_node_ips.append(nodes_dict[key])
+        return public_node_ips
+
+    def get_validator_missed_blocks(self):
+        validators_missed_blocks = {}
+        validators_signing_info = self.get_validator_signing_info()["result"]
+        for validator_signing_info in validators_signing_info:
+            validators_missed_blocks[validator_signing_info["address"]] = validator_signing_info["missed_blocks_counter"]
+        return validators_missed_blocks
+
+    def get_validator_signing_info(self, limit: int = 100):
+        api_params = {}
+        api_params["limit"] = limit
+        return self.tradehub_get_request(path='/slashing/signing_infos', params=api_params)
+
+    def get_validators(self, status=None):
+        api_params = {}
+        if status is not None and status in ["unbonding", "unbonded"]:
+            api_params["status"] = status
+        return self.tradehub_get_request(path='/staking/validators', params=api_params)
 
     def get_vault_types(self) -> list:
         """

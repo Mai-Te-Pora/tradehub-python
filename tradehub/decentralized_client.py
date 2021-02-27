@@ -55,9 +55,9 @@ class NetworkCrawlerClient(object):
             raise ValueError("Can't use both IP and URI list, only pass one option.")
 
         if trusted_ip_list or trusted_uri_list:
-            BYPASS_NETWORK_CRAWLER = True
+            self.BYPASS_NETWORK_CRAWLER = True
         else:
-            BYPASS_NETWORK_CRAWLER = False
+            self.BYPASS_NETWORK_CRAWLER = False
 
         self.is_secure = is_secure
         if self.is_secure:
@@ -69,7 +69,7 @@ class NetworkCrawlerClient(object):
         self.is_websocket_client = is_websocket_client
         self.active_ws_uri_list = []
 
-        if not BYPASS_NETWORK_CRAWLER:
+        if not self.BYPASS_NETWORK_CRAWLER:
             self.seed_peers_list = {
                 "main": ["54.255.5.46", "175.41.151.35"],
                 "mainnet": ["54.255.5.46", "175.41.151.35"],
