@@ -1,12 +1,34 @@
+"""
+Description:
+
+    Decentralized Client Class for Crawling the Tradehub network.
+    This client is the basis to all classes because it allows network calls to fail over to other nodes.
+    This class is designed to find available public nodes to interact with for API and Websocket calls.
+
+Usage::
+
+    from tradehub.decentralized_client import NetworkCrawlerClient
+"""
+
 import multiprocessing as mp
 from tradehub.utils import Request
 import random
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 import socket
-import threading
+# import threading
 
 
 class NetworkCrawlerClient(object):
+    """
+    This class crawls the Switcheo Validator network to build a list of accessible endpoints for APIs and Websockets.
+    Execution of this function is as follows::
+
+        NetworkCrawlerClient(network='mainnet',
+                             trusted_ip_list=None,
+                             trusted_uri_list=None,
+                             is_secure=False,
+                             is_websocket_client=True)
+    """
 
     def __init__(self,
                  network: str = "testnet",
@@ -14,6 +36,18 @@ class NetworkCrawlerClient(object):
                  trusted_uri_list: list = None,
                  is_secure: bool = False,
                  is_websocket_client: bool = False):
+        """
+        :param network: The network you want to interact with. Accepts "testnet" or "mainnet".
+        :type network: str
+        :param trusted_ip_list: Known and trusted IPs to connect to for your API requests.
+        :type trusted_ip_list: list
+        :param trusted_uri_list: Known and trusted URIs to connect to for your API requests.
+        :type trusted_uri_list: list
+        :param is_secure: Flag for setting secure connection on or off.
+        :type is_secure: bool
+        :param is_websocket_client: Flag for finding and setting websocket variables.
+        :type is_websocket_client: bool
+        """
         if network.lower() not in ["main", "mainnet", "test", "testnet"]:
             raise ValueError("Parameter network - {} - is not valid, requires main, mainnent, test, or testnet.".format(network))
 
@@ -71,6 +105,13 @@ class NetworkCrawlerClient(object):
             self.active_ws_ip = self.active_ws_uri.split(':')[1][2:]
 
     def validator_crawler_mp(self):
+        """
+        Crawl the Tradehub Validators to test for available API endpoints.
+
+        Execution of this function is as follows::
+
+            validator_crawler_mp()
+        """
         checked_peers_list = []
         unchecked_peers_list = list(set(self.all_peers_list) - set(checked_peers_list))
 
@@ -101,6 +142,44 @@ class NetworkCrawlerClient(object):
             #         unchecked_peers_list.append(validator["ip"])
 
     def validator_status_request(self, validator_ip):
+        """
+        Function that makes the network requests to the Tradehub validators across the network.
+
+        Execution of this function is as follows::
+
+            validator_status_request(validator_ip='54.255.5.46')
+
+        The expected return result for this function is as follows::
+
+            {
+                'moniker': 'spock',
+                'id': 'ca1189045e84d2be5db0a1ed326ce7cd56015f11',
+                'ip': '54.255.5.46',
+                'version': '0.33.7',
+                'network': 'switcheo-tradehub-1',
+                'latest_block_hash': 'DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B',
+                'latest_block_height': '7995864',
+                'latest_block_time': '2021-02-27T19:51:00.162091183Z',
+                'earliest_block_height': '1',
+                'earliest_block_time': '2020-08-14T07:32:27.856700491Z',
+                'catching_up': False,
+                'validator_address': '7091A72888509B3F3069231081621DC988D63542',
+                'validator_pub_key_type': 'tendermint/PubKeyEd25519',
+                'validator_pub_key': 'epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=',
+                'validator_voting_power': '0',
+                'validator_status': 'Active',
+                'connected_nodes': [
+                    {
+                        'node_id': 'd57a64f41487b5e421e91b71dceb0784cae57733',
+                        'node_ip': '195.201.82.228',
+                        'node_full': 'd57a64f41487b5e421e91b71dceb0784cae57733@195.201.82.228'
+                    },
+                    ...
+                ]
+            }
+
+        :return: Dictionary of validators that the crawler has found with the status.
+        """
         validator_status = {}
         try:
             process_peer = True
@@ -136,6 +215,35 @@ class NetworkCrawlerClient(object):
         return validator_status
 
     def parse_validator_status(self, request_json, validator_ip):
+        """
+        Function to parse each peer's JSON element and build information about each.
+
+        Execution of this function is as follows::
+
+            parse_validator_status(request_json='/status', validator_ip='54.255.5.46')
+
+        The expected return result for this function is as follows::
+
+            {
+                'moniker': 'spock',
+                'id': 'ca1189045e84d2be5db0a1ed326ce7cd56015f11',
+                'ip': '54.255.5.46',
+                'version': '0.33.7',
+                'network': 'switcheo-tradehub-1',
+                'latest_block_hash': 'DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B',
+                'latest_block_height': '7995864',
+                'latest_block_time': '2021-02-27T19:51:00.162091183Z',
+                'earliest_block_height': '1',
+                'earliest_block_time': '2020-08-14T07:32:27.856700491Z',
+                'catching_up': False,
+                'validator_address': '7091A72888509B3F3069231081621DC988D63542',
+                'validator_pub_key_type': 'tendermint/PubKeyEd25519',
+                'validator_pub_key': 'epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=',
+                'validator_voting_power': '0'
+            }
+
+        :return: Dictionary of validator information.
+        """
         return {
             "moniker": request_json["result"]["node_info"]["moniker"],
             "id": request_json["result"]["node_info"]["id"],
@@ -155,6 +263,14 @@ class NetworkCrawlerClient(object):
         }
 
     def sentry_status_request(self, uri: bool = False):
+        """
+        This function is here to ensure the nodes that have open network connections also have their persistence service running.
+        Many times the network connection is open for communication but the persistence service will not be on.
+
+        Execution of this function is as follows::
+
+            sentry_status_request(uri=True)
+        """
         for active_validator in self.active_validator_list:
             if uri:
                 try:
@@ -181,6 +297,14 @@ class NetworkCrawlerClient(object):
         self.active_ws_uri_list = list(dict.fromkeys(self.active_ws_uri_list))
 
     def websocket_status_check(self, ip: str, port: int = 5000):
+        """
+        Function to check if the websocket port is open for communication.
+        This is called as part of the sentry check because calling the websocket also requires the persistence service to be available.
+
+        Execution of this function is as follows::
+
+            websocket_status_check(ip='54.255.5.46', port=5000)
+        """
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             location = (ip, port)
@@ -191,13 +315,22 @@ class NetworkCrawlerClient(object):
         except socket.error:
             pass
 
-    def update_validators_and_sentries(self):
-        threading.Timer(5.0, self.update_validators_and_sentries).start()
-        self.validator_crawler_mp()
-        self.sentry_status_request()
-        self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
+    # def update_validators_and_sentries(self):
+    #     threading.Timer(5.0, self.update_validators_and_sentries).start()
+    #     self.validator_crawler_mp()
+    #     self.sentry_status_request()
+    #     self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]
 
     def tradehub_get_request(self, path: str, params=None):
+        """
+        This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.
+
+        Execution of this function is as follows::
+
+            tradehub_get_request(path='/txs')
+
+        :return: Dictionary of the return request based on the network path sent.
+        """
         try:
             req = Request(api_url=self.active_sentry_uri, timeout=2).get(path=path, params=params)
             return req
@@ -212,6 +345,15 @@ class NetworkCrawlerClient(object):
             return self.tradehub_get_request(path=path, params=params)
 
     def tradehub_post_request(self, path: str, data=None, json_data=None, params=None):
+        """
+        This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.
+
+        Execution of this function is as follows::
+
+            tradehub_post_request(path='/txs')
+
+        :return: Dictionary of the return request based on the network path sent.
+        """
         try:
             req = Request(api_url=self.active_sentry_uri, timeout=2).post(path=path, data=data, json_data=json_data, params=params)
             return req
