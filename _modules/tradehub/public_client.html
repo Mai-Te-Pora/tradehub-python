@@ -300,6 +300,20 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_address&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_address_rewards"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_address_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">get_address_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/distribution/delegators/</span><span class="si">{}</span><span class="s1">/rewards&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_address_staking"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_address_staking">[docs]</a>    <span class="k">def</span> <span class="nf">get_address_staking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/delegators/</span><span class="si">{}</span><span class="s1">/delegations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_address_trades"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_address_trades">[docs]</a>    <span class="k">def</span> <span class="nf">get_address_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">pagination</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">pagination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;pagination&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pagination</span>
+        <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;account&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_trades_by_account&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_all_validators"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_all_validators">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_validators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get all validators. This includes active, unbonding and unbonded validators.</span>
@@ -423,6 +437,9 @@
             <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="n">swth_address</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_balance&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_block"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_block">[docs]</a>    <span class="k">def</span> <span class="nf">get_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_nbr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/blocks/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">block_nbr</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_block_time"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_block_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_block_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -555,6 +572,9 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/candlesticks&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_commitment_curve"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_commitment_curve">[docs]</a>    <span class="k">def</span> <span class="nf">get_commitment_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_commitment_curve&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_delegation_rewards"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_delegation_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">get_delegation_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Request delegation rewards made by a tradehub wallet.</span>
@@ -618,6 +638,9 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_delegation_rewards&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_distribution_parameters"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_distribution_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_distribution_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/distribution/parameters&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_external_transfers"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_external_transfers">[docs]</a>    <span class="k">def</span> <span class="nf">get_external_transfers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get external transfers(withdraws or deposits) from other blockchains.</span>
@@ -666,6 +689,9 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_external_transfers&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_inflation_start_time"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_inflation_start_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_inflation_start_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_inflation_start_time&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_insurance_fund_balance"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_insurance_fund_balance">[docs]</a>    <span class="k">def</span> <span class="nf">get_insurance_fund_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -677,6 +703,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO result currently []</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_insurance_balance&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_latest_blocks"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_latest_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">get_latest_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/blocks/latest&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_leverage"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_leverage">[docs]</a>    <span class="k">def</span> <span class="nf">get_leverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -695,6 +724,9 @@
             <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_leverage&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_liquidity_pools"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_liquidity_pools">[docs]</a>    <span class="k">def</span> <span class="nf">get_liquidity_pools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_liquidity_pools&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_liquidations"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_liquidations">[docs]</a>    <span class="k">def</span> <span class="nf">get_liquidations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">after_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">order_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1251,6 +1283,9 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_profile&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_reward_curve"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_reward_curve">[docs]</a>    <span class="k">def</span> <span class="nf">get_reward_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_reward_curve&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_rich_list"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_rich_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_rich_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
@@ -1265,6 +1300,9 @@
             <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">token</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_rich_list&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_staking_pool"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_staking_pool">[docs]</a>    <span class="k">def</span> <span class="nf">get_staking_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/pool&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_status"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1323,6 +1361,62 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_status&#39;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="PublicClient.get_trades"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_trades">[docs]</a>    <span class="k">def</span> <span class="nf">get_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">before_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">after_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">order_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">swth_address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get recent trades or filter trades.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_trades()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;id&quot;:&quot;103965&quot;,</span>
+<span class="sd">                    &quot;block_created_at&quot;:&quot;2021-01-10T21:59:53.563633+01:00&quot;,</span>
+<span class="sd">                    &quot;taker_id&quot;:&quot;11DCD0B7B0A0021476B8C801FD627B297EBDBBE7436BFEEC5ADB734DCF3C9291&quot;,</span>
+<span class="sd">                    &quot;taker_address&quot;:&quot;swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz&quot;,</span>
+<span class="sd">                    &quot;taker_fee_amount&quot;:&quot;0.000007&quot;,</span>
+<span class="sd">                    &quot;taker_fee_denom&quot;:&quot;eth1&quot;,</span>
+<span class="sd">                    &quot;taker_side&quot;:&quot;buy&quot;,</span>
+<span class="sd">                    &quot;maker_id&quot;:&quot;A59962E7A61F361F7DE5BF00D7A6A8225668F449D73301FB9D3787E4C13DEE60&quot;,</span>
+<span class="sd">                    &quot;maker_address&quot;:&quot;swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5&quot;,</span>
+<span class="sd">                    &quot;maker_fee_amount&quot;:&quot;-0.0000035&quot;,</span>
+<span class="sd">                    &quot;maker_fee_denom&quot;:&quot;eth1&quot;,</span>
+<span class="sd">                    &quot;maker_side&quot;:&quot;sell&quot;,</span>
+<span class="sd">                    &quot;market&quot;:&quot;eth1_usdc1&quot;,</span>
+<span class="sd">                    &quot;price&quot;:&quot;1251.51&quot;,</span>
+<span class="sd">                    &quot;quantity&quot;:&quot;0.007&quot;,</span>
+<span class="sd">                    &quot;liquidation&quot;:&quot;&quot;,</span>
+<span class="sd">                    &quot;taker_username&quot;:&quot;devel484&quot;,</span>
+<span class="sd">                    &quot;maker_username&quot;:&quot;&quot;,</span>
+<span class="sd">                    &quot;block_height&quot;:&quot;6156871&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+
+<span class="sd">        :param market: Market ticker used by blockchain (eg. swth_eth1).</span>
+<span class="sd">        :param before_id: get orders before id(exclusive).</span>
+<span class="sd">        :param after_id: get orders after id(exclusive).</span>
+<span class="sd">        :param order_by: TODO no official documentation.</span>
+<span class="sd">        :param limit: limit the responded result, values above 200 have no effect.</span>
+<span class="sd">        :param swth_address: tradehub switcheo address starting with &#39;swth1&#39; on mainnet and &#39;tswth1&#39; on testnet.</span>
+<span class="sd">        :return: List off trades as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
+            <span class="s2">&quot;before_id&quot;</span><span class="p">:</span> <span class="n">before_id</span><span class="p">,</span>
+            <span class="s2">&quot;after_id&quot;</span><span class="p">:</span> <span class="n">after_id</span><span class="p">,</span>
+            <span class="s2">&quot;order_by&quot;</span><span class="p">:</span> <span class="n">order_by</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="n">swth_address</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_trades&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="PublicClient.get_transaction"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">get_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tx_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a transaction by providing the hash.</span>
@@ -1369,6 +1463,11 @@
             <span class="s2">&quot;hash&quot;</span><span class="p">:</span> <span class="n">tx_hash</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_transaction&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_transaction_log"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_transaction_log">[docs]</a>    <span class="k">def</span> <span class="nf">get_transaction_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction_hash</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_tx_log&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_transaction_types"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_transaction_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_transaction_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1451,6 +1550,13 @@
             <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_transactions&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_transactions_fees"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_transactions_fees">[docs]</a>    <span class="k">def</span> <span class="nf">get_transactions_fees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gas_fees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_txns_fees&#39;</span><span class="p">)</span>
+        <span class="n">fees</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">gas_fee</span> <span class="ow">in</span> <span class="n">gas_fees</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]:</span>
+            <span class="n">fees</span><span class="p">[</span><span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;msg_type&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">fees</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_token"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_token">[docs]</a>    <span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">denom</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1565,69 +1671,6 @@
         <span class="c1"># TODO responses currently not available</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_total_balances&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PublicClient.get_trades"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_trades">[docs]</a>    <span class="k">def</span> <span class="nf">get_trades</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">before_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">after_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                   <span class="n">order_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                   <span class="n">swth_address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get recent trades or filter trades.</span>
-
-<span class="sd">        Example::</span>
-
-<span class="sd">            public_client.get_trades()</span>
-
-<span class="sd">        The expected return result for this function is as follows::</span>
-
-<span class="sd">            [</span>
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;:&quot;103965&quot;,</span>
-<span class="sd">                    &quot;block_created_at&quot;:&quot;2021-01-10T21:59:53.563633+01:00&quot;,</span>
-<span class="sd">                    &quot;taker_id&quot;:&quot;11DCD0B7B0A0021476B8C801FD627B297EBDBBE7436BFEEC5ADB734DCF3C9291&quot;,</span>
-<span class="sd">                    &quot;taker_address&quot;:&quot;swth1qlue2pat9cxx2s5xqrv0ashs475n9va963h4hz&quot;,</span>
-<span class="sd">                    &quot;taker_fee_amount&quot;:&quot;0.000007&quot;,</span>
-<span class="sd">                    &quot;taker_fee_denom&quot;:&quot;eth1&quot;,</span>
-<span class="sd">                    &quot;taker_side&quot;:&quot;buy&quot;,</span>
-<span class="sd">                    &quot;maker_id&quot;:&quot;A59962E7A61F361F7DE5BF00D7A6A8225668F449D73301FB9D3787E4C13DEE60&quot;,</span>
-<span class="sd">                    &quot;maker_address&quot;:&quot;swth1wmcj8gmz4tszy5v8c0d9lxnmguqcdkw22275w5&quot;,</span>
-<span class="sd">                    &quot;maker_fee_amount&quot;:&quot;-0.0000035&quot;,</span>
-<span class="sd">                    &quot;maker_fee_denom&quot;:&quot;eth1&quot;,</span>
-<span class="sd">                    &quot;maker_side&quot;:&quot;sell&quot;,</span>
-<span class="sd">                    &quot;market&quot;:&quot;eth1_usdc1&quot;,</span>
-<span class="sd">                    &quot;price&quot;:&quot;1251.51&quot;,</span>
-<span class="sd">                    &quot;quantity&quot;:&quot;0.007&quot;,</span>
-<span class="sd">                    &quot;liquidation&quot;:&quot;&quot;,</span>
-<span class="sd">                    &quot;taker_username&quot;:&quot;devel484&quot;,</span>
-<span class="sd">                    &quot;maker_username&quot;:&quot;&quot;,</span>
-<span class="sd">                    &quot;block_height&quot;:&quot;6156871&quot;</span>
-<span class="sd">                },</span>
-<span class="sd">                ...</span>
-<span class="sd">            ]</span>
-
-
-<span class="sd">        :param market: Market ticker used by blockchain (eg. swth_eth1).</span>
-<span class="sd">        :param before_id: get orders before id(exclusive).</span>
-<span class="sd">        :param after_id: get orders after id(exclusive).</span>
-<span class="sd">        :param order_by: TODO no official documentation.</span>
-<span class="sd">        :param limit: limit the responded result, values above 200 have no effect.</span>
-<span class="sd">        :param swth_address: tradehub switcheo address starting with &#39;swth1&#39; on mainnet and &#39;tswth1&#39; on testnet.</span>
-<span class="sd">        :return: List off trades as dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
-            <span class="s2">&quot;before_id&quot;</span><span class="p">:</span> <span class="n">before_id</span><span class="p">,</span>
-            <span class="s2">&quot;after_id&quot;</span><span class="p">:</span> <span class="n">after_id</span><span class="p">,</span>
-            <span class="s2">&quot;order_by&quot;</span><span class="p">:</span> <span class="n">order_by</span><span class="p">,</span>
-            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
-            <span class="s2">&quot;account&quot;</span><span class="p">:</span> <span class="n">swth_address</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_trades&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PublicClient.get_transactions_fees"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_transactions_fees">[docs]</a>    <span class="k">def</span> <span class="nf">get_transactions_fees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">gas_fees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_txns_fees&#39;</span><span class="p">)</span>
-        <span class="n">fees</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">gas_fee</span> <span class="ow">in</span> <span class="n">gas_fees</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]:</span>
-            <span class="n">fees</span><span class="p">[</span><span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;msg_type&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">fees</span></div>
-
 <div class="viewcode-block" id="PublicClient.get_username_check"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_username_check">[docs]</a>    <span class="k">def</span> <span class="nf">get_username_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if a username is taken or not.</span>
@@ -1650,6 +1693,41 @@
             <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/username_check&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validator_delegations"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validator_delegations">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_delegations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator_address</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/validators/</span><span class="si">{}</span><span class="s1">/delegations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operator_address</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validator_public_nodes"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validator_public_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_public_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">public_nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tradehub_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tradehub_monitor</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">tradehub_state</span><span class="p">:</span>
+            <span class="n">public_nodes</span><span class="p">[</span><span class="n">validator</span><span class="p">[</span><span class="s2">&quot;moniker&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validator</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">public_nodes</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validator_public_node_ips"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validator_public_node_ips">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_public_node_ips</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">public_node_ips</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nodes_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_validator_public_nodes</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nodes_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">public_node_ips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">public_node_ips</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validator_missed_blocks"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validator_missed_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_missed_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">validators_missed_blocks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">validators_signing_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_validator_signing_info</span><span class="p">()[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">validator_signing_info</span> <span class="ow">in</span> <span class="n">validators_signing_info</span><span class="p">:</span>
+            <span class="n">validators_missed_blocks</span><span class="p">[</span><span class="n">validator_signing_info</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validator_signing_info</span><span class="p">[</span><span class="s2">&quot;missed_blocks_counter&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">validators_missed_blocks</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validator_signing_info"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validator_signing_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_signing_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/slashing/signing_infos&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicClient.get_validators"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_validators">[docs]</a>    <span class="k">def</span> <span class="nf">get_validators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;unbonding&quot;</span><span class="p">,</span> <span class="s2">&quot;unbonded&quot;</span><span class="p">]:</span>
+            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/validators&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PublicClient.get_vault_types"><a class="viewcode-back" href="../../public_client.html#tradehub.public_client.PublicClient.get_vault_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_vault_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
