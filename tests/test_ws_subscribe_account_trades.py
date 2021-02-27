@@ -1,4 +1,6 @@
 import asyncio
+from typing import List
+
 from tradehub.websocket_client import DemexWebsocket
 from tests import APITestCase, MAINNET_WS_URI, WALLET_SWTH_ETH1_AMM, WEBSOCKET_TIMEOUT_SUBSCRIPTION
 
@@ -16,30 +18,24 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         expect: dict = {
-            "id": str,
-            "sequence_number": int,
+            "channel": str,
             "result": [
                 {
-                    "id": str,
-                    "block_created_at": str,
-                    "taker_id": str,
-                    "taker_address": str,
-                    "taker_fee_amount": str,
-                    "taker_fee_denom": str,
-                    "taker_side": str,
-                    "maker_id": str,
-                    "maker_address": str,
-                    "maker_fee_amount": str,
-                    "maker_fee_denom": str,
-                    "maker_side": str,
-                    "market": str,
-                    "price": str,
-                    "quantity": str,
-                    "liquidation": str,
-                    "taker_username": str,
-                    "maker_username": str,
-                    "block_height": str
-                },
+                    'base_precision': int,
+                    'quote_precision': int,
+                    'fee_precision': int,
+                    'order_id': str,
+                    'market': str,
+                    'side': str,
+                    'quantity': str,
+                    'price': str,
+                    'fee_amount': str,
+                    'fee_denom': str,
+                    'address': str,
+                    'block_height': str,
+                    'block_created_at': str,
+                    'id': int
+                }
             ]
         }
 
@@ -89,30 +85,24 @@ class TestWSSubscribeAccountTrades(APITestCase):
         }
 
         expect: dict = {
-            "id": str,
-            "sequence_number": int,
+            "channel": str,
             "result": [
                 {
-                    "id": str,
-                    "block_created_at": str,
-                    "taker_id": str,
-                    "taker_address": str,
-                    "taker_fee_amount": str,
-                    "taker_fee_denom": str,
-                    "taker_side": str,
-                    "maker_id": str,
-                    "maker_address": str,
-                    "maker_fee_amount": str,
-                    "maker_fee_denom": str,
-                    "maker_side": str,
-                    "market": str,
-                    "price": str,
-                    "quantity": str,
-                    "liquidation": str,
-                    "taker_username": str,
-                    "maker_username": str,
-                    "block_height": str
-                },
+                    'base_precision': int,
+                    'quote_precision': int,
+                    'fee_precision': int,
+                    'order_id': str,
+                    'market': str,
+                    'side': str,
+                    'quantity': str,
+                    'price': str,
+                    'fee_amount': str,
+                    'fee_denom': str,
+                    'address': str,
+                    'block_height': str,
+                    'block_created_at': str,
+                    'id': int
+                }
             ]
         }
 
