@@ -8,3 +8,4 @@ Client Documentation
    demex_client
    websocket_client
    wallet
+   decentralized_client

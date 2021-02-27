@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="demex_client.html">Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="websocket_client.html">Websocket Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">websocket_client</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="wallet.html">Wallet Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">wallet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="decentralized_client.html">Decentralized Network Crawler - <code class="xref py py-mod docutils literal notranslate"><span class="pre">decentralized_client</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -185,7 +186,7 @@
 <dl class="py class">
 <dt id="tradehub.public_client.PublicClient">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tradehub.public_client.</span></code><code class="sig-name descname"><span class="pre">PublicClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'testnet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_ips</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_uris</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_websocket_client</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_client.html#PublicClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_client.PublicClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tradehub.decentralized_client.NetworkCrawlerClient</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient" title="tradehub.decentralized_client.NetworkCrawlerClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">tradehub.decentralized_client.NetworkCrawlerClient</span></code></a></p>
 <p>This class allows the user to interact with the TradeScan API including information
 available with validators, tokens, delegators, addresses, and blockchain stats.</p>
 <p><strong>Methods:</strong></p>
@@ -343,28 +344,25 @@ available with validators, tokens, delegators, addresses, and blockchain stats.<
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.parse_validator_status" title="tradehub.public_client.PublicClient.parse_validator_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_validator_status</span></code></a>(request_json, …)</p></td>
-<td><p></p></td>
+<td><p>Function to parse each peer’s JSON element and build information about each.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.sentry_status_request" title="tradehub.public_client.PublicClient.sentry_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sentry_status_request</span></code></a>([uri])</p></td>
-<td><p></p></td>
+<td><p>This function is here to ensure the nodes that have open network connections also have their persistence service running.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.tradehub_get_request" title="tradehub.public_client.PublicClient.tradehub_get_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tradehub_get_request</span></code></a>(path[, params])</p></td>
-<td><p></p></td>
+<td><p>This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.tradehub_post_request" title="tradehub.public_client.PublicClient.tradehub_post_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tradehub_post_request</span></code></a>(path[, data, …])</p></td>
-<td><p></p></td>
+<td><p>This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.update_validators_and_sentries" title="tradehub.public_client.PublicClient.update_validators_and_sentries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_validators_and_sentries</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.validator_crawler_mp" title="tradehub.public_client.PublicClient.validator_crawler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_crawler_mp</span></code></a>()</p></td>
+<td><p>Crawl the Tradehub Validators to test for available API endpoints.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.validator_crawler_mp" title="tradehub.public_client.PublicClient.validator_crawler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_crawler_mp</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.validator_status_request" title="tradehub.public_client.PublicClient.validator_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_status_request</span></code></a>(validator_ip)</p></td>
+<td><p>Function that makes the network requests to the Tradehub validators across the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.validator_status_request" title="tradehub.public_client.PublicClient.validator_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_status_request</span></code></a>(validator_ip)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.websocket_status_check" title="tradehub.public_client.PublicClient.websocket_status_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">websocket_status_check</span></code></a>(ip[, port])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_client.PublicClient.websocket_status_check" title="tradehub.public_client.PublicClient.websocket_status_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">websocket_status_check</span></code></a>(ip[, port])</p></td>
+<td><p>Function to check if the websocket port is open for communication.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1897,42 +1895,143 @@ Parameter ‘market’ is NOT required, but strongly recommended. The return res
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.parse_validator_status">
 <code class="sig-name descname"><span class="pre">parse_validator_status</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator_ip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.parse_validator_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to parse each peer’s JSON element and build information about each.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parse_validator_status</span><span class="p">(</span><span class="n">request_json</span><span class="o">=</span><span class="s1">&#39;/status&#39;</span><span class="p">,</span> <span class="n">validator_ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;moniker&#39;</span><span class="p">:</span> <span class="s1">&#39;spock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ip&#39;</span><span class="p">:</span> <span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.33.7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="s1">&#39;switcheo-tradehub-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7995864&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-27T19:51:00.162091183Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-14T07:32:27.856700491Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;catching_up&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;validator_address&#39;</span><span class="p">:</span> <span class="s1">&#39;7091A72888509B3F3069231081621DC988D63542&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key_type&#39;</span><span class="p">:</span> <span class="s1">&#39;tendermint/PubKeyEd25519&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key&#39;</span><span class="p">:</span> <span class="s1">&#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_voting_power&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of validator information.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.sentry_status_request">
 <code class="sig-name descname"><span class="pre">sentry_status_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.sentry_status_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function is here to ensure the nodes that have open network connections also have their persistence service running.
+Many times the network connection is open for communication but the persistence service will not be on.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentry_status_request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.tradehub_get_request">
 <code class="sig-name descname"><span class="pre">tradehub_get_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.tradehub_get_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/txs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of the return request based on the network path sent.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.tradehub_post_request">
 <code class="sig-name descname"><span class="pre">tradehub_post_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.tradehub_post_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="tradehub.public_client.PublicClient.update_validators_and_sentries">
-<code class="sig-name descname"><span class="pre">update_validators_and_sentries</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.update_validators_and_sentries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tradehub_post_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/txs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of the return request based on the network path sent.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.validator_crawler_mp">
 <code class="sig-name descname"><span class="pre">validator_crawler_mp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.validator_crawler_mp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Crawl the Tradehub Validators to test for available API endpoints.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">validator_crawler_mp</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.validator_status_request">
 <code class="sig-name descname"><span class="pre">validator_status_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validator_ip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.validator_status_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function that makes the network requests to the Tradehub validators across the network.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">validator_status_request</span><span class="p">(</span><span class="n">validator_ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;moniker&#39;</span><span class="p">:</span> <span class="s1">&#39;spock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ip&#39;</span><span class="p">:</span> <span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.33.7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="s1">&#39;switcheo-tradehub-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7995864&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-27T19:51:00.162091183Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-14T07:32:27.856700491Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;catching_up&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;validator_address&#39;</span><span class="p">:</span> <span class="s1">&#39;7091A72888509B3F3069231081621DC988D63542&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key_type&#39;</span><span class="p">:</span> <span class="s1">&#39;tendermint/PubKeyEd25519&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key&#39;</span><span class="p">:</span> <span class="s1">&#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_voting_power&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_status&#39;</span><span class="p">:</span> <span class="s1">&#39;Active&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;connected_nodes&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="s1">&#39;d57a64f41487b5e421e91b71dceb0784cae57733&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;node_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;195.201.82.228&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;node_full&#39;</span><span class="p">:</span> <span class="s1">&#39;d57a64f41487b5e421e91b71dceb0784cae57733@195.201.82.228&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of validators that the crawler has found with the status.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="tradehub.public_client.PublicClient.websocket_status_check">
 <code class="sig-name descname"><span class="pre">websocket_status_check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_client.PublicClient.websocket_status_check" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Function to check if the websocket port is open for communication.
+This is called as part of the sentry check because calling the websocket also requires the persistence service to be available.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">websocket_status_check</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd></dl>
 

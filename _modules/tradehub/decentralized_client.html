@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -13,6 +13,7 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/width_style.css" type="text/css" />
 
   
   
@@ -29,10 +30,9 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -151,15 +151,37 @@
            <div itemprop="articleBody">
             
   <h1>Source code for tradehub.decentralized_client</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    Decentralized Client Class for Crawling the Tradehub network.</span>
+<span class="sd">    This client is the basis to all classes because it allows network calls to fail over to other nodes.</span>
+<span class="sd">    This class is designed to find available public nodes to interact with for API and Websocket calls.</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">    from tradehub.decentralized_client import NetworkCrawlerClient</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">from</span> <span class="nn">tradehub.utils</span> <span class="kn">import</span> <span class="n">Request</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span><span class="p">,</span> <span class="n">HTTPError</span><span class="p">,</span> <span class="n">Timeout</span>
 <span class="kn">import</span> <span class="nn">socket</span>
-<span class="kn">import</span> <span class="nn">threading</span>
+<span class="c1"># import threading</span>
 
 
-<span class="k">class</span> <span class="nc">NetworkCrawlerClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient">[docs]</a><span class="k">class</span> <span class="nc">NetworkCrawlerClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class crawls the Switcheo Validator network to build a list of accessible endpoints for APIs and Websockets.</span>
+<span class="sd">    Execution of this function is as follows::</span>
+
+<span class="sd">        NetworkCrawlerClient(network=&#39;mainnet&#39;,</span>
+<span class="sd">                             trusted_ip_list=None,</span>
+<span class="sd">                             trusted_uri_list=None,</span>
+<span class="sd">                             is_secure=False,</span>
+<span class="sd">                             is_websocket_client=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;testnet&quot;</span><span class="p">,</span>
@@ -167,6 +189,18 @@
                  <span class="n">trusted_uri_list</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">is_secure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">is_websocket_client</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param network: The network you want to interact with. Accepts &quot;testnet&quot; or &quot;mainnet&quot;.</span>
+<span class="sd">        :type network: str</span>
+<span class="sd">        :param trusted_ip_list: Known and trusted IPs to connect to for your API requests.</span>
+<span class="sd">        :type trusted_ip_list: list</span>
+<span class="sd">        :param trusted_uri_list: Known and trusted URIs to connect to for your API requests.</span>
+<span class="sd">        :type trusted_uri_list: list</span>
+<span class="sd">        :param is_secure: Flag for setting secure connection on or off.</span>
+<span class="sd">        :type is_secure: bool</span>
+<span class="sd">        :param is_websocket_client: Flag for finding and setting websocket variables.</span>
+<span class="sd">        :type is_websocket_client: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="s2">&quot;mainnet&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;testnet&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameter network - </span><span class="si">{}</span><span class="s2"> - is not valid, requires main, mainnent, test, or testnet.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">network</span><span class="p">))</span>
 
@@ -223,7 +257,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">:]</span>
 
-    <span class="k">def</span> <span class="nf">validator_crawler_mp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.validator_crawler_mp"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.validator_crawler_mp">[docs]</a>    <span class="k">def</span> <span class="nf">validator_crawler_mp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crawl the Tradehub Validators to test for available API endpoints.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            validator_crawler_mp()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">checked_peers_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">unchecked_peers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_peers_list</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">checked_peers_list</span><span class="p">))</span>
 
@@ -245,7 +286,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">all_peers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_peers_list</span><span class="p">))</span>
             <span class="n">checked_peers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">checked_peers_list</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_validator_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_validator_list</span><span class="p">))</span>
-            <span class="n">unchecked_peers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_peers_list</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">checked_peers_list</span><span class="p">))</span>
+            <span class="n">unchecked_peers_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_peers_list</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">checked_peers_list</span><span class="p">))</span></div>
 
             <span class="c1"># If the initial peers do not return any reults, query Tradescan API.</span>
             <span class="c1"># if not self.active_peers_list:</span>
@@ -253,7 +294,45 @@
             <span class="c1">#     for validator in validators:</span>
             <span class="c1">#         unchecked_peers_list.append(validator[&quot;ip&quot;])</span>
 
-    <span class="k">def</span> <span class="nf">validator_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.validator_status_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.validator_status_request">[docs]</a>    <span class="k">def</span> <span class="nf">validator_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function that makes the network requests to the Tradehub validators across the network.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            validator_status_request(validator_ip=&#39;54.255.5.46&#39;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;moniker&#39;: &#39;spock&#39;,</span>
+<span class="sd">                &#39;id&#39;: &#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;,</span>
+<span class="sd">                &#39;ip&#39;: &#39;54.255.5.46&#39;,</span>
+<span class="sd">                &#39;version&#39;: &#39;0.33.7&#39;,</span>
+<span class="sd">                &#39;network&#39;: &#39;switcheo-tradehub-1&#39;,</span>
+<span class="sd">                &#39;latest_block_hash&#39;: &#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;,</span>
+<span class="sd">                &#39;latest_block_height&#39;: &#39;7995864&#39;,</span>
+<span class="sd">                &#39;latest_block_time&#39;: &#39;2021-02-27T19:51:00.162091183Z&#39;,</span>
+<span class="sd">                &#39;earliest_block_height&#39;: &#39;1&#39;,</span>
+<span class="sd">                &#39;earliest_block_time&#39;: &#39;2020-08-14T07:32:27.856700491Z&#39;,</span>
+<span class="sd">                &#39;catching_up&#39;: False,</span>
+<span class="sd">                &#39;validator_address&#39;: &#39;7091A72888509B3F3069231081621DC988D63542&#39;,</span>
+<span class="sd">                &#39;validator_pub_key_type&#39;: &#39;tendermint/PubKeyEd25519&#39;,</span>
+<span class="sd">                &#39;validator_pub_key&#39;: &#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;,</span>
+<span class="sd">                &#39;validator_voting_power&#39;: &#39;0&#39;,</span>
+<span class="sd">                &#39;validator_status&#39;: &#39;Active&#39;,</span>
+<span class="sd">                &#39;connected_nodes&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;node_id&#39;: &#39;d57a64f41487b5e421e91b71dceb0784cae57733&#39;,</span>
+<span class="sd">                        &#39;node_ip&#39;: &#39;195.201.82.228&#39;,</span>
+<span class="sd">                        &#39;node_full&#39;: &#39;d57a64f41487b5e421e91b71dceb0784cae57733@195.201.82.228&#39;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    ...</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :return: Dictionary of validators that the crawler has found with the status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">validator_status</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">process_peer</span> <span class="o">=</span> <span class="kc">True</span>
@@ -286,9 +365,38 @@
                 <span class="n">validator_status</span><span class="p">[</span><span class="s2">&quot;validator_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Active&quot;</span>
                 <span class="n">validator_status</span><span class="p">[</span><span class="s2">&quot;connected_nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connected_nodes</span>
 
-        <span class="k">return</span> <span class="n">validator_status</span>
+        <span class="k">return</span> <span class="n">validator_status</span></div>
 
-    <span class="k">def</span> <span class="nf">parse_validator_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_json</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.parse_validator_status"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.parse_validator_status">[docs]</a>    <span class="k">def</span> <span class="nf">parse_validator_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_json</span><span class="p">,</span> <span class="n">validator_ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to parse each peer&#39;s JSON element and build information about each.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            parse_validator_status(request_json=&#39;/status&#39;, validator_ip=&#39;54.255.5.46&#39;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;moniker&#39;: &#39;spock&#39;,</span>
+<span class="sd">                &#39;id&#39;: &#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;,</span>
+<span class="sd">                &#39;ip&#39;: &#39;54.255.5.46&#39;,</span>
+<span class="sd">                &#39;version&#39;: &#39;0.33.7&#39;,</span>
+<span class="sd">                &#39;network&#39;: &#39;switcheo-tradehub-1&#39;,</span>
+<span class="sd">                &#39;latest_block_hash&#39;: &#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;,</span>
+<span class="sd">                &#39;latest_block_height&#39;: &#39;7995864&#39;,</span>
+<span class="sd">                &#39;latest_block_time&#39;: &#39;2021-02-27T19:51:00.162091183Z&#39;,</span>
+<span class="sd">                &#39;earliest_block_height&#39;: &#39;1&#39;,</span>
+<span class="sd">                &#39;earliest_block_time&#39;: &#39;2020-08-14T07:32:27.856700491Z&#39;,</span>
+<span class="sd">                &#39;catching_up&#39;: False,</span>
+<span class="sd">                &#39;validator_address&#39;: &#39;7091A72888509B3F3069231081621DC988D63542&#39;,</span>
+<span class="sd">                &#39;validator_pub_key_type&#39;: &#39;tendermint/PubKeyEd25519&#39;,</span>
+<span class="sd">                &#39;validator_pub_key&#39;: &#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;,</span>
+<span class="sd">                &#39;validator_voting_power&#39;: &#39;0&#39;</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :return: Dictionary of validator information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;moniker&quot;</span><span class="p">:</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;node_info&quot;</span><span class="p">][</span><span class="s2">&quot;moniker&quot;</span><span class="p">],</span>
             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;node_info&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
@@ -305,9 +413,17 @@
             <span class="s2">&quot;validator_pub_key_type&quot;</span><span class="p">:</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;validator_info&quot;</span><span class="p">][</span><span class="s2">&quot;pub_key&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
             <span class="s2">&quot;validator_pub_key&quot;</span><span class="p">:</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;validator_info&quot;</span><span class="p">][</span><span class="s2">&quot;pub_key&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
             <span class="s2">&quot;validator_voting_power&quot;</span><span class="p">:</span> <span class="n">request_json</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;validator_info&quot;</span><span class="p">][</span><span class="s2">&quot;voting_power&quot;</span><span class="p">]</span>
-        <span class="p">}</span>
+        <span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">sentry_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.sentry_status_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.sentry_status_request">[docs]</a>    <span class="k">def</span> <span class="nf">sentry_status_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function is here to ensure the nodes that have open network connections also have their persistence service running.</span>
+<span class="sd">        Many times the network connection is open for communication but the persistence service will not be on.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            sentry_status_request(uri=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">active_validator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_validator_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">uri</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -331,9 +447,17 @@
                         <span class="k">pass</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">websocket_status_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.websocket_status_check"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.websocket_status_check">[docs]</a>    <span class="k">def</span> <span class="nf">websocket_status_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to check if the websocket port is open for communication.</span>
+<span class="sd">        This is called as part of the sentry check because calling the websocket also requires the persistence service to be available.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            websocket_status_check(ip=&#39;54.255.5.46&#39;, port=5000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
             <span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
@@ -342,15 +466,24 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">active_ws_uri_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">/ws&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ws_string</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
             <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="k">pass</span></div>
 
-    <span class="k">def</span> <span class="nf">update_validators_and_sentries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_validators_and_sentries</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validator_crawler_mp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sentry_status_request</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_ip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="c1"># def update_validators_and_sentries(self):</span>
+    <span class="c1">#     threading.Timer(5.0, self.update_validators_and_sentries).start()</span>
+    <span class="c1">#     self.validator_crawler_mp()</span>
+    <span class="c1">#     self.sentry_status_request()</span>
+    <span class="c1">#     self.active_sentry_api_ip = self.active_sentry_api_list[random.randint(a=0, b=len(self.active_sentry_api_list)-1)]</span>
 
-    <span class="k">def</span> <span class="nf">tradehub_get_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_get_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_get_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_get_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            tradehub_get_request(path=&#39;/txs&#39;)</span>
+
+<span class="sd">        :return: Dictionary of the return request based on the network path sent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">api_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_uri</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">req</span>
@@ -362,9 +495,18 @@
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">BYPASS_NETWORK_CRAWLER</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided Sentry API IP addresses are not responding.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">tradehub_post_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkCrawlerClient.tradehub_post_request"><a class="viewcode-back" href="../../decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient.tradehub_post_request">[docs]</a>    <span class="k">def</span> <span class="nf">tradehub_post_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            tradehub_post_request(path=&#39;/txs&#39;)</span>
+
+<span class="sd">        :return: Dictionary of the return request based on the network path sent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">api_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_uri</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">req</span>
@@ -376,7 +518,7 @@
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">BYPASS_NETWORK_CRAWLER</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided Sentry API IP addresses are not responding.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_sentry_api_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_post_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_post_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
