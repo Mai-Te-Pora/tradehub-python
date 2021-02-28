@@ -71,6 +71,8 @@ Transactions Client</br>
 :arrow_up:</br>
 Public Client</br>
 :arrow_up:</br>
+Public Blockchain Client</br>
+:arrow_up:</br>
 Network Crawler Client</br>
 </p>
 

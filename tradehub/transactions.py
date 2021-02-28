@@ -10,7 +10,7 @@ Usage::
 """
 import jsons
 
-from tradehub.public_client import PublicClient as TradehubPublicClient
+from tradehub.public_account_client import PublicClient as TradehubPublicClient
 import tradehub.types as types
 from tradehub.wallet import Wallet
 
