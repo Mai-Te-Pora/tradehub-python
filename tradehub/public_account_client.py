@@ -8,7 +8,8 @@ class PublicClient(PublicBlockchainClient):
     available with validators, tokens, delegators, addresses, and blockchain stats.
     """
 
-    def __init__(self, network: str = "testnet", trusted_ips: Union[None, list] = None, trusted_uris: Union[None, list] = None, is_websocket_client: bool = False):
+    def __init__(self, network: str = "testnet", trusted_ips: Union[None, list] = None,
+                 trusted_uris: Union[None, list] = None, is_websocket_client: bool = False):
         """
         Create a public client using IP:Port or URI format.
 
@@ -19,14 +20,29 @@ class PublicClient(PublicBlockchainClient):
 
             public_client = PublicClient(trusted_uris=["https://tradehub-api-server.network/"])
 
-        :param node_ip: ip address off a tradehub node.
-        :param node_port: prt off a tradehub node, default 5001.
-        :param uri: URI address off tradehub node.
+        :param network: Define the used network: "mainnet" or "testnet"
+        :param trusted_ips: ip addresses of trusted tradehub nodes.
+        :param trusted_uris: uris addresses of trusted tradehub nodes.
+        :param is_websocket_client: if this connection is a websocket client.
         """
         PublicBlockchainClient.__init__(self, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris, is_websocket_client=is_websocket_client)
 
     def check_username(self, username: str) -> dict:
         """
+        Check if a username is taken or not.
+
+        Example::
+
+            # wallet behind Devel And Co validator
+            public_client.get_account("devel484")
+
+        The expected return result for this function is as follows::
+
+            true
+
+        .. warning::
+
+            This Endpoint returns the result just as bool and not as json format.
 
         :param username:
         :return:
@@ -108,6 +124,23 @@ class PublicClient(PublicBlockchainClient):
 
     def get_active_wallets(self, token: str) -> int:
         """
+        Get active switcheo tradehub accounts.
+
+        Example::
+
+            public_client.get_active_wallets("swth")
+
+        The expected return result for this function is as follows::
+
+            "3019"
+
+        .. warning::
+
+            This Endpoint return just a string and not a json format!
+
+        .. warning::
+
+            This endpoint return just '0' if the provided denom/token is not available.
 
         :param token:
         :return active_wallet_cnt:
@@ -150,12 +183,49 @@ class PublicClient(PublicBlockchainClient):
     def get_address_staking(self, address: str):
         return self.tradehub_get_request(path='/staking/delegators/{}/delegations'.format(address))
 
-    def get_address_trades(self, limit: int = 200, pagination: bool = None, address: str = None):
-        api_params = {}
-        if pagination is not None:
-            api_params["pagination"] = pagination
-        if address is not None:
-            api_params["account"] = address
+    def get_address_trades(self, swth_address: str, before_id: Optional[int] = None, after_id: Optional[int] = None, limit: Optional[int] = 200):
+        """
+        Get account trades.
+
+        Example::
+
+            public_client.get_address_trades("swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p")
+
+        The expected return result for this function is as follows::
+
+            [
+                {
+                    "base_precision": 8,
+                    "quote_precision": 6,
+                    "fee_precision": 6,
+                    "order_id": "8C26B030383C1D0EFBAB0C4DEC42CC2EB5F26FC7A3E6C65BCD59B6E3C317239B",
+                    "market": "wbtc1_usdc1",
+                    "side": "sell",
+                    "quantity": "0.0164",
+                    "price": "45144.4",
+                    "fee_amount": "0.740369",
+                    "fee_denom": "usdc1",
+                    "address": "swth1vaavrkrm7usqg9hcwhqh2hev9m3nryw7aera8p",
+                    "block_height": "8018873",
+                    "block_created_at": "2021-02-28T09:17:46.747712Z",
+                    "id": 303086
+                },
+                ...
+            ]
+
+        :param swth_address: tradehub switcheo address starting with 'swth1' on mainnet and 'tswth1' on testnet.
+        :param before_id: return orders before id(exclusive).
+        :param after_id: return orders after id(exclusive).
+        :param limit: Limit response, values above 200 have no effect.
+        :return: List of orders as dict
+        :return:
+        """
+        api_params = {
+            "account": swth_address,
+            "before_id": before_id,
+            "after_id": after_id,
+            "limit": limit
+        }
         return self.tradehub_get_request(path='/get_trades_by_account', params=api_params)
 
     def get_balance(self, swth_address: str) -> dict:
@@ -803,9 +873,25 @@ class PublicClient(PublicBlockchainClient):
         }
         return self.tradehub_get_request(path='/get_transaction', params=api_params)
 
-    def get_transaction_log(self, transaction_hash: str):
-        api_params = {}
-        api_params["hash"] = transaction_hash
+    def get_transaction_log(self, transaction_hash: str) -> dict:
+        """
+        Get transaction raw log.
+
+
+            {
+                "raw_log": "[{\"msg_index\":0,\"log\":\"\",\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"send\"},{\"key\":\"sender\",\"value\":\"swth1adxz9ylgcfjp98hacl3fm3dk30cf2plfp85z75\"},{\"key\":\"module\",\"value\":\"bank\"}]},{\"type\":\"transfer\",\"attributes\":[{\"key\":\"recipient\",\"value\":\"swth1kk088cr6u8n5zfh237l5np5k5f7xwapc7afw4q\"},{\"key\":\"sender\",\"value\":\"swth1adxz9ylgcfjp98hacl3fm3dk30cf2plfp85z75\"},{\"key\":\"amount\",\"value\":\"10000000000swth\"}]}]}]"
+            }
+
+        .. note::
+
+            The transaction raw log is a json string. To access the fields the result needs to be parsed.
+
+        :param transaction_hash: Hash of the transaction.
+        :return: Dict with the raw log.
+        """
+        api_params = {
+            "hash": transaction_hash
+        }
         return self.tradehub_get_request(path='/get_tx_log', params=api_params)
 
     def get_transactions(self, swth_address: Optional[str] = None, msg_type: Optional[str] = None,
