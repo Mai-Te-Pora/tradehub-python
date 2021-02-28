@@ -1,7 +1,7 @@
 import os
 from unittest import TestCase
 
-from tradehub.public_client import PublicClient
+from tradehub.public_account_client import PublicClient
 
 mainnet_client = PublicClient(network='mainnet', is_websocket_client=True)
 MAINNET_VAL_IP = mainnet_client.active_sentry_api_ip

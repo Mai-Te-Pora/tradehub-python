@@ -5,6 +5,7 @@ Client Documentation
    :maxdepth: 2
 
    decentralized_client
+   public_blockchain_client
    public_client
    transactions
    authenticated_client

@@ -1,10 +1,10 @@
-Public Class - :mod:`public_client`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Public Client - :mod:`public_client`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. contents:: Table of Contents
 
 
-.. automodule:: tradehub.public_client
+.. automodule:: tradehub.public_account_client
     :autosummary:
     :members:
     :private-members:
