@@ -1,0 +1,925 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tradehub.public_blockchain_client &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/width_style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../clients.html">Client Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tradehub.public_blockchain_client</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tradehub.public_blockchain_client</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">tradehub.decentralized_client</span> <span class="kn">import</span> <span class="n">NetworkCrawlerClient</span>
+
+
+<div class="viewcode-block" id="PublicBlockchainClient"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient">[docs]</a><span class="k">class</span> <span class="nc">PublicBlockchainClient</span><span class="p">(</span><span class="n">NetworkCrawlerClient</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class allows the user to interact with the TradeScan API including information</span>
+<span class="sd">    available with validators, tokens, delegators, addresses, and blockchain stats.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;testnet&quot;</span><span class="p">,</span> <span class="n">trusted_ips</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">trusted_uris</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_websocket_client</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a public client using IP:Port or URI format.</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            public_client = PublicClient(trusted_ips=[&quot;127.0.0.1&quot;])</span>
+
+<span class="sd">            # or use uri method</span>
+
+<span class="sd">            public_client = PublicClient(trusted_uris=[&quot;https://tradehub-api-server.network/&quot;])</span>
+
+<span class="sd">        :param node_ip: ip address off a tradehub node.</span>
+<span class="sd">        :param node_port: prt off a tradehub node, default 5001.</span>
+<span class="sd">        :param uri: URI address off tradehub node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">trusted_ips</span> <span class="ow">and</span> <span class="n">trusted_uris</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Use IP&#39;s or URI&#39;s, not both!&quot;</span><span class="p">)</span>
+
+        <span class="n">NetworkCrawlerClient</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">trusted_ip_list</span><span class="o">=</span><span class="n">trusted_ips</span><span class="p">,</span> <span class="n">trusted_uri_list</span><span class="o">=</span><span class="n">trusted_uris</span><span class="p">,</span> <span class="n">is_websocket_client</span><span class="o">=</span><span class="n">is_websocket_client</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_all_validators"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_all_validators">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_validators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all validators. This includes active, unbonding and unbonded validators.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_all_validators()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                &quot;OperatorAddress&quot;:&quot;swthvaloper1vwges9p847l9csj8ehrlgzajhmt4fcq4dmg8x0&quot;,</span>
+<span class="sd">                &quot;ConsPubKey&quot;:&quot;swthvalconspub1zcjduepqcufdssqqfycjwz2srp42tytrs7gtdkkry9cpspea3zqsjzqd2tps73pr63&quot;,</span>
+<span class="sd">                &quot;Jailed&quot;:false,</span>
+<span class="sd">                &quot;Status&quot;:2,</span>
+<span class="sd">                &quot;Tokens&quot;:&quot;22414566.55131922&quot;,</span>
+<span class="sd">                &quot;DelegatorShares&quot;:&quot;22414566.55131922&quot;,</span>
+<span class="sd">                &quot;Description&quot;:{</span>
+<span class="sd">                    &quot;moniker&quot;:&quot;Devel \u0026 Co&quot;,</span>
+<span class="sd">                    &quot;identity&quot;:&quot;c572aef1818379c38996878357c321398165fcf0&quot;,</span>
+<span class="sd">                    &quot;website&quot;:&quot;https://gitlab.com/switcheo-utils&quot;,</span>
+<span class="sd">                    &quot;security_contact&quot;:&quot;&quot;,</span>
+<span class="sd">                    &quot;details&quot;:&quot;...&quot;},</span>
+<span class="sd">                    &quot;UnbondingHeight&quot;:0,</span>
+<span class="sd">                    &quot;UnbondingCompletionTime&quot;:&quot;1970-01-01T00:00:00Z&quot;,</span>
+<span class="sd">                    &quot;Commission&quot;:{</span>
+<span class="sd">                        &quot;commission_rates&quot;:{</span>
+<span class="sd">                            &quot;rate&quot;:&quot;0.004200000000000000&quot;,</span>
+<span class="sd">                            &quot;max_rate&quot;:&quot;0.200000000000000000&quot;,</span>
+<span class="sd">                            &quot;max_change_rate&quot;:&quot;0.010000000000000000&quot;</span>
+<span class="sd">                        },</span>
+<span class="sd">                        &quot;update_time&quot;:&quot;2020-11-27T20:25:33.45991154Z&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &quot;MinSelfDelegation&quot;:&quot;1&quot;,</span>
+<span class="sd">                    &quot;ConsAddress&quot;:&quot;swthvalcons1pqnlj0na6k8u9y27j3elrx584mt3380dal0j9s&quot;,</span>
+<span class="sd">                    &quot;ConsAddressByte&quot;:&quot;0827F93E7DD58FC2915E9473F19A87AED7189DED&quot;,</span>
+<span class="sd">                    &quot;WalletAddress&quot;:&quot;swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl&quot;,</span>
+<span class="sd">                    &quot;BondStatus&quot;:&quot;bonded&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            The response from this endpoint uses different types off name conventions!</span>
+<span class="sd">            For example &#39;MinSelfDelegation&#39; and &#39;max_change_rate&#39;.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;volume&quot;:&quot;2100&quot;) or integer(eg. &quot;resolution&quot;:5)</span>
+
+<span class="sd">        :return: list with validators.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_all_validators&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_block"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_block">[docs]</a>    <span class="k">def</span> <span class="nf">get_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_nbr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/blocks/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">block_nbr</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_block_time"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_block_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_block_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the block time in format HH:MM:SS.ZZZZZZ.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_block_time()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            &quot;00:00:02.190211&quot;</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint returns only a string.</span>
+
+<span class="sd">        :return: block time as string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_block_time&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_blocks"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">get_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">after_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">order_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">swth_valcons</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get latest blocks or request specific blocks.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_blocks()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;block_height&quot;:&quot;6103923&quot;,</span>
+<span class="sd">                    &quot;time&quot;:&quot;2021-01-09T14:15:53.071509+01:00&quot;,</span>
+<span class="sd">                    &quot;count&quot;:&quot;1&quot;,</span>
+<span class="sd">                    &quot;proposer_address&quot;:&quot;swthvalcons17m2ueqqqt8u0jz4rv5kvk4kg0teel4sckytjlc&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;block_height&quot;:&quot;6103922&quot;,</span>
+<span class="sd">                    &quot;time&quot;:&quot;2021-01-09T14:15:50.824548+01:00&quot;,</span>
+<span class="sd">                    &quot;count&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;proposer_address&quot;:&quot;swthvalcons1zecfdrf22f6syz8xj4vn8jsvsalxdhwl9tlflk&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        .. warning:: This endpoint is not well documented in official documents. The parameters are NOT required.</span>
+
+<span class="sd">        :param before_id: Before block height(exclusive).</span>
+<span class="sd">        :param after_id: After block height(exclusive).</span>
+<span class="sd">        :param order_by: Not specified yet.</span>
+<span class="sd">        :param swth_valcons: Switcheo tradehub validator consensus starting with &#39;swthvalcons1&#39; on mainnet and</span>
+<span class="sd">            &#39;tswthvalcons1&#39; on testnet.</span>
+<span class="sd">        :param limit: Limit the responded result. Values greater than 200 have no effect and a maximum off 200</span>
+<span class="sd">            results are returned.</span>
+<span class="sd">        :return: List with found blocks matching the requested parameters. Can be empty list [].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;before_id&quot;</span><span class="p">:</span> <span class="n">before_id</span><span class="p">,</span>
+            <span class="s2">&quot;after_id&quot;</span><span class="p">:</span> <span class="n">after_id</span><span class="p">,</span>
+            <span class="s2">&quot;order_by&quot;</span><span class="p">:</span> <span class="n">order_by</span><span class="p">,</span>
+            <span class="s2">&quot;proposer&quot;</span><span class="p">:</span> <span class="n">swth_valcons</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_blocks&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_commitment_curve"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_commitment_curve">[docs]</a>    <span class="k">def</span> <span class="nf">get_commitment_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_commitment_curve&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_distribution_parameters"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_distribution_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">get_distribution_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/distribution/parameters&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_inflation_start_time"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_inflation_start_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_inflation_start_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_inflation_start_time&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_insurance_fund_balance"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_insurance_fund_balance">[docs]</a>    <span class="k">def</span> <span class="nf">get_insurance_fund_balance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO result currently []</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_insurance_balance&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_latest_blocks"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_latest_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">get_latest_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/blocks/latest&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_liquidity_pools"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidity_pools">[docs]</a>    <span class="k">def</span> <span class="nf">get_liquidity_pools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_liquidity_pools&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_liquidations"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidations">[docs]</a>    <span class="k">def</span> <span class="nf">get_liquidations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">after_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">order_by</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :param before_id:</span>
+<span class="sd">        :param after_id:</span>
+<span class="sd">        :param order_by:</span>
+<span class="sd">        :param limit:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO result currently not available</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;before_id&quot;</span><span class="p">:</span> <span class="n">before_id</span><span class="p">,</span>
+            <span class="s2">&quot;after_id&quot;</span><span class="p">:</span> <span class="n">after_id</span><span class="p">,</span>
+            <span class="s2">&quot;order_by&quot;</span><span class="p">:</span> <span class="n">order_by</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_liquidations&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_market"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_market">[docs]</a>    <span class="k">def</span> <span class="nf">get_market</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get information about a market.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_market(&quot;swth_eth1&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">           {</span>
+<span class="sd">                &quot;type&quot;:&quot;&quot;,</span>
+<span class="sd">                &quot;name&quot;:&quot;swth_eth1&quot;,</span>
+<span class="sd">                &quot;display_name&quot;:&quot;SWTH_ETH&quot;,</span>
+<span class="sd">                &quot;description&quot;:&quot;SWTH/ETH Spot Market&quot;,</span>
+<span class="sd">                &quot;market_type&quot;:&quot;spot&quot;,</span>
+<span class="sd">                &quot;base&quot;:&quot;swth&quot;,</span>
+<span class="sd">                &quot;base_name&quot;:&quot;Switcheo&quot;,</span>
+<span class="sd">                &quot;base_precision&quot;:8,</span>
+<span class="sd">                &quot;quote&quot;:&quot;eth1&quot;,</span>
+<span class="sd">                &quot;quote_name&quot;:&quot;Ethereum&quot;,</span>
+<span class="sd">                &quot;quote_precision&quot;:18,</span>
+<span class="sd">                &quot;lot_size&quot;:&quot;1&quot;,</span>
+<span class="sd">                &quot;tick_size&quot;:&quot;0.0000001&quot;,</span>
+<span class="sd">                &quot;min_quantity&quot;:&quot;200&quot;,</span>
+<span class="sd">                &quot;maker_fee&quot;:&quot;-0.0005&quot;,</span>
+<span class="sd">                &quot;taker_fee&quot;:&quot;0.0025&quot;,</span>
+<span class="sd">                &quot;risk_step_size&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;initial_margin_base&quot;:&quot;1&quot;,</span>
+<span class="sd">                &quot;initial_margin_step&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;maintenance_margin_ratio&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;max_liquidation_order_ticket&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;max_liquidation_order_duration&quot;:0,</span>
+<span class="sd">                &quot;impact_size&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;mark_price_band&quot;:0,</span>
+<span class="sd">                &quot;last_price_protected_band&quot;:0,</span>
+<span class="sd">                &quot;index_oracle_id&quot;:&quot;&quot;,</span>
+<span class="sd">                &quot;expiry_time&quot;:&quot;1970-01-01T01:00:00+01:00&quot;,</span>
+<span class="sd">                &quot;is_active&quot;:true,</span>
+<span class="sd">                &quot;is_settled&quot;:false,</span>
+<span class="sd">                &quot;closed_block_height&quot;:0,</span>
+<span class="sd">                &quot;created_block_height&quot;:0</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not well documented in official documents.</span>
+<span class="sd">            The example market swth_eth does not exist on mainnet. The correct market ticker is &#39;swth_eth1&#39;.</span>
+<span class="sd">            See get_markets() for correct tickers.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;lot_size&quot;:&quot;1&quot;) or integer(eg. &quot;base_precision&quot;:8).</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns the same dict structure even the market does not exist with default values!</span>
+
+<span class="sd">        :param market: Market ticker used by blockchain (eg. swth_eth1).</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_market&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_market_stats"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_market_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_market_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get statistics about one or all markets.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_market_stats()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;day_high&quot;:&quot;0.0000215&quot;,</span>
+<span class="sd">                    &quot;day_low&quot;:&quot;0.000021&quot;,</span>
+<span class="sd">                    &quot;day_open&quot;:&quot;0.0000211&quot;,</span>
+<span class="sd">                    &quot;day_close&quot;:&quot;0.0000212&quot;,</span>
+<span class="sd">                    &quot;day_volume&quot;:&quot;436030&quot;,</span>
+<span class="sd">                    &quot;day_quote_volume&quot;:&quot;9.2787298&quot;,</span>
+<span class="sd">                    &quot;index_price&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;mark_price&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;last_price&quot;:&quot;0.00212000&quot;,</span>
+<span class="sd">                    &quot;market&quot;:&quot;swth_eth1&quot;,</span>
+<span class="sd">                    &quot;market_type&quot;:&quot;spot&quot;,</span>
+<span class="sd">                    &quot;open_interest&quot;:&quot;0&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+
+<span class="sd">        :param market: Market ticker used by blockchain (eg. swth_eth1).</span>
+<span class="sd">        :return: List with market stats as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_market_stats&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_markets"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_markets">[docs]</a>    <span class="k">def</span> <span class="nf">get_markets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_active</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">is_settled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all markets or filter markets.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_markets()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;type&quot;:&quot;&quot;,</span>
+<span class="sd">                    &quot;name&quot;:&quot;swth_eth1&quot;,</span>
+<span class="sd">                    &quot;display_name&quot;:&quot;SWTH_ETH&quot;,</span>
+<span class="sd">                    &quot;description&quot;:&quot;SWTH/ETH Spot Market&quot;,</span>
+<span class="sd">                    &quot;market_type&quot;:&quot;spot&quot;,</span>
+<span class="sd">                    &quot;base&quot;:&quot;swth&quot;,</span>
+<span class="sd">                    &quot;base_name&quot;:&quot;Switcheo&quot;,</span>
+<span class="sd">                    &quot;base_precision&quot;:8,</span>
+<span class="sd">                    &quot;quote&quot;:&quot;eth1&quot;,</span>
+<span class="sd">                    &quot;quote_name&quot;:&quot;Ethereum&quot;,</span>
+<span class="sd">                    &quot;quote_precision&quot;:18,</span>
+<span class="sd">                    &quot;lot_size&quot;:&quot;1&quot;,</span>
+<span class="sd">                    &quot;tick_size&quot;:&quot;0.0000001&quot;,</span>
+<span class="sd">                    &quot;min_quantity&quot;:&quot;200&quot;,</span>
+<span class="sd">                    &quot;maker_fee&quot;:&quot;-0.0005&quot;,</span>
+<span class="sd">                    &quot;taker_fee&quot;:&quot;0.0025&quot;,</span>
+<span class="sd">                    &quot;risk_step_size&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;initial_margin_base&quot;:&quot;1&quot;,</span>
+<span class="sd">                    &quot;initial_margin_step&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;maintenance_margin_ratio&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;max_liquidation_order_ticket&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;max_liquidation_order_duration&quot;:0,</span>
+<span class="sd">                    &quot;impact_size&quot;:&quot;0&quot;,</span>
+<span class="sd">                    &quot;mark_price_band&quot;:0,</span>
+<span class="sd">                    &quot;last_price_protected_band&quot;:0,</span>
+<span class="sd">                    &quot;index_oracle_id&quot;:&quot;&quot;,</span>
+<span class="sd">                    &quot;expiry_time&quot;:&quot;1970-01-01T01:00:00+01:00&quot;,</span>
+<span class="sd">                    &quot;is_active&quot;:true,</span>
+<span class="sd">                    &quot;is_settled&quot;:false,</span>
+<span class="sd">                    &quot;closed_block_height&quot;:0,</span>
+<span class="sd">                    &quot;created_block_height&quot;:0</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;lot_size&quot;:&quot;1&quot;) or integer(eg. &quot;base_precision&quot;:8)</span>
+
+<span class="sd">        :param market_type: type of the market can be &#39;futures&#39; or &#39;spot&#39;</span>
+<span class="sd">        :param is_active: if only active markets should be returned</span>
+<span class="sd">        :param is_settled: if only settled markets should be returned</span>
+<span class="sd">        :return: List with returned market stats as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">market_type</span> <span class="ow">and</span> <span class="n">market_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;futures&#39;</span><span class="p">,</span> <span class="s1">&#39;spot&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter &#39;market_type&#39; only can be &#39;futures&#39; or &#39;spot&#39;. Got </span><span class="si">{market_type}</span><span class="s2"> instead.&quot;</span><span class="p">)</span>
+
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market_type&quot;</span><span class="p">:</span> <span class="n">market_type</span><span class="p">,</span>
+            <span class="s2">&quot;is_active&quot;</span><span class="p">:</span> <span class="n">is_active</span><span class="p">,</span>
+            <span class="s2">&quot;is_settled&quot;</span><span class="p">:</span> <span class="n">is_settled</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_markets&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_nodes"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO no results yet available</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/monitor&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_oracle_result"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_result">[docs]</a>    <span class="k">def</span> <span class="nf">get_oracle_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oracle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :param oracle_id:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO no results yet available</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">oracle_id</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_oracle_result&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_oracle_results"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_oracle_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO no results yet available</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_oracle_results&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_prices"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_prices">[docs]</a>    <span class="k">def</span> <span class="nf">get_prices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get prices off a market.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_prices(&quot;swth_eth1&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;last&quot;:&quot;207000&quot;,</span>
+<span class="sd">                &quot;index&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;fair&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;mark&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;mark_avg&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;settlement&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;fair_index_delta_avg&quot;:&quot;0&quot;,</span>
+<span class="sd">                &quot;market&quot;:&quot;&quot;,</span>
+<span class="sd">                &quot;marking_strategy&quot;:&quot;&quot;,</span>
+<span class="sd">                &quot;index_updated_at&quot;:&quot;0001-01-01T00:00:00Z&quot;,</span>
+<span class="sd">                &quot;last_updated_at&quot;:&quot;2021-01-09T22:50:59.068526+01:00&quot;,</span>
+<span class="sd">                &quot;block_height&quot;:0</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint is not well documented in official documents.</span>
+<span class="sd">            Parameter &#39;market&#39; is NOT required, but strongly recommended. The return result has an empty &#39;market&#39; field.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns amounts which are NOT human readable values. Consider &#39;base_precision&#39; and</span>
+<span class="sd">            &#39;quote_precision&#39; to calculate a multiplication factor = 10 ^ (&#39;base_precision&#39; - &#39;quote_precision&#39;)</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;last&quot;:&quot;207000&quot;) or integer(eg. &quot;block_height&quot;:0)</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns a result even if the market is not known. Result contains default values.</span>
+
+<span class="sd">        :param market: Market ticker used by blockchain (eg. swth_eth1).</span>
+<span class="sd">        :return: Prices as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_prices&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_reward_curve"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_reward_curve">[docs]</a>    <span class="k">def</span> <span class="nf">get_reward_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_reward_curve&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_rich_list"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_rich_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_rich_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :param token:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO responses currently not available</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">token</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_rich_list&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_staking_pool"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_staking_pool">[docs]</a>    <span class="k">def</span> <span class="nf">get_staking_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/pool&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_status"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return cosmos RPC status endpoint.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_status()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">              &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<span class="sd">              &quot;id&quot;: -1,</span>
+<span class="sd">              &quot;result&quot;: {</span>
+<span class="sd">                &quot;node_info&quot;: {</span>
+<span class="sd">                  &quot;protocol_version&quot;: {</span>
+<span class="sd">                    &quot;p2p&quot;: &quot;7&quot;,</span>
+<span class="sd">                    &quot;block&quot;: &quot;10&quot;,</span>
+<span class="sd">                    &quot;app&quot;: &quot;0&quot;</span>
+<span class="sd">                  },</span>
+<span class="sd">                  &quot;id&quot;: &quot;f4cee80e4dec5a686139cb82729118e15f7ce19c&quot;,</span>
+<span class="sd">                  &quot;listen_addr&quot;: &quot;tcp://0.0.0.0:26656&quot;,</span>
+<span class="sd">                  &quot;network&quot;: &quot;switcheo-tradehub-1&quot;,</span>
+<span class="sd">                  &quot;version&quot;: &quot;0.33.7&quot;,</span>
+<span class="sd">                  &quot;channels&quot;: &quot;4020212223303800&quot;,</span>
+<span class="sd">                  &quot;moniker&quot;: &quot;Devel Sentry Node 2&quot;,</span>
+<span class="sd">                  &quot;other&quot;: {</span>
+<span class="sd">                    &quot;tx_index&quot;: &quot;on&quot;,</span>
+<span class="sd">                    &quot;rpc_address&quot;: &quot;tcp://0.0.0.0:26659&quot;</span>
+<span class="sd">                  }</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;sync_info&quot;: {</span>
+<span class="sd">                  &quot;latest_block_hash&quot;: &quot;4A2C89C105D7864AA74C9DE4752AF5B59E96045EBAF984C69DD447C4524EC36F&quot;,</span>
+<span class="sd">                  &quot;latest_app_hash&quot;: &quot;773651392EEDBFF6AEE088F76E7D75F2932B4D9F74CA27D568F706ADFC12B174&quot;,</span>
+<span class="sd">                  &quot;latest_block_height&quot;: &quot;6119142&quot;,</span>
+<span class="sd">                  &quot;latest_block_time&quot;: &quot;2021-01-09T22:18:52.722611018Z&quot;,</span>
+<span class="sd">                  &quot;earliest_block_hash&quot;: &quot;B4AF1F3D3D3FD5795BDDB7A6A2E6CA4E34D06338505D6EC46DD8F99E72ADCDAB&quot;,</span>
+<span class="sd">                  &quot;earliest_app_hash&quot;: &quot;&quot;,</span>
+<span class="sd">                  &quot;earliest_block_height&quot;: &quot;1&quot;,</span>
+<span class="sd">                  &quot;earliest_block_time&quot;: &quot;2020-08-14T07:32:27.856700491Z&quot;,</span>
+<span class="sd">                  &quot;catching_up&quot;: false</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;validator_info&quot;: {</span>
+<span class="sd">                  &quot;address&quot;: &quot;DCB03C204B7F94765B4ADCE1D8BEE88AA43AE811&quot;,</span>
+<span class="sd">                  &quot;pub_key&quot;: {</span>
+<span class="sd">                    &quot;type&quot;: &quot;tendermint/PubKeyEd25519&quot;,</span>
+<span class="sd">                    &quot;value&quot;: &quot;1GmDSymN6jTqQlZA2KeyzqknIncGMMrwnnas/DWGNOI=&quot;</span>
+<span class="sd">                  },</span>
+<span class="sd">                  &quot;voting_power&quot;: &quot;0&quot;</span>
+<span class="sd">                }</span>
+<span class="sd">              }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :return: Status as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_status&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_transaction_types"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_transaction_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_transaction_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get transaction types used by tradehub.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_transaction_types()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                &quot;submit_proposal&quot;,</span>
+<span class="sd">                &quot;create_pool&quot;,</span>
+<span class="sd">                &quot;set_reward_curve&quot;,</span>
+<span class="sd">                &quot;send&quot;,</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        :return: List with transaction types as strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_transaction_types&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_transactions_fees"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_transactions_fees">[docs]</a>    <span class="k">def</span> <span class="nf">get_transactions_fees</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gas_fees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_txns_fees&#39;</span><span class="p">)</span>
+        <span class="n">fees</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">gas_fee</span> <span class="ow">in</span> <span class="n">gas_fees</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]:</span>
+            <span class="n">fees</span><span class="p">[</span><span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;msg_type&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">gas_fee</span><span class="p">[</span><span class="s2">&quot;fee&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">fees</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_token"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_token">[docs]</a>    <span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">denom</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get information about a token.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_token(&quot;swth&quot;)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &quot;name&quot;:&quot;Switcheo&quot;,</span>
+<span class="sd">                &quot;symbol&quot;:&quot;swth&quot;,</span>
+<span class="sd">                &quot;denom&quot;:&quot;swth&quot;,</span>
+<span class="sd">                &quot;decimals&quot;:8,</span>
+<span class="sd">                &quot;blockchain&quot;:&quot;neo&quot;,</span>
+<span class="sd">                &quot;chain_id&quot;:4,</span>
+<span class="sd">                &quot;asset_id&quot;:&quot;32e125258b7db0a0dffde5bd03b2b859253538ab&quot;,</span>
+<span class="sd">                &quot;is_active&quot;:true,</span>
+<span class="sd">                &quot;is_collateral&quot;:false,</span>
+<span class="sd">                &quot;lock_proxy_hash&quot;:&quot;17d0f66eca7fcbfddc8d9706f20513bf5d7419cd&quot;,</span>
+<span class="sd">                &quot;delegated_supply&quot;:&quot;100000000000000000&quot;,</span>
+<span class="sd">                &quot;originator&quot;:&quot;swth1mw90en8tcqnvdjhp64qmyhuq4qasvhy25dpmvw&quot;</span>
+<span class="sd">            }</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;delegated_supply&quot;:&quot;100000000000000000&quot;) or integer(eg. &quot;decimals&quot;:8)</span>
+
+
+<span class="sd">        :param denom: Denom used by tradehub.</span>
+<span class="sd">        :return: Information about token as dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">denom</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_token&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_tokens"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all known tokens on tradehub chain.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            public_client.get_tokens()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot;:&quot;Switcheo&quot;,</span>
+<span class="sd">                    &quot;symbol&quot;:&quot;swth&quot;,</span>
+<span class="sd">                    &quot;denom&quot;:&quot;swth&quot;,</span>
+<span class="sd">                    &quot;decimals&quot;:8,</span>
+<span class="sd">                    &quot;blockchain&quot;:&quot;neo&quot;,</span>
+<span class="sd">                    &quot;chain_id&quot;:4,</span>
+<span class="sd">                    &quot;asset_id&quot;:&quot;32e125258b7db0a0dffde5bd03b2b859253538ab&quot;,</span>
+<span class="sd">                    &quot;is_active&quot;:true,</span>
+<span class="sd">                    &quot;is_collateral&quot;:false,</span>
+<span class="sd">                    &quot;lock_proxy_hash&quot;:&quot;17d0f66eca7fcbfddc8d9706f20513bf5d7419cd&quot;,</span>
+<span class="sd">                    &quot;delegated_supply&quot;:&quot;100000000000000000&quot;,</span>
+<span class="sd">                    &quot;originator&quot;:&quot;swth1mw90en8tcqnvdjhp64qmyhuq4qasvhy25dpmvw&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                ...</span>
+<span class="sd">            ]</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint returns numbers as string(eg. &quot;delegated_supply&quot;:&quot;100000000000000000&quot;) or integer(eg. &quot;decimals&quot;:8)</span>
+
+<span class="sd">        :return: List with tokens as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_tokens&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_token_details"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_token_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_token_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span>
+        <span class="n">tokens_details</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="s2">&quot;is_active&quot;</span><span class="p">]:</span>
+                <span class="n">tokens_details</span><span class="p">[</span><span class="n">token</span><span class="p">[</span><span class="s2">&quot;denom&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                    <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">],</span>
+                    <span class="s1">&#39;decimals&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">[</span><span class="s2">&quot;decimals&quot;</span><span class="p">],</span>
+                <span class="p">}</span>
+        <span class="k">return</span> <span class="n">tokens_details</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_top_r_profits"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_top_r_profits">[docs]</a>    <span class="k">def</span> <span class="nf">get_top_r_profits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :param market:</span>
+<span class="sd">        :param limit:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO responses currently not available</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;market&quot;</span><span class="p">:</span> <span class="n">market</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_top_r_profits&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_total_balances"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_total_balances">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_balances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            This endpoint is not working yet.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO responses currently not available</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_total_balances&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validator_delegations"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_delegations">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_delegations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator_address</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/validators/</span><span class="si">{}</span><span class="s1">/delegations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operator_address</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validator_public_nodes"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_public_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">public_nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tradehub_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tradehub_monitor</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="n">tradehub_state</span><span class="p">:</span>
+            <span class="n">public_nodes</span><span class="p">[</span><span class="n">validator</span><span class="p">[</span><span class="s2">&quot;moniker&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validator</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">public_nodes</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validator_public_node_ips"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_node_ips">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_public_node_ips</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">public_node_ips</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nodes_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_validator_public_nodes</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">nodes_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">public_node_ips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">public_node_ips</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validator_missed_blocks"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_missed_blocks">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_missed_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">validators_missed_blocks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">validators_signing_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_validator_signing_info</span><span class="p">()[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">validator_signing_info</span> <span class="ow">in</span> <span class="n">validators_signing_info</span><span class="p">:</span>
+            <span class="n">validators_missed_blocks</span><span class="p">[</span><span class="n">validator_signing_info</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">validator_signing_info</span><span class="p">[</span><span class="s2">&quot;missed_blocks_counter&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">validators_missed_blocks</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validator_signing_info"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_signing_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_validator_signing_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/slashing/signing_infos&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_validators"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_validators">[docs]</a>    <span class="k">def</span> <span class="nf">get_validators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">status</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;unbonding&quot;</span><span class="p">,</span> <span class="s2">&quot;unbonded&quot;</span><span class="p">]:</span>
+            <span class="n">api_params</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/staking/validators&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_vault_types"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_vault_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_vault_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param token:</span>
+<span class="sd">        :return :</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO responses currently not an empty list</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_vault_types&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PublicBlockchainClient.get_vaults"><a class="viewcode-back" href="../../public_blockchain_client.html#tradehub.public_blockchain_client.PublicBlockchainClient.get_vaults">[docs]</a>    <span class="k">def</span> <span class="nf">get_vaults</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">swth_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">swth_address</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/get_vaults&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">api_params</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

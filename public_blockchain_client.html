@@ -1,0 +1,1304 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Public Blockchain Class - public_blockchain_client &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/width_style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Transactions Class - transactions" href="transactions.html" />
+    <link rel="prev" title="Decentralized Network Crawler - decentralized_client" href="decentralized_client.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="clients.html">Client Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="decentralized_client.html">Decentralized Network Crawler - <code class="xref py py-mod docutils literal notranslate"><span class="pre">decentralized_client</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Public Blockchain Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">public_blockchain_client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="transactions.html">Transactions Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">transactions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="authenticated_client.html">Authenticated Client - <code class="xref py py-mod docutils literal notranslate"><span class="pre">authenticated_client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="demex_client.html">Demex Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">demex_client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket_client.html">Websocket Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">websocket_client</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="wallet.html">Wallet Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">wallet</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="clients.html">Client Documentation</a> &raquo;</li>
+        
+      <li>Public Blockchain Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">public_blockchain_client</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/public_blockchain_client.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="public-blockchain-class-public-blockchain-client">
+<h1><a class="toc-backref" href="#id1">Public Blockchain Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">public_blockchain_client</span></code></a><a class="headerlink" href="#public-blockchain-class-public-blockchain-client" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#public-blockchain-class-public-blockchain-client" id="id1">Public Blockchain Class - <code class="xref py py-mod docutils literal notranslate"><span class="pre">public_blockchain_client</span></code></a></p></li>
+</ul>
+</div>
+<span class="target" id="module-tradehub.public_blockchain_client"></span><p><strong>Classes:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient" title="tradehub.public_blockchain_client.PublicBlockchainClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PublicBlockchainClient</span></code></a>(network, trusted_ips, …)</p></td>
+<td><p>This class allows the user to interact with the TradeScan API including information available with validators, tokens, delegators, addresses, and blockchain stats.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tradehub.public_blockchain_client.</span></code><code class="sig-name descname"><span class="pre">PublicBlockchainClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'testnet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_ips</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trusted_uris</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_websocket_client</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="decentralized_client.html#tradehub.decentralized_client.NetworkCrawlerClient" title="tradehub.decentralized_client.NetworkCrawlerClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">tradehub.decentralized_client.NetworkCrawlerClient</span></code></a></p>
+<p>This class allows the user to interact with the TradeScan API including information
+available with validators, tokens, delegators, addresses, and blockchain stats.</p>
+<p><strong>Methods:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_all_validators" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_all_validators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_validators</span></code></a>()</p></td>
+<td><p>Get all validators.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_block" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_block</span></code></a>([block_nbr])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_block_time" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_block_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_block_time</span></code></a>()</p></td>
+<td><p>Get the block time in format HH:MM:SS.ZZZZZZ.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_blocks" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_blocks</span></code></a>([before_id, after_id, order_by, …])</p></td>
+<td><p>Get latest blocks or request specific blocks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_commitment_curve" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_commitment_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_commitment_curve</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_distribution_parameters" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_distribution_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distribution_parameters</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_inflation_start_time" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_inflation_start_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inflation_start_time</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_insurance_fund_balance" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_insurance_fund_balance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_insurance_fund_balance</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_latest_blocks" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_latest_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_blocks</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidations" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_liquidations</span></code></a>(before_id, after_id, …)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidity_pools" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidity_pools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_liquidity_pools</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_market" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_market"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_market</span></code></a>(market)</p></td>
+<td><p>Get information about a market.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_market_stats" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_market_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_market_stats</span></code></a>([market])</p></td>
+<td><p>Get statistics about one or all markets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_markets" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_markets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_markets</span></code></a>([market_type, is_active, is_settled])</p></td>
+<td><p>Get all markets or filter markets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_nodes" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nodes</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_result" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_oracle_result</span></code></a>(oracle_id)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_results" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_oracle_results</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_prices" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_prices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_prices</span></code></a>(market)</p></td>
+<td><p>Get prices off a market.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_reward_curve" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_reward_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reward_curve</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_rich_list" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_rich_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rich_list</span></code></a>(token)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_staking_pool" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_staking_pool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_staking_pool</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_status" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_status</span></code></a>()</p></td>
+<td><p>Return cosmos RPC status endpoint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_token" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_token</span></code></a>(denom)</p></td>
+<td><p>Get information about a token.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_token_details" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_token_details"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_token_details</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_tokens" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tokens</span></code></a>()</p></td>
+<td><p>Get all known tokens on tradehub chain.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_top_r_profits" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_top_r_profits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_top_r_profits</span></code></a>(market, limit)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_total_balances" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_total_balances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_total_balances</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_transaction_types" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_transaction_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transaction_types</span></code></a>()</p></td>
+<td><p>Get transaction types used by tradehub.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_transactions_fees" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_transactions_fees"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_transactions_fees</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_delegations" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_delegations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validator_delegations</span></code></a>(operator_address)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_missed_blocks" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_missed_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validator_missed_blocks</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_node_ips" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_node_ips"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validator_public_node_ips</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_nodes" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validator_public_nodes</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_signing_info" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_signing_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validator_signing_info</span></code></a>([limit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validators" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_validators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_validators</span></code></a>([status])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_vault_types" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_vault_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vault_types</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param token</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_vaults" title="tradehub.public_blockchain_client.PublicBlockchainClient.get_vaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vaults</span></code></a>(swth_address)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.parse_validator_status" title="tradehub.public_blockchain_client.PublicBlockchainClient.parse_validator_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_validator_status</span></code></a>(request_json, …)</p></td>
+<td><p>Function to parse each peer’s JSON element and build information about each.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.sentry_status_request" title="tradehub.public_blockchain_client.PublicBlockchainClient.sentry_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sentry_status_request</span></code></a>([uri])</p></td>
+<td><p>This function is here to ensure the nodes that have open network connections also have their persistence service running.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_get_request" title="tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_get_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tradehub_get_request</span></code></a>(path[, params])</p></td>
+<td><p>This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_post_request" title="tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_post_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tradehub_post_request</span></code></a>(path[, data, …])</p></td>
+<td><p>This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.validator_crawler_mp" title="tradehub.public_blockchain_client.PublicBlockchainClient.validator_crawler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_crawler_mp</span></code></a>()</p></td>
+<td><p>Crawl the Tradehub Validators to test for available API endpoints.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.validator_status_request" title="tradehub.public_blockchain_client.PublicBlockchainClient.validator_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_status_request</span></code></a>(validator_ip)</p></td>
+<td><p>Function that makes the network requests to the Tradehub validators across the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.public_blockchain_client.PublicBlockchainClient.websocket_status_check" title="tradehub.public_blockchain_client.PublicBlockchainClient.websocket_status_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">websocket_status_check</span></code></a>(ip[, port])</p></td>
+<td><p>Function to check if the websocket port is open for communication.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_all_validators">
+<code class="sig-name descname"><span class="pre">get_all_validators</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_all_validators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_all_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all validators. This includes active, unbonding and unbonded validators.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_all_validators</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+    <span class="s2">&quot;OperatorAddress&quot;</span><span class="p">:</span><span class="s2">&quot;swthvaloper1vwges9p847l9csj8ehrlgzajhmt4fcq4dmg8x0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ConsPubKey&quot;</span><span class="p">:</span><span class="s2">&quot;swthvalconspub1zcjduepqcufdssqqfycjwz2srp42tytrs7gtdkkry9cpspea3zqsjzqd2tps73pr63&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Jailed&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+    <span class="s2">&quot;Status&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;Tokens&quot;</span><span class="p">:</span><span class="s2">&quot;22414566.55131922&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DelegatorShares&quot;</span><span class="p">:</span><span class="s2">&quot;22414566.55131922&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Description&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;moniker&quot;</span><span class="p">:</span><span class="s2">&quot;Devel &amp; Co&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;identity&quot;</span><span class="p">:</span><span class="s2">&quot;c572aef1818379c38996878357c321398165fcf0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;website&quot;</span><span class="p">:</span><span class="s2">&quot;https://gitlab.com/switcheo-utils&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;security_contact&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;details&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;UnbondingHeight&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;UnbondingCompletionTime&quot;</span><span class="p">:</span><span class="s2">&quot;1970-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Commission&quot;</span><span class="p">:{</span>
+            <span class="s2">&quot;commission_rates&quot;</span><span class="p">:{</span>
+                <span class="s2">&quot;rate&quot;</span><span class="p">:</span><span class="s2">&quot;0.004200000000000000&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;max_rate&quot;</span><span class="p">:</span><span class="s2">&quot;0.200000000000000000&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;max_change_rate&quot;</span><span class="p">:</span><span class="s2">&quot;0.010000000000000000&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;update_time&quot;</span><span class="p">:</span><span class="s2">&quot;2020-11-27T20:25:33.45991154Z&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;MinSelfDelegation&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ConsAddress&quot;</span><span class="p">:</span><span class="s2">&quot;swthvalcons1pqnlj0na6k8u9y27j3elrx584mt3380dal0j9s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ConsAddressByte&quot;</span><span class="p">:</span><span class="s2">&quot;0827F93E7DD58FC2915E9473F19A87AED7189DED&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WalletAddress&quot;</span><span class="p">:</span><span class="s2">&quot;swth1vwges9p847l9csj8ehrlgzajhmt4fcq4sd7gzl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;BondStatus&quot;</span><span class="p">:</span><span class="s2">&quot;bonded&quot;</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The response from this endpoint uses different types off name conventions!
+For example ‘MinSelfDelegation’ and ‘max_change_rate’.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “volume”:”2100”) or integer(eg. “resolution”:5)</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list with validators.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_block">
+<code class="sig-name descname"><span class="pre">get_block</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_nbr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_block_time">
+<code class="sig-name descname"><span class="pre">get_block_time</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_block_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_block_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the block time in format HH:MM:SS.ZZZZZZ.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_block_time</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;00:00:02.190211&quot;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns only a string.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>block time as string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_blocks">
+<code class="sig-name descname"><span class="pre">get_blocks</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">before_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swth_valcons</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get latest blocks or request specific blocks.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_blocks</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;block_height&quot;</span><span class="p">:</span><span class="s2">&quot;6103923&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2021-01-09T14:15:53.071509+01:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;proposer_address&quot;</span><span class="p">:</span><span class="s2">&quot;swthvalcons17m2ueqqqt8u0jz4rv5kvk4kg0teel4sckytjlc&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;block_height&quot;</span><span class="p">:</span><span class="s2">&quot;6103922&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2021-01-09T14:15:50.824548+01:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;proposer_address&quot;</span><span class="p">:</span><span class="s2">&quot;swthvalcons1zecfdrf22f6syz8xj4vn8jsvsalxdhwl9tlflk&quot;</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not well documented in official documents. The parameters are NOT required.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>before_id</strong> – Before block height(exclusive).</p></li>
+<li><p><strong>after_id</strong> – After block height(exclusive).</p></li>
+<li><p><strong>order_by</strong> – Not specified yet.</p></li>
+<li><p><strong>swth_valcons</strong> – Switcheo tradehub validator consensus starting with ‘swthvalcons1’ on mainnet and
+‘tswthvalcons1’ on testnet.</p></li>
+<li><p><strong>limit</strong> – Limit the responded result. Values greater than 200 have no effect and a maximum off 200
+results are returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List with found blocks matching the requested parameters. Can be empty list [].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_commitment_curve">
+<code class="sig-name descname"><span class="pre">get_commitment_curve</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_commitment_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_commitment_curve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_distribution_parameters">
+<code class="sig-name descname"><span class="pre">get_distribution_parameters</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_distribution_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_distribution_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_inflation_start_time">
+<code class="sig-name descname"><span class="pre">get_inflation_start_time</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_inflation_start_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_inflation_start_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_insurance_fund_balance">
+<code class="sig-name descname"><span class="pre">get_insurance_fund_balance</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_insurance_fund_balance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_insurance_fund_balance" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_latest_blocks">
+<code class="sig-name descname"><span class="pre">get_latest_blocks</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_latest_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_latest_blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidations">
+<code class="sig-name descname"><span class="pre">get_liquidations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">before_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_liquidations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidations" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>before_id</strong> – </p></li>
+<li><p><strong>after_id</strong> – </p></li>
+<li><p><strong>order_by</strong> – </p></li>
+<li><p><strong>limit</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidity_pools">
+<code class="sig-name descname"><span class="pre">get_liquidity_pools</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_liquidity_pools"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_liquidity_pools" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_market">
+<code class="sig-name descname"><span class="pre">get_market</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_market"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_market" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a market.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_market</span><span class="p">(</span><span class="s2">&quot;swth_eth1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+     <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;swth_eth1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;display_name&quot;</span><span class="p">:</span><span class="s2">&quot;SWTH_ETH&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;SWTH/ETH Spot Market&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;market_type&quot;</span><span class="p">:</span><span class="s2">&quot;spot&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;base&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;base_name&quot;</span><span class="p">:</span><span class="s2">&quot;Switcheo&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;base_precision&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span>
+     <span class="s2">&quot;quote&quot;</span><span class="p">:</span><span class="s2">&quot;eth1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;quote_name&quot;</span><span class="p">:</span><span class="s2">&quot;Ethereum&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;quote_precision&quot;</span><span class="p">:</span><span class="mi">18</span><span class="p">,</span>
+     <span class="s2">&quot;lot_size&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;tick_size&quot;</span><span class="p">:</span><span class="s2">&quot;0.0000001&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;min_quantity&quot;</span><span class="p">:</span><span class="s2">&quot;200&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;maker_fee&quot;</span><span class="p">:</span><span class="s2">&quot;-0.0005&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;taker_fee&quot;</span><span class="p">:</span><span class="s2">&quot;0.0025&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;risk_step_size&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;initial_margin_base&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;initial_margin_step&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;maintenance_margin_ratio&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;max_liquidation_order_ticket&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;max_liquidation_order_duration&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+     <span class="s2">&quot;impact_size&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;mark_price_band&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+     <span class="s2">&quot;last_price_protected_band&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+     <span class="s2">&quot;index_oracle_id&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;expiry_time&quot;</span><span class="p">:</span><span class="s2">&quot;1970-01-01T01:00:00+01:00&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;is_active&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+     <span class="s2">&quot;is_settled&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+     <span class="s2">&quot;closed_block_height&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+     <span class="s2">&quot;created_block_height&quot;</span><span class="p">:</span><span class="mi">0</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not well documented in official documents.
+The example market swth_eth does not exist on mainnet. The correct market ticker is ‘swth_eth1’.
+See get_markets() for correct tickers.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “lot_size”:”1”) or integer(eg. “base_precision”:8).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns the same dict structure even the market does not exist with default values!</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>market</strong> – Market ticker used by blockchain (eg. swth_eth1).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_market_stats">
+<code class="sig-name descname"><span class="pre">get_market_stats</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_market_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_market_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get statistics about one or all markets.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_market_stats</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;day_high&quot;</span><span class="p">:</span><span class="s2">&quot;0.0000215&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;day_low&quot;</span><span class="p">:</span><span class="s2">&quot;0.000021&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;day_open&quot;</span><span class="p">:</span><span class="s2">&quot;0.0000211&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;day_close&quot;</span><span class="p">:</span><span class="s2">&quot;0.0000212&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;day_volume&quot;</span><span class="p">:</span><span class="s2">&quot;436030&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;day_quote_volume&quot;</span><span class="p">:</span><span class="s2">&quot;9.2787298&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;index_price&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mark_price&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_price&quot;</span><span class="p">:</span><span class="s2">&quot;0.00212000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;market&quot;</span><span class="p">:</span><span class="s2">&quot;swth_eth1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;market_type&quot;</span><span class="p">:</span><span class="s2">&quot;spot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;open_interest&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>market</strong> – Market ticker used by blockchain (eg. swth_eth1).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List with market stats as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_markets">
+<code class="sig-name descname"><span class="pre">get_markets</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_settled</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_markets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_markets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all markets or filter markets.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_markets</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;swth_eth1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;display_name&quot;</span><span class="p">:</span><span class="s2">&quot;SWTH_ETH&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;SWTH/ETH Spot Market&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;market_type&quot;</span><span class="p">:</span><span class="s2">&quot;spot&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;base&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;base_name&quot;</span><span class="p">:</span><span class="s2">&quot;Switcheo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;base_precision&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span>
+        <span class="s2">&quot;quote&quot;</span><span class="p">:</span><span class="s2">&quot;eth1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quote_name&quot;</span><span class="p">:</span><span class="s2">&quot;Ethereum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quote_precision&quot;</span><span class="p">:</span><span class="mi">18</span><span class="p">,</span>
+        <span class="s2">&quot;lot_size&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tick_size&quot;</span><span class="p">:</span><span class="s2">&quot;0.0000001&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;min_quantity&quot;</span><span class="p">:</span><span class="s2">&quot;200&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maker_fee&quot;</span><span class="p">:</span><span class="s2">&quot;-0.0005&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;taker_fee&quot;</span><span class="p">:</span><span class="s2">&quot;0.0025&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;risk_step_size&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;initial_margin_base&quot;</span><span class="p">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;initial_margin_step&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maintenance_margin_ratio&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_liquidation_order_ticket&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_liquidation_order_duration&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;impact_size&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mark_price_band&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;last_price_protected_band&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;index_oracle_id&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expiry_time&quot;</span><span class="p">:</span><span class="s2">&quot;1970-01-01T01:00:00+01:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_active&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;is_settled&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+        <span class="s2">&quot;closed_block_height&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;created_block_height&quot;</span><span class="p">:</span><span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “lot_size”:”1”) or integer(eg. “base_precision”:8)</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>market_type</strong> – type of the market can be ‘futures’ or ‘spot’</p></li>
+<li><p><strong>is_active</strong> – if only active markets should be returned</p></li>
+<li><p><strong>is_settled</strong> – if only settled markets should be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List with returned market stats as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_nodes">
+<code class="sig-name descname"><span class="pre">get_nodes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_result">
+<code class="sig-name descname"><span class="pre">get_oracle_result</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oracle_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_oracle_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_result" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>oracle_id</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_results">
+<code class="sig-name descname"><span class="pre">get_oracle_results</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_oracle_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_oracle_results" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_prices">
+<code class="sig-name descname"><span class="pre">get_prices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_prices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_prices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get prices off a market.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_prices</span><span class="p">(</span><span class="s2">&quot;swth_eth1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;last&quot;</span><span class="p">:</span><span class="s2">&quot;207000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;index&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fair&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mark&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mark_avg&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;settlement&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fair_index_delta_avg&quot;</span><span class="p">:</span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;market&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;marking_strategy&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;index_updated_at&quot;</span><span class="p">:</span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated_at&quot;</span><span class="p">:</span><span class="s2">&quot;2021-01-09T22:50:59.068526+01:00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;block_height&quot;</span><span class="p">:</span><span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not well documented in official documents.
+Parameter ‘market’ is NOT required, but strongly recommended. The return result has an empty ‘market’ field.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns amounts which are NOT human readable values. Consider ‘base_precision’ and
+‘quote_precision’ to calculate a multiplication factor = 10 ^ (‘base_precision’ - ‘quote_precision’)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “last”:”207000”) or integer(eg. “block_height”:0)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns a result even if the market is not known. Result contains default values.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>market</strong> – Market ticker used by blockchain (eg. swth_eth1).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Prices as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_reward_curve">
+<code class="sig-name descname"><span class="pre">get_reward_curve</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_reward_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_reward_curve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_rich_list">
+<code class="sig-name descname"><span class="pre">get_rich_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_rich_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_rich_list" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>token</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_staking_pool">
+<code class="sig-name descname"><span class="pre">get_staking_pool</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_staking_pool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_staking_pool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_status">
+<code class="sig-name descname"><span class="pre">get_status</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return cosmos RPC status endpoint.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+  <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;node_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;protocol_version&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;p2p&quot;</span><span class="p">:</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;block&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;app&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;f4cee80e4dec5a686139cb82729118e15f7ce19c&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;listen_addr&quot;</span><span class="p">:</span> <span class="s2">&quot;tcp://0.0.0.0:26656&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;switcheo-tradehub-1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.33.7&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;channels&quot;</span><span class="p">:</span> <span class="s2">&quot;4020212223303800&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;moniker&quot;</span><span class="p">:</span> <span class="s2">&quot;Devel Sentry Node 2&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tx_index&quot;</span><span class="p">:</span> <span class="s2">&quot;on&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rpc_address&quot;</span><span class="p">:</span> <span class="s2">&quot;tcp://0.0.0.0:26659&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;sync_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;latest_block_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;4A2C89C105D7864AA74C9DE4752AF5B59E96045EBAF984C69DD447C4524EC36F&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;latest_app_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;773651392EEDBFF6AEE088F76E7D75F2932B4D9F74CA27D568F706ADFC12B174&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;latest_block_height&quot;</span><span class="p">:</span> <span class="s2">&quot;6119142&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;latest_block_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-01-09T22:18:52.722611018Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;earliest_block_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;B4AF1F3D3D3FD5795BDDB7A6A2E6CA4E34D06338505D6EC46DD8F99E72ADCDAB&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;earliest_app_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;earliest_block_height&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;earliest_block_time&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-08-14T07:32:27.856700491Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;catching_up&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;validator_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;DCB03C204B7F94765B4ADCE1D8BEE88AA43AE811&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;pub_key&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tendermint/PubKeyEd25519&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;1GmDSymN6jTqQlZA2KeyzqknIncGMMrwnnas/DWGNOI=&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;voting_power&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Status as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_token">
+<code class="sig-name descname"><span class="pre">get_token</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denom</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a token.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_token</span><span class="p">(</span><span class="s2">&quot;swth&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Switcheo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;symbol&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;denom&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;decimals&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;blockchain&quot;</span><span class="p">:</span><span class="s2">&quot;neo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chain_id&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;asset_id&quot;</span><span class="p">:</span><span class="s2">&quot;32e125258b7db0a0dffde5bd03b2b859253538ab&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_active&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;is_collateral&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+    <span class="s2">&quot;lock_proxy_hash&quot;</span><span class="p">:</span><span class="s2">&quot;17d0f66eca7fcbfddc8d9706f20513bf5d7419cd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;delegated_supply&quot;</span><span class="p">:</span><span class="s2">&quot;100000000000000000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;originator&quot;</span><span class="p">:</span><span class="s2">&quot;swth1mw90en8tcqnvdjhp64qmyhuq4qasvhy25dpmvw&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “delegated_supply”:”100000000000000000”) or integer(eg. “decimals”:8)</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>denom</strong> – Denom used by tradehub.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Information about token as dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_token_details">
+<code class="sig-name descname"><span class="pre">get_token_details</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_token_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_token_details" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_tokens">
+<code class="sig-name descname"><span class="pre">get_tokens</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all known tokens on tradehub chain.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Switcheo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;symbol&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;denom&quot;</span><span class="p">:</span><span class="s2">&quot;swth&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;decimals&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span>
+        <span class="s2">&quot;blockchain&quot;</span><span class="p">:</span><span class="s2">&quot;neo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;chain_id&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+        <span class="s2">&quot;asset_id&quot;</span><span class="p">:</span><span class="s2">&quot;32e125258b7db0a0dffde5bd03b2b859253538ab&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_active&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;is_collateral&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>
+        <span class="s2">&quot;lock_proxy_hash&quot;</span><span class="p">:</span><span class="s2">&quot;17d0f66eca7fcbfddc8d9706f20513bf5d7419cd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;delegated_supply&quot;</span><span class="p">:</span><span class="s2">&quot;100000000000000000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;originator&quot;</span><span class="p">:</span><span class="s2">&quot;swth1mw90en8tcqnvdjhp64qmyhuq4qasvhy25dpmvw&quot;</span>
+    <span class="p">},</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint returns numbers as string(eg. “delegated_supply”:”100000000000000000”) or integer(eg. “decimals”:8)</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List with tokens as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_top_r_profits">
+<code class="sig-name descname"><span class="pre">get_top_r_profits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_top_r_profits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_top_r_profits" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>market</strong> – </p></li>
+<li><p><strong>limit</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_total_balances">
+<code class="sig-name descname"><span class="pre">get_total_balances</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_total_balances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_total_balances" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This endpoint is not working yet.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_transaction_types">
+<code class="sig-name descname"><span class="pre">get_transaction_types</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_transaction_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_transaction_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get transaction types used by tradehub.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public_client</span><span class="o">.</span><span class="n">get_transaction_types</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="s2">&quot;submit_proposal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;create_pool&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_reward_curve&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;send&quot;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List with transaction types as strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_transactions_fees">
+<code class="sig-name descname"><span class="pre">get_transactions_fees</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_transactions_fees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_transactions_fees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_delegations">
+<code class="sig-name descname"><span class="pre">get_validator_delegations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator_address</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validator_delegations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_delegations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_missed_blocks">
+<code class="sig-name descname"><span class="pre">get_validator_missed_blocks</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validator_missed_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_missed_blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_node_ips">
+<code class="sig-name descname"><span class="pre">get_validator_public_node_ips</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validator_public_node_ips"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_node_ips" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_nodes">
+<code class="sig-name descname"><span class="pre">get_validator_public_nodes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validator_public_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_public_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_signing_info">
+<code class="sig-name descname"><span class="pre">get_validator_signing_info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validator_signing_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validator_signing_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_validators">
+<code class="sig-name descname"><span class="pre">get_validators</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_validators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_validators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_vault_types">
+<code class="sig-name descname"><span class="pre">get_vault_types</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_vault_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_vault_types" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>token</strong> – </p>
+</dd>
+</dl>
+<p>:return :</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.get_vaults">
+<code class="sig-name descname"><span class="pre">get_vaults</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">swth_address</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="reference internal" href="_modules/tradehub/public_blockchain_client.html#PublicBlockchainClient.get_vaults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.get_vaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.parse_validator_status">
+<code class="sig-name descname"><span class="pre">parse_validator_status</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_json</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator_ip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.parse_validator_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to parse each peer’s JSON element and build information about each.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parse_validator_status</span><span class="p">(</span><span class="n">request_json</span><span class="o">=</span><span class="s1">&#39;/status&#39;</span><span class="p">,</span> <span class="n">validator_ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;moniker&#39;</span><span class="p">:</span> <span class="s1">&#39;spock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ip&#39;</span><span class="p">:</span> <span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.33.7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="s1">&#39;switcheo-tradehub-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7995864&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-27T19:51:00.162091183Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-14T07:32:27.856700491Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;catching_up&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;validator_address&#39;</span><span class="p">:</span> <span class="s1">&#39;7091A72888509B3F3069231081621DC988D63542&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key_type&#39;</span><span class="p">:</span> <span class="s1">&#39;tendermint/PubKeyEd25519&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key&#39;</span><span class="p">:</span> <span class="s1">&#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_voting_power&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_json</strong> – Dictionary of the return response from the validator status request.</p></li>
+<li><p><strong>validator_ip</strong> – String of the IP address to connect to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of validator information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.sentry_status_request">
+<code class="sig-name descname"><span class="pre">sentry_status_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.sentry_status_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is here to ensure the nodes that have open network connections also have their persistence service running.
+Many times the network connection is open for communication but the persistence service will not be on.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sentry_status_request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uri</strong> – Bool value for a URI or IP address.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_get_request">
+<code class="sig-name descname"><span class="pre">tradehub_get_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_get_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a wrapper for the get request function to allow for retrying network calls on different available validators if a request fails.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tradehub_get_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/txs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – String of the path being used for the network request that is going to be made.</p></li>
+<li><p><strong>params</strong> – Dict values that will added to the get request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the return request based on the network path sent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_post_request">
+<code class="sig-name descname"><span class="pre">tradehub_post_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.tradehub_post_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tradehub_post_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/txs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – String of the path being used for the network request that is going to be made.</p></li>
+<li><p><strong>data</strong> – Dict values that will added to the post request.</p></li>
+<li><p><strong>json_data</strong> – Dict values that will added to the post request.</p></li>
+<li><p><strong>params</strong> – Dict values that will added to the post request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the return request based on the network path sent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.validator_crawler_mp">
+<code class="sig-name descname"><span class="pre">validator_crawler_mp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.validator_crawler_mp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crawl the Tradehub Validators to test for available API endpoints.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">validator_crawler_mp</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.validator_status_request">
+<code class="sig-name descname"><span class="pre">validator_status_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validator_ip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.validator_status_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that makes the network requests to the Tradehub validators across the network.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">validator_status_request</span><span class="p">(</span><span class="n">validator_ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected return result for this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;moniker&#39;</span><span class="p">:</span> <span class="s1">&#39;spock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;ca1189045e84d2be5db0a1ed326ce7cd56015f11&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ip&#39;</span><span class="p">:</span> <span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.33.7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="s1">&#39;switcheo-tradehub-1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;DF194D43058D3CD89DD98A7DA28164B239B9693C822A1DB16CCC27FB49CA587B&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;7995864&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;latest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2021-02-27T19:51:00.162091183Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_height&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;earliest_block_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2020-08-14T07:32:27.856700491Z&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;catching_up&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;validator_address&#39;</span><span class="p">:</span> <span class="s1">&#39;7091A72888509B3F3069231081621DC988D63542&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key_type&#39;</span><span class="p">:</span> <span class="s1">&#39;tendermint/PubKeyEd25519&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_pub_key&#39;</span><span class="p">:</span> <span class="s1">&#39;epMp0h65WflL7r8tPGQwusVMbCHgy7ucRg8eDlEJPW0=&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_voting_power&#39;</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validator_status&#39;</span><span class="p">:</span> <span class="s1">&#39;Active&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;connected_nodes&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;node_id&#39;</span><span class="p">:</span> <span class="s1">&#39;d57a64f41487b5e421e91b71dceb0784cae57733&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;node_ip&#39;</span><span class="p">:</span> <span class="s1">&#39;195.201.82.228&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;node_full&#39;</span><span class="p">:</span> <span class="s1">&#39;d57a64f41487b5e421e91b71dceb0784cae57733@195.201.82.228&#39;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>validator_ip</strong> – String of the IP address to connect to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of validators that the crawler has found with the status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.public_blockchain_client.PublicBlockchainClient.websocket_status_check">
+<code class="sig-name descname"><span class="pre">websocket_status_check</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tradehub.public_blockchain_client.PublicBlockchainClient.websocket_status_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to check if the websocket port is open for communication.
+This is called as part of the sentry check because calling the websocket also requires the persistence service to be available.</p>
+<p>Execution of this function is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">websocket_status_check</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;54.255.5.46&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip</strong> – String of the IP address to connect to.</p></li>
+<li><p><strong>port</strong> – Int value for the port to be checked.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="transactions.html" class="btn btn-neutral float-right" title="Transactions Class - transactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="decentralized_client.html" class="btn btn-neutral float-left" title="Decentralized Network Crawler - decentralized_client" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
