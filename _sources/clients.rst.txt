@@ -6,6 +6,7 @@ Client Documentation
 
    decentralized_client
    public_client
+   transactions
    authenticated_client
    demex_client
    websocket_client

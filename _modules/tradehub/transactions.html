@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tradehub.transactions &mdash; Tradehub Python 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/width_style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tradehub Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../clients.html">Client Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tradehub Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tradehub.transactions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tradehub.transactions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    Transaction Class used as part of the Authenticated Client to standardize how on-chain messages are constructed.</span>
+<span class="sd">    This client is the basis any on-chain transaction and handles message construction, standards, signing, and broadcasting.</span>
+
+<span class="sd">Usage::</span>
+
+<span class="sd">    from tradehub.transactions import Transactions</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">jsons</span>
+
+<span class="kn">from</span> <span class="nn">tradehub.public_client</span> <span class="kn">import</span> <span class="n">PublicClient</span> <span class="k">as</span> <span class="n">TradehubPublicClient</span>
+<span class="kn">import</span> <span class="nn">tradehub.types</span> <span class="k">as</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">tradehub.wallet</span> <span class="kn">import</span> <span class="n">Wallet</span>
+
+
+<div class="viewcode-block" id="Transactions"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions">[docs]</a><span class="k">class</span> <span class="nc">Transactions</span><span class="p">(</span><span class="n">TradehubPublicClient</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class constructs, standardizes, signs, and broadcasts messages to the Tradehub network.</span>
+
+<span class="sd">    Execution of this function is as follows::</span>
+
+<span class="sd">        Transactions(wallet=Wallet(),</span>
+<span class="sd">                     trusted_ips=None,</span>
+<span class="sd">                     trusted_uris=None,</span>
+<span class="sd">                     network=&quot;mainnet&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wallet</span><span class="p">:</span> <span class="n">Wallet</span><span class="p">,</span> <span class="n">trusted_ips</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">trusted_uris</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;testnet&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param wallet: Wallet class for Tradehub interaction.</span>
+<span class="sd">        :type wallet: Wallet</span>
+<span class="sd">        :param trusted_ips: Known and trusted IPs to connect to for your API requests.</span>
+<span class="sd">        :type trusted_ips: list</span>
+<span class="sd">        :param trusted_uris: Known and trusted URIs to connect to for your API requests.</span>
+<span class="sd">        :type trusted_uris: list</span>
+<span class="sd">        :param network: Network to submit the transaction.</span>
+<span class="sd">        :type network: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">TradehubPublicClient</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">trusted_ips</span><span class="o">=</span><span class="n">trusted_ips</span><span class="p">,</span> <span class="n">trusted_uris</span><span class="o">=</span><span class="n">trusted_uris</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wallet</span> <span class="o">=</span> <span class="n">wallet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_details</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;account_number&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;sequence&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_variables</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;testnet&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;chain_id&quot;</span><span class="p">:</span> <span class="s2">&quot;switcheochain&quot;</span><span class="p">,</span> <span class="p">},</span>
+            <span class="s2">&quot;mainnet&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;chain_id&quot;</span><span class="p">:</span> <span class="s2">&quot;switcheo-tradehub-1&quot;</span><span class="p">,</span> <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chain_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_variables</span><span class="p">[</span><span class="n">network</span><span class="p">][</span><span class="s2">&quot;chain_id&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transactions_fees</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;block&quot;</span>        <span class="c1"># Need to automate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gas</span> <span class="o">=</span> <span class="s2">&quot;100000000000&quot;</span>  <span class="c1"># Need to automate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_token_details</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Transactions.get_account_details"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.get_account_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_account_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve Wallet account details required for submitting transactions on Tradehub.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            get_account_details()</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;height&#39;: &#39;1950991&#39;,</span>
+<span class="sd">                &#39;result&#39;: {</span>
+<span class="sd">                    &#39;type&#39;: &#39;cosmos-sdk/Account&#39;,</span>
+<span class="sd">                    &#39;value&#39;: {</span>
+<span class="sd">                        &#39;address&#39;: &#39;tswth1urfldmcspc9nk4w8vcfakxdf2rc5ee4fr2dn76&#39;,</span>
+<span class="sd">                        &#39;coins&#39;: [{</span>
+<span class="sd">                            &#39;denom&#39;: &#39;btc&#39;,</span>
+<span class="sd">                            &#39;amount&#39;: &#39;99033160&#39;</span>
+<span class="sd">                        }, {</span>
+<span class="sd">                        ...</span>
+<span class="sd">                        }],</span>
+<span class="sd">                        &#39;public_key&#39;: {</span>
+<span class="sd">                            &#39;type&#39;: &#39;tendermint/PubKeySecp256k1&#39;,</span>
+<span class="sd">                            &#39;value&#39;: &#39;Ao8h4bhZr1/m8ZEwPaOizNCcIMDX/yqwQh7LXhI77FLW&#39;</span>
+<span class="sd">                        },</span>
+<span class="sd">                        &#39;account_number&#39;: &#39;56&#39;,</span>
+<span class="sd">                        &#39;sequence&#39;: &#39;3195&#39;</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :return: Dictionary for the current state of the wallet, including sequence number and balances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account</span><span class="p">(</span><span class="n">swth_address</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wallet</span><span class="o">.</span><span class="n">address</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transactions.get_transaction_fee_type"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.get_transaction_fee_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_transaction_fee_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">fee_types</span><span class="p">[</span><span class="n">transaction_type</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Transactions.submit_transaction_on_chain"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.submit_transaction_on_chain">[docs]</a>    <span class="k">def</span> <span class="nf">submit_transaction_on_chain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the function that every function in higher classes should call.</span>
+<span class="sd">        Every function in the authenticated_client calls this function.</span>
+<span class="sd">        It standardizes the transaction construction and the signing and broadcasting.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            submit_transaction_on_chain(messages=[message], transaction_type=&quot;UPDATE_PROFILE_MSG_TYPE&quot;, fee=None)</span>
+
+<span class="sd">        :return: Dictionary for the transaction submitted on-chain.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">messages_list</span><span class="p">,</span> <span class="n">transactions_list</span><span class="p">,</span> <span class="n">fee_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_transaction_standards</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+                                                                                    <span class="n">transaction_type</span><span class="o">=</span><span class="n">transaction_type</span><span class="p">,</span>
+                                                                                    <span class="n">fee</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_and_broadcast</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages_list</span><span class="p">,</span> <span class="n">transaction_types</span><span class="o">=</span><span class="n">transactions_list</span><span class="p">,</span> <span class="n">fee</span><span class="o">=</span><span class="n">fee_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transactions.set_transaction_standards"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.set_transaction_standards">[docs]</a>    <span class="k">def</span> <span class="nf">set_transaction_standards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function sets standards for the messages in the transaction submitted to the chain.</span>
+<span class="sd">        Fees, Integer precision as string, and Transaction messages are required.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            submit_transaction_standards(messages=[message], transaction_type=&quot;UPDATE_PROFILE_MSG_TYPE&quot;, fee=None)</span>
+
+<span class="sd">        :return: Three return variables, 1 for each input but run through standardizations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">messages_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_message_standards</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">)</span>
+        <span class="n">tradehub_transaction_type</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">transaction_types</span><span class="p">[</span><span class="n">transaction_type</span><span class="p">]</span>
+        <span class="n">transactions_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tradehub_transaction_type</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages_list</span><span class="p">)</span>
+        <span class="n">fee_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_fees</span><span class="p">(</span><span class="n">transaction_cnt</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">),</span> <span class="n">transaction_type</span><span class="o">=</span><span class="n">tradehub_transaction_type</span><span class="p">,</span> <span class="n">fee</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">messages_list</span><span class="p">,</span> <span class="n">transactions_list</span><span class="p">,</span> <span class="n">fee_dict</span></div>
+
+<div class="viewcode-block" id="Transactions.set_message_standards"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.set_message_standards">[docs]</a>    <span class="k">def</span> <span class="nf">set_message_standards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Standardize messages, adding an originator or takingo ut keys that don&#39;t exist.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            set_message_standards(messages=[message])</span>
+
+<span class="sd">        :return: Three return variables, 1 for each input but run through standardizations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">messages_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s1">&#39;originator&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">message</span><span class="o">.</span><span class="n">originator</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]:</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">originator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wallet</span><span class="o">.</span><span class="n">address</span>
+            <span class="n">message_json</span> <span class="o">=</span> <span class="n">jsons</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="n">message_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">message_json</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">message_json</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">message_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">messages_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">messages_list</span></div>
+
+<div class="viewcode-block" id="Transactions.set_fees"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.set_fees">[docs]</a>    <span class="k">def</span> <span class="nf">set_fees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_cnt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Standardize, find, and calculate fees for the number of transactions.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            set_fees(transaction_cnt=1, transaction_type=&quot;UPDATE_PROFILE_MSG_TYPE&quot;, fee=None)</span>
+
+<span class="sd">        :return: Dictionary for the fee&#39;s that will be needed for this transaction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fee</span><span class="p">:</span>
+            <span class="n">fee_dict</span> <span class="o">=</span> <span class="n">fee</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fee_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transaction_fee_type</span><span class="p">(</span><span class="n">transaction_type</span><span class="p">)</span>
+            <span class="n">fee_amount</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fees</span><span class="p">[</span><span class="n">fee_type</span><span class="p">])</span> <span class="o">*</span> <span class="n">transaction_cnt</span><span class="p">)</span>
+            <span class="n">fee_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;amount&quot;</span><span class="p">:</span> <span class="n">fee_amount</span><span class="p">,</span> <span class="s2">&quot;denom&quot;</span><span class="p">:</span> <span class="s2">&quot;swth&quot;</span><span class="p">}],</span>
+                <span class="s2">&quot;gas&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">gas</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">fee_dict</span></div>
+
+<div class="viewcode-block" id="Transactions.sign_and_broadcast"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.sign_and_broadcast">[docs]</a>    <span class="k">def</span> <span class="nf">sign_and_broadcast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">transaction_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>   <span class="c1"># Eventually need to add memo to this.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Now that messages are standardized we need to sign the transaction and broadcast it.</span>
+<span class="sd">        The actual signature part will be handled by the Wallet Client to avoid leaking keys between classes.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            sign_and_broadcast(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)</span>
+
+<span class="sd">        :return: Dictionary for the transaction submitted on-chain.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transactions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_transaction</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">transaction_types</span><span class="o">=</span><span class="n">transaction_types</span><span class="p">,</span> <span class="n">fee</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+        <span class="n">broadcast_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadcast_transactions</span><span class="p">(</span><span class="n">transactions</span><span class="o">=</span><span class="n">transactions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;code&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">broadcast_response</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">broadcast_response</span></div>
+
+<div class="viewcode-block" id="Transactions.sign_transaction"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.sign_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">sign_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                         <span class="n">transaction_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                         <span class="n">memo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                         <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A Signature has the following sequence.  https://docs.switcheo.org/#/?id=authentication</span>
+<span class="sd">        (1) Construct a list of dictionaries combining message and message types together. &lt;- construct_concrete_messages</span>
+<span class="sd">        (2) Sign the list of messages generated in step (1). &lt;- sign_message</span>
+<span class="sd">        (3) Take the signature from step (2) and create a signature JSON message. &lt;- construct_signatures</span>
+<span class="sd">        (4) Take the signature JSON from step (3) and wrape it in a transaction JSON message. &lt;- construct_transaction</span>
+<span class="sd">        (5) Take the transaction JSON from step (4) and create the final layer of the transaction JSON message. &lt;- construct_complete_transaction</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            sign_transaction(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)</span>
+
+<span class="sd">        :return: Dictionary for a complete transaction message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">concrete_messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_concrete_messages</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">transaction_types</span><span class="o">=</span><span class="n">transaction_types</span><span class="p">)</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_message</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">concrete_messages</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="n">memo</span><span class="p">,</span> <span class="n">fee</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+        <span class="n">signatures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_signatures</span><span class="p">(</span><span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">)</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_transaction</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">concrete_messages</span><span class="p">,</span> <span class="n">signatures</span><span class="o">=</span><span class="p">[</span><span class="n">signatures</span><span class="p">],</span> <span class="n">fees</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_complete_transaction</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transactions.construct_concrete_messages"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.construct_concrete_messages">[docs]</a>    <span class="k">def</span> <span class="nf">construct_concrete_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">transaction_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1"># both of these are lists of strings</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The first step to building a transaction is merging the messages with the transaction types for each.</span>
+<span class="sd">        Once constructed then each message can be sent off for signature.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            construct_concrete_messages(messages=messages_list, transaction_types=transactions_list)</span>
+
+<span class="sd">        :return: List of dictionaries of messages with transaction types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">transaction_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Message length is not equal to transaction types length.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot broadcast more than 100 messages in 1 transaction&#39;</span><span class="p">)</span>
+
+        <span class="n">concrete_messages</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># ConcreteMsg[] from JS code -&gt; {type: string, value: object}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">transaction_types</span><span class="p">):</span>
+            <span class="n">concrete_messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">transaction_type</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">concrete_messages</span></div>
+
+<div class="viewcode-block" id="Transactions.sign_message"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.sign_message">[docs]</a>    <span class="k">def</span> <span class="nf">sign_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                     <span class="n">memo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">fee</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sign the messages constructed in the previous function.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            sign_message(messages=messages_list, memo=None, fee=None)</span>
+
+<span class="sd">        :return: String as a result of the signed messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span>  <span class="c1"># no sequence override, get latest from blockchain</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_details</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;account_number&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;sequence&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Account number still 0 after refetching. This suggests your account is not initialized with funds.&#39;</span><span class="p">)</span>
+
+        <span class="n">fee_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_fees</span><span class="p">(</span><span class="n">transaction_cnt</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">),</span> <span class="n">transaction_type</span><span class="o">=</span><span class="n">messages</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">],</span> <span class="n">fee</span><span class="o">=</span><span class="n">fee</span><span class="p">)</span>
+
+        <span class="n">constructed_signing_message</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;account_number&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span><span class="p">,</span>
+            <span class="s2">&quot;chain_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">chain_id</span><span class="p">,</span>
+            <span class="s2">&quot;fee&quot;</span><span class="p">:</span> <span class="n">fee_dict</span><span class="p">,</span>
+            <span class="s2">&quot;memo&quot;</span><span class="p">:</span> <span class="n">memo</span> <span class="k">if</span> <span class="n">memo</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;msgs&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">,</span>
+            <span class="s2">&quot;sequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wallet</span><span class="o">.</span><span class="n">_sign</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">constructed_signing_message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transactions.construct_signatures"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.construct_signatures">[docs]</a>    <span class="k">def</span> <span class="nf">construct_signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signature</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;pub_key&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tendermint/PubKeySecp256k1&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wallet</span><span class="o">.</span><span class="n">base64_public_key</span><span class="p">},</span>
+            <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Transactions.construct_transaction"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.construct_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">construct_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">signatures</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fees</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">memo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;fee&quot;</span><span class="p">:</span> <span class="n">fees</span><span class="p">,</span>
+            <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+            <span class="s2">&quot;memo&quot;</span><span class="p">:</span> <span class="n">memo</span> <span class="k">if</span> <span class="n">memo</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;signatures&quot;</span><span class="p">:</span> <span class="n">signatures</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Transactions.construct_complete_transaction"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.construct_complete_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">construct_complete_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">mode</span> <span class="k">if</span> <span class="n">mode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+            <span class="s2">&quot;tx&quot;</span><span class="p">:</span> <span class="n">transaction</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Transactions.broadcast_transactions"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.broadcast_transactions">[docs]</a>    <span class="k">def</span> <span class="nf">broadcast_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transactions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Now that messages are standardized we need to sign the transaction and broadcast it.</span>
+<span class="sd">        The actual signature part will be handled by the Wallet Client to avoid leaking keys between classes.</span>
+
+<span class="sd">        Execution of this function is as follows::</span>
+
+<span class="sd">            broadcast_transactions(transactions=transactions)</span>
+
+<span class="sd">        The expected return result for this function is as follows::</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &#39;height&#39;: str,</span>
+<span class="sd">            &#39;txhash&#39;: str,</span>
+<span class="sd">            &#39;raw_log&#39;: str,</span>
+<span class="sd">            &#39;logs&#39;: [{</span>
+<span class="sd">                &#39;msg_index&#39;: int,</span>
+<span class="sd">                &#39;log&#39;: str,</span>
+<span class="sd">                &#39;events&#39;: [{</span>
+<span class="sd">                    &#39;type&#39;: str,</span>
+<span class="sd">                    &#39;attributes&#39;: [{</span>
+<span class="sd">                        &#39;key&#39;: str,</span>
+<span class="sd">                        &#39;value&#39;: str</span>
+<span class="sd">                    }]</span>
+<span class="sd">                }]</span>
+<span class="sd">            }],</span>
+<span class="sd">            &#39;gas_wanted&#39;: str,</span>
+<span class="sd">            &#39;gas_used&#39;: str</span>
+<span class="sd">        }</span>
+
+<span class="sd">        :return: Dictionary for the transaction submitted on-chain.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tradehub_post_request</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/txs&#39;</span><span class="p">,</span> <span class="n">json_data</span><span class="o">=</span><span class="n">transactions</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Switcheolytics &amp; Pascal Kelbing.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
