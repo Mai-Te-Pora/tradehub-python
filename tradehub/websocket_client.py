@@ -1,3 +1,15 @@
+"""
+Description:
+
+    Websocket Client for the Switcheo Tradehub decentralized exchange.
+    This is the client that you should use to start fetching data from Demex via WebSockets.
+    You will find the necessary functions to subscribe on the channels to receive realtime updates.
+    Additional you can perform a limited set of get requests which are perform via the same WebSocket connection.
+
+Usage::
+
+    from tradehub.websocket_client import DemexWebsocket
+"""
 from typing import Optional, List, Callable
 import websockets
 import json
