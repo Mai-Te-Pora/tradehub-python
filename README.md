@@ -60,6 +60,20 @@ There are many clients to choose from and depending on your needs there are only
 Traders should use the `Demex Client`
 Validators could use the `Demex Client` but combining the `Wallet` Client and `Authenticated Client` together is effectively the same.
 
+The way these classes inheret from each other is as follows (top level first):
+
+<p style="text-align: center;">
+Demex Client</br>
+:arrow_up:</br>
+Authenticated Client     +     Wallet</br>
+:arrow_up:</br>
+Transactions Client</br>
+:arrow_up:</br>
+Public Client</br>
+:arrow_up:</br>
+Network Crawler Client</br>
+</p>
+
 ### Demex Client
 
 This client utilizes all the other clients and can call wallet, authenticated, and public endpoints.

@@ -1,3 +1,13 @@
+"""
+Description:
+
+    Transaction Class used as part of the Authenticated Client to standardize how on-chain messages are constructed.
+    This client is the basis any on-chain transaction and handles message construction, standards, signing, and broadcasting.
+
+Usage::
+
+    from tradehub.transactions import Transactions
+"""
 import jsons
 
 from tradehub.public_client import PublicClient as TradehubPublicClient
@@ -6,9 +16,27 @@ from tradehub.wallet import Wallet
 
 
 class Transactions(TradehubPublicClient):
+    """
+    This class constructs, standardizes, signs, and broadcasts messages to the Tradehub network.
+
+    Execution of this function is as follows::
+
+        Transactions(wallet=Wallet(),
+                     trusted_ips=None,
+                     trusted_uris=None,
+                     network="mainnet")
+    """
 
     def __init__(self, wallet: Wallet, trusted_ips: list = None, trusted_uris: list = None, network: str = "testnet"):
         """
+        :param wallet: Wallet class for Tradehub interaction.
+        :type wallet: Wallet
+        :param trusted_ips: Known and trusted IPs to connect to for your API requests.
+        :type trusted_ips: list
+        :param trusted_uris: Known and trusted URIs to connect to for your API requests.
+        :type trusted_uris: list
+        :param network: Network to submit the transaction.
+        :type network: str
         """
         TradehubPublicClient.__init__(self, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris)
         self.wallet = wallet
@@ -26,18 +54,72 @@ class Transactions(TradehubPublicClient):
         self.tokens = self.get_token_details()
 
     def get_account_details(self):
+        """
+        Retrieve Wallet account details required for submitting transactions on Tradehub.
+
+        Execution of this function is as follows::
+
+            get_account_details()
+
+        The expected return result for this function is as follows::
+
+            {
+                'height': '1950991',
+                'result': {
+                    'type': 'cosmos-sdk/Account',
+                    'value': {
+                        'address': 'tswth1urfldmcspc9nk4w8vcfakxdf2rc5ee4fr2dn76',
+                        'coins': [{
+                            'denom': 'btc',
+                            'amount': '99033160'
+                        }, {
+                        ...
+                        }],
+                        'public_key': {
+                            'type': 'tendermint/PubKeySecp256k1',
+                            'value': 'Ao8h4bhZr1/m8ZEwPaOizNCcIMDX/yqwQh7LXhI77FLW'
+                        },
+                        'account_number': '56',
+                        'sequence': '3195'
+                    }
+                }
+            }
+
+        :return: Dictionary for the current state of the wallet, including sequence number and balances.
+        """
         return self.get_account(swth_address=self.wallet.address)
 
     def get_transaction_fee_type(self, transaction_type: str):
         return types.fee_types[transaction_type]
 
     def submit_transaction_on_chain(self, messages: list, transaction_type: str, fee: dict):
+        """
+        This is the function that every function in higher classes should call.
+        Every function in the authenticated_client calls this function.
+        It standardizes the transaction construction and the signing and broadcasting.
+
+        Execution of this function is as follows::
+
+            submit_transaction_on_chain(messages=[message], transaction_type="UPDATE_PROFILE_MSG_TYPE", fee=None)
+
+        :return: Dictionary for the transaction submitted on-chain.
+        """
         messages_list, transactions_list, fee_dict = self.set_transaction_standards(messages=messages,
                                                                                     transaction_type=transaction_type,
                                                                                     fee=fee)
         return self.sign_and_broadcast(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)
 
     def set_transaction_standards(self, messages: list, transaction_type: str, fee: dict):
+        """
+        This function sets standards for the messages in the transaction submitted to the chain.
+        Fees, Integer precision as string, and Transaction messages are required.
+
+        Execution of this function is as follows::
+
+            submit_transaction_standards(messages=[message], transaction_type="UPDATE_PROFILE_MSG_TYPE", fee=None)
+
+        :return: Three return variables, 1 for each input but run through standardizations.
+        """
         messages_list = self.set_message_standards(messages=messages)
         tradehub_transaction_type = types.transaction_types[transaction_type]
         transactions_list = [tradehub_transaction_type] * len(messages_list)
@@ -45,6 +127,15 @@ class Transactions(TradehubPublicClient):
         return messages_list, transactions_list, fee_dict
 
     def set_message_standards(self, messages: list):
+        """
+        Standardize messages, adding an originator or takingo ut keys that don't exist.
+
+        Execution of this function is as follows::
+
+            set_message_standards(messages=[message])
+
+        :return: Three return variables, 1 for each input but run through standardizations.
+        """
         messages_list = []
         for message in messages:
             if hasattr(message, 'originator') and message.originator in [None, ""]:
@@ -58,6 +149,15 @@ class Transactions(TradehubPublicClient):
         return messages_list
 
     def set_fees(self, transaction_cnt: int, transaction_type: str, fee: dict):
+        """
+        Standardize, find, and calculate fees for the number of transactions.
+
+        Execution of this function is as follows::
+
+            set_fees(transaction_cnt=1, transaction_type="UPDATE_PROFILE_MSG_TYPE", fee=None)
+
+        :return: Dictionary for the fee's that will be needed for this transaction.
+        """
         if fee:
             fee_dict = fee
         else:
@@ -70,11 +170,16 @@ class Transactions(TradehubPublicClient):
         return fee_dict
 
     def sign_and_broadcast(self, messages: list, transaction_types: list, fee: dict):   # Eventually need to add memo to this.
-        '''
-            This is the entry point for all signatures in this Class.
-            All the signatures should be handled in the Wallet Client to avoid leaking keys.
+        """
+        Now that messages are standardized we need to sign the transaction and broadcast it.
+        The actual signature part will be handled by the Wallet Client to avoid leaking keys between classes.
 
-        '''
+        Execution of this function is as follows::
+
+            sign_and_broadcast(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)
+
+        :return: Dictionary for the transaction submitted on-chain.
+        """
         transactions = self.sign_transaction(messages=messages, transaction_types=transaction_types, fee=fee)
         broadcast_response = self.broadcast_transactions(transactions=transactions)
         if 'code' not in broadcast_response:
@@ -86,15 +191,20 @@ class Transactions(TradehubPublicClient):
                          transaction_types: list,
                          memo: str = None,
                          fee: dict = None):
-        '''
-            A Signature has the following sequence.  https://docs.switcheo.org/#/?id=authentication
-            (1) Construct a list of dictionaries combining message and message types together. <- construct_concreate_messages
-            (2) Sign the list of messages generated in step (1). <- sign_message
-            (3) Take the signature from step (2) and create a signature JSON message. <- construct_signatures
-            (4) Take the signature JSON from step (3) and wrape it in a transaction JSON message. <- construact_transaction
-            (5) Take the transaction JSON from step (4) and create the final layer of the transaction JSON message. <- construct_complete_transaction
-        '''
+        """
+        A Signature has the following sequence.  https://docs.switcheo.org/#/?id=authentication
+        (1) Construct a list of dictionaries combining message and message types together. <- construct_concrete_messages
+        (2) Sign the list of messages generated in step (1). <- sign_message
+        (3) Take the signature from step (2) and create a signature JSON message. <- construct_signatures
+        (4) Take the signature JSON from step (3) and wrape it in a transaction JSON message. <- construct_transaction
+        (5) Take the transaction JSON from step (4) and create the final layer of the transaction JSON message. <- construct_complete_transaction
 
+        Execution of this function is as follows::
+
+            sign_transaction(messages=messages_list, transaction_types=transactions_list, fee=fee_dict)
+
+        :return: Dictionary for a complete transaction message.
+        """
         concrete_messages = self.construct_concrete_messages(messages=messages, transaction_types=transaction_types)
         signature = self.sign_message(messages=concrete_messages, memo=memo, fee=fee)
         signatures = self.construct_signatures(signature=signature)
@@ -102,6 +212,16 @@ class Transactions(TradehubPublicClient):
         return self.construct_complete_transaction(transaction=transaction)
 
     def construct_concrete_messages(self, messages: list, transaction_types: list):  # both of these are lists of strings
+        """
+        The first step to building a transaction is merging the messages with the transaction types for each.
+        Once constructed then each message can be sent off for signature.
+
+        Execution of this function is as follows::
+
+            construct_concrete_messages(messages=messages_list, transaction_types=transactions_list)
+
+        :return: List of dictionaries of messages with transaction types.
+        """
         if len(messages) != len(transaction_types):
             raise ValueError('Message length is not equal to transaction types length.')
         if len(messages) > 100:
@@ -121,7 +241,15 @@ class Transactions(TradehubPublicClient):
                      messages: list,
                      memo: str = None,
                      fee: dict = None):
+        """
+        Sign the messages constructed in the previous function.
 
+        Execution of this function is as follows::
+
+            sign_message(messages=messages_list, memo=None, fee=None)
+
+        :return: String as a result of the signed messages.
+        """
         if self.account_sequence_nbr is None or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
             self.account_blockchain_dict = self.get_account_details()
             self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
@@ -163,4 +291,35 @@ class Transactions(TradehubPublicClient):
         }
 
     def broadcast_transactions(self, transactions: dict):
+        """
+        Now that messages are standardized we need to sign the transaction and broadcast it.
+        The actual signature part will be handled by the Wallet Client to avoid leaking keys between classes.
+
+        Execution of this function is as follows::
+
+            broadcast_transactions(transactions=transactions)
+
+        The expected return result for this function is as follows::
+
+        {
+            'height': str,
+            'txhash': str,
+            'raw_log': str,
+            'logs': [{
+                'msg_index': int,
+                'log': str,
+                'events': [{
+                    'type': str,
+                    'attributes': [{
+                        'key': str,
+                        'value': str
+                    }]
+                }]
+            }],
+            'gas_wanted': str,
+            'gas_used': str
+        }
+
+        :return: Dictionary for the transaction submitted on-chain.
+        """
         return self.tradehub_post_request(path='/txs', json_data=transactions)
