@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "tradehub"
-version = "1.0.0"
+version = "2.0.0"
 description = "Python Client to interact with the Switcheo Tradehub Blockchain to manage staking, liquidity pools, governance, and trading on Demex."
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
+repository = "https://github.com/Mai-Te-Pora/tradehub-python"
+documentation = "https://mai-te-pora.github.io/tradehub-python/"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
