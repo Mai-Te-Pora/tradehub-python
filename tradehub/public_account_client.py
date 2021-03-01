@@ -144,12 +144,6 @@ class PublicClient(PublicBlockchainClient):
         }
         return self.tradehub_get_request(path='/get_address', params=api_params)
 
-    def get_address_rewards(self, address: str):
-        return self.tradehub_get_request(path='/distribution/delegators/{}/rewards'.format(address))
-
-    def get_address_staking(self, address: str):
-        return self.tradehub_get_request(path='/staking/delegators/{}/delegations'.format(address))
-
     def get_address_trades(self, limit: int = 200, pagination: bool = None, address: str = None):
         api_params = {}
         if pagination is not None:
