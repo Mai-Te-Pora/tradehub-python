@@ -43,8 +43,9 @@ class TestWSSubscribeMarketStats(APITestCase):
                 'nneo2_usdc1': market_stats,
                 'swth_eth1': market_stats,
                 'swth_usdc1': market_stats,
-                'wbtc1_usdc1': market_stats
-
+                'wbtc1_usdc1': market_stats,
+                'btc_h21': market_stats,
+                'eth_h21': market_stats,
             }
         }
 
@@ -58,7 +59,6 @@ class TestWSSubscribeMarketStats(APITestCase):
 
         async def on_message(message: dict):
             # save response into self
-            print(message)
             self.response.append(message)
 
         try:
@@ -75,8 +75,6 @@ class TestWSSubscribeMarketStats(APITestCase):
 
         if len(self.response) < 2:
             self.skipTest(f"Did not receive candlesticks within time, test can not finish.")
-
-        print(self.response[1]["result"].keys())
 
         channel_subscription: dict = self.response[0]
         self.assertDictStructure(expect_subscription, channel_subscription)

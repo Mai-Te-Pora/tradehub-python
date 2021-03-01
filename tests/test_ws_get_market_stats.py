@@ -38,7 +38,9 @@ class TestWSGetMarketStats(APITestCase):
                 'nneo2_usdc1': market_stats,
                 'swth_eth1': market_stats,
                 'swth_usdc1': market_stats,
-                'wbtc1_usdc1': market_stats
+                'wbtc1_usdc1': market_stats,
+                'btc_h21': market_stats,
+                'eth_h21': market_stats,
 
             }
         }
@@ -99,8 +101,9 @@ class TestWSGetMarketStats(APITestCase):
                 'nneo2_usdc1': market_stats,
                 'swth_eth1': market_stats,
                 'swth_usdc1': market_stats,
-                'wbtc1_usdc1': market_stats
-
+                'wbtc1_usdc1': market_stats,
+                'btc_h21': market_stats,
+                'eth_h21': market_stats
             }
         }
 
