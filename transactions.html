@@ -462,13 +462,16 @@ This client is the basis any on-chain transaction and handles message constructi
 <tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.tradehub_post_request" title="tradehub.transactions.Transactions.tradehub_post_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tradehub_post_request</span></code></a>(path[, data, …])</p></td>
 <td><p>This is a wrapper for the post request function to allow for retrying network calls on different available validators if a request fails.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.validator_crawler_mp" title="tradehub.transactions.Transactions.validator_crawler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_crawler_mp</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.update_account_details" title="tradehub.transactions.Transactions.update_account_details"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_account_details</span></code></a>()</p></td>
+<td><p>Triggers an update to fetch current sequence number.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.validator_crawler_mp" title="tradehub.transactions.Transactions.validator_crawler_mp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_crawler_mp</span></code></a>()</p></td>
 <td><p>Crawl the Tradehub Validators to test for available API endpoints.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.validator_status_request" title="tradehub.transactions.Transactions.validator_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_status_request</span></code></a>(validator_ip)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.validator_status_request" title="tradehub.transactions.Transactions.validator_status_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validator_status_request</span></code></a>(validator_ip)</p></td>
 <td><p>Function that makes the network requests to the Tradehub validators across the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.websocket_status_check" title="tradehub.transactions.Transactions.websocket_status_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">websocket_status_check</span></code></a>(ip[, port])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.transactions.Transactions.websocket_status_check" title="tradehub.transactions.Transactions.websocket_status_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">websocket_status_check</span></code></a>(ip[, port])</p></td>
 <td><p>Function to check if the websocket port is open for communication.</p></td>
 </tr>
 </tbody>
@@ -2410,6 +2413,17 @@ It standardizes the transaction construction and the signing and broadcasting.</
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Dictionary of the return request based on the network path sent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.transactions.Transactions.update_account_details">
+<code class="sig-name descname"><span class="pre">update_account_details</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tradehub/transactions.html#Transactions.update_account_details"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.transactions.Transactions.update_account_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggers an update to fetch current sequence number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

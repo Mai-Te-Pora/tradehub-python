@@ -231,40 +231,43 @@ functionalities described in the documentation.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.get_recent_trades" title="tradehub.websocket_client.DemexWebsocket.get_recent_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_recent_trades</span></code></a>(message_id, market)</p></td>
 <td><p>Request up  to 100 recent trades for a market.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.send" title="tradehub.websocket_client.DemexWebsocket.send"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code></a>(data)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.open" title="tradehub.websocket_client.DemexWebsocket.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>()</p></td>
+<td><p>Check if the connection is open.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.send" title="tradehub.websocket_client.DemexWebsocket.send"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code></a>(data)</p></td>
 <td><p>Send data to websocket server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe" title="tradehub.websocket_client.DemexWebsocket.subscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe</span></code></a>(message_id, channels)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe" title="tradehub.websocket_client.DemexWebsocket.subscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe</span></code></a>(message_id, channels)</p></td>
 <td><p>Subscribe to one or many channels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_account_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_account_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_account_trades</span></code></a>(message_id, …[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_account_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_account_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_account_trades</span></code></a>(message_id, …[, …])</p></td>
 <td><p>Subscribe to account trades.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_balances" title="tradehub.websocket_client.DemexWebsocket.subscribe_balances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_balances</span></code></a>(message_id, swth_address)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_balances" title="tradehub.websocket_client.DemexWebsocket.subscribe_balances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_balances</span></code></a>(message_id, swth_address)</p></td>
 <td><p>Subscribe to wallet specific balance channel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_books" title="tradehub.websocket_client.DemexWebsocket.subscribe_books"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_books</span></code></a>(message_id, market)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_books" title="tradehub.websocket_client.DemexWebsocket.subscribe_books"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_books</span></code></a>(message_id, market)</p></td>
 <td><p>Subscribe to book channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks" title="tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_candlesticks</span></code></a>(message_id, market, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks" title="tradehub.websocket_client.DemexWebsocket.subscribe_candlesticks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_candlesticks</span></code></a>(message_id, market, …)</p></td>
 <td><p>Subscribe to candlesticks channel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_leverages" title="tradehub.websocket_client.DemexWebsocket.subscribe_leverages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_leverages</span></code></a>(message_id, swth_address)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_leverages" title="tradehub.websocket_client.DemexWebsocket.subscribe_leverages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_leverages</span></code></a>(message_id, swth_address)</p></td>
 <td><p>Subscribe to wallet specific leverages channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_market_stats" title="tradehub.websocket_client.DemexWebsocket.subscribe_market_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_market_stats</span></code></a>(message_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_market_stats" title="tradehub.websocket_client.DemexWebsocket.subscribe_market_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_market_stats</span></code></a>(message_id)</p></td>
 <td><p>Subscribe to market stats.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_orders" title="tradehub.websocket_client.DemexWebsocket.subscribe_orders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_orders</span></code></a>(message_id, swth_address[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_orders" title="tradehub.websocket_client.DemexWebsocket.subscribe_orders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_orders</span></code></a>(message_id, swth_address[, …])</p></td>
 <td><p>Subscribe to orders channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_positions" title="tradehub.websocket_client.DemexWebsocket.subscribe_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_positions</span></code></a>(message_id, swth_address)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_positions" title="tradehub.websocket_client.DemexWebsocket.subscribe_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_positions</span></code></a>(message_id, swth_address)</p></td>
 <td><p>Subscribe to positions channel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_recent_trades</span></code></a>(message_id, market)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades" title="tradehub.websocket_client.DemexWebsocket.subscribe_recent_trades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subscribe_recent_trades</span></code></a>(message_id, market)</p></td>
 <td><p>Subscribe to recent trades.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.unsubscribe" title="tradehub.websocket_client.DemexWebsocket.unsubscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unsubscribe</span></code></a>(message_id, channels)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#tradehub.websocket_client.DemexWebsocket.unsubscribe" title="tradehub.websocket_client.DemexWebsocket.unsubscribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unsubscribe</span></code></a>(message_id, channels)</p></td>
 <td><p>Unsubscribe to one or many channels.</p></td>
 </tr>
 </tbody>
@@ -716,6 +719,17 @@ identify which channel the notification is originated from.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tradehub.websocket_client.DemexWebsocket.open">
+<code class="sig-name descname"><span class="pre">open</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tradehub/websocket_client.html#DemexWebsocket.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tradehub.websocket_client.DemexWebsocket.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the connection is open.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Bool</p>
 </dd>
 </dl>
 </dd></dl>

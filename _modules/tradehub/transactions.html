@@ -206,6 +206,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gas</span> <span class="o">=</span> <span class="s2">&quot;100000000000&quot;</span>  <span class="c1"># Need to automate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_token_details</span><span class="p">()</span>
 
+<div class="viewcode-block" id="Transactions.update_account_details"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.update_account_details">[docs]</a>    <span class="k">def</span> <span class="nf">update_account_details</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Triggers an update to fetch current sequence number.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_details</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;account_number&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account_sequence_nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account_blockchain_dict</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;sequence&quot;</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="Transactions.get_account_details"><a class="viewcode-back" href="../../transactions.html#tradehub.transactions.Transactions.get_account_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_account_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve Wallet account details required for submitting transactions on Tradehub.</span>
