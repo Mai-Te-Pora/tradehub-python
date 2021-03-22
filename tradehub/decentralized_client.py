@@ -349,7 +349,8 @@ class NetworkCrawlerClient(object):
             req = Request(api_url=self.active_sentry_uri, timeout=2).get(path=path, params=params)
             return req
         except (ValueError, ConnectionError, HTTPError, Timeout):
-            self.active_sentry_api_list.remove(self.active_sentry_uri)
+            if self.active_sentry_uri in self.active_sentry_api_list:
+                self.active_sentry_api_list.remove(self.active_sentry_uri)
             if not self.active_sentry_api_list and not self.BYPASS_NETWORK_CRAWLER:
                 self.validator_crawler_mp()
                 self.sentry_status_request()
@@ -373,10 +374,11 @@ class NetworkCrawlerClient(object):
         :return: Dictionary of the return request based on the network path sent.
         """
         try:
-            req = Request(api_url=self.active_sentry_uri, timeout=2).post(path=path, data=data, json_data=json_data, params=params)
+            req = Request(api_url=self.active_sentry_uri, timeout=30).post(path=path, data=data, json_data=json_data, params=params)
             return req
-        except (ValueError, ConnectionError, HTTPError, Timeout):
-            self.active_sentry_api_list.remove(self.active_sentry_uri)
+        except (ValueError, ConnectionError, HTTPError, Timeout) as e:
+            if self.active_sentry_uri in self.active_sentry_api_list:
+                self.active_sentry_api_list.remove(self.active_sentry_uri)
             if not self.active_sentry_api_list and not self.BYPASS_NETWORK_CRAWLER:
                 self.validator_crawler_mp()
                 self.sentry_status_request()
