@@ -53,6 +53,16 @@ class Transactions(TradehubPublicClient):
         self.gas = "100000000000"  # Need to automate
         self.tokens = self.get_token_details()
 
+    def update_account_details(self) -> None:
+        """
+        Triggers an update to fetch current sequence number.
+
+        :return: None
+        """
+        self.account_blockchain_dict = self.get_account_details()
+        self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
+        self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
+
     def get_account_details(self):
         """
         Retrieve Wallet account details required for submitting transactions on Tradehub.

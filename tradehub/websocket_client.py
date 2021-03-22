@@ -942,6 +942,17 @@ class DemexWebsocket:
         """
         await self._websocket.send(json.dumps(data))
 
+    def open(self) -> bool:
+        """
+        Check if the connection is open.
+
+        :return: Bool
+        """
+        if not self._websocket:
+            return False
+
+        return self._websocket.open
+
     async def disconnect(self):
         """
         Safely close the websocket connection.
