@@ -40,9 +40,7 @@ class Transactions(TradehubPublicClient):
         """
         TradehubPublicClient.__init__(self, network=network, trusted_ips=trusted_ips, trusted_uris=trusted_uris)
         self.wallet = wallet
-        self.account_blockchain_dict = self.get_account_details()
-        self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
-        self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
+        self.update_account_details()
         self.network_variables = {
             "testnet": {"chain_id": "switcheochain", },
             "mainnet": {"chain_id": "switcheo-tradehub-1", },
@@ -194,6 +192,10 @@ class Transactions(TradehubPublicClient):
         broadcast_response = self.broadcast_transactions(transactions=transactions)
         if 'code' not in broadcast_response:
             self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
+        elif broadcast_response['code'] == '3':
+            self.update_account_details()
+        elif broadcast_response['code'] == '19':
+            self.account_sequence_nbr = str(int(self.account_sequence_nbr) + 1)
         return broadcast_response
 
     def sign_transaction(self,
@@ -261,9 +263,7 @@ class Transactions(TradehubPublicClient):
         :return: String as a result of the signed messages.
         """
         if self.account_sequence_nbr is None or self.account_nbr is None or self.account_nbr == '0':  # no sequence override, get latest from blockchain
-            self.account_blockchain_dict = self.get_account_details()
-            self.account_nbr = self.account_blockchain_dict["result"]["value"]["account_number"]
-            self.account_sequence_nbr = self.account_blockchain_dict["result"]["value"]["sequence"]
+            self.update_account_details()
             if self.account_nbr == '0' or self.account_nbr is None:
                 raise ValueError('Account number still 0 after refetching. This suggests your account is not initialized with funds.')
 
