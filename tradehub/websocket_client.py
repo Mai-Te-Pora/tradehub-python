@@ -1703,8 +1703,8 @@ class CarbonWebsocket:
             "params": {
                 "market": market,
                 "resolution": str(granularity),
-                "from": str(from_epoch),
-                "to": str(to_epoch)
+                "from": from_epoch,
+                "to": to_epoch
             }
         })
 
